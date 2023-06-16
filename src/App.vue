@@ -1,30 +1,81 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { useRouter, useRoute } from "vue-router";
+import { computed } from "vue";
+
+const router = useRouter();
+const route = useRoute();
+
+let menu = [
+  {
+    name: "",
+    title: "О марафоне",
+    // Убрать после 25.06.23
+    disable: true,
+  },
+  {
+    name: "",
+    title: "Отчёты",
+    // Убрать после 25.06.23
+    disable: true,
+  },
+  {
+    name: "",
+    title: "FAQ",
+    // Убрать после 25.06.23
+    disable: true,
+  },
+  {
+    name: "",
+    title: "Регистрация",
+    // Убрать после 25.06.23
+    disable: true,
+  },
+  {
+    name: "Results",
+    title: "Результаты",
+    disable: false,
+  },
+];
+
+const currentPathName = computed(() => {
+  if (route.matched[0]) {
+    return route.matched[0].name;
+  }
+});
+
+function chooseMenuItem(pathName) {
+  if (currentPathName.value !== pathName) {
+    router.push({ name: pathName });
+  }
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="text-white font-sans font-semibold">
+    <menu class="flex justify-center py-10">
+      <div
+        :class="[
+          ' mr-10 last:mr-0',
+          item.disable ? 'opacity-10' : ' cursor-pointer',
+          { ' text-lime-400': currentPathName === item.name },
+        ]"
+        v-for="item in menu"
+        :key="item.name"
+      >
+        <div @click="chooseMenuItem(item.name)" :to="item.name">
+          {{ item.title }}
+        </div>
+      </div>
+    </menu>
+    <router-view />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<style >
+html {
+  background-color: #242627;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.my-border-color {
+  border-color: #4d5155;
 }
 </style>

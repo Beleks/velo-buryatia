@@ -1,4 +1,37 @@
-:root {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  box-sizing: border-box; 
+  /* ?? */
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #27272a39;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #2d2d30;
+    border-radius: 100vh;
+    /* border: 3px solid #f6f7ed; */
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #27272a;
+  }
+}
+
+
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -86,4 +119,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
