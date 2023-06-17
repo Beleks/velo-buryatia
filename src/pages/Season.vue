@@ -26,7 +26,9 @@ let distances = computed(() => {
   let distances = [];
 
   seasonMarathon.value.forEach((element) => {
-    distances.push(element.distance);
+    if (!distances.includes(element.distance)) {
+      distances.push(element.distance);
+    }
   });
 
   return distances;

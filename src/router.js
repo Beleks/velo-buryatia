@@ -1,16 +1,26 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-  { name: "Home", path: "/", component: () => import("@/pages/Home.vue") },
+  { path: "/:pathMatch(.*)*", component: () => import("@/pages/NotFound.vue") },
   {
-    name: "Results",
-    path: "/results",
-    component: () => import("@/pages/Results.vue"),
+    name: "Desktop",
+    path: "/",
+    redirect: () => {
+      return { name: "Results" };
+    },
+    component: () => import("@/pages/Home.vue"),
     children: [
       {
-        name: "Season",
-        path: ":season",
-        component: () => import("@/pages/Season.vue"),
+        name: "Results",
+        path: "results",
+        component: () => import("@/pages/Results.vue"),
+        children: [
+          {
+            name: "Season",
+            path: ":season",
+            component: () => import("@/pages/Season.vue"),
+          },
+        ],
       },
     ],
   },
