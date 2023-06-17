@@ -148,9 +148,8 @@ function goBack() {
 <template>
   <div class="px-24 max-w-7xl m-auto">
     <template v-if="seasonMarathon">
-      <div class="flex justify-between items-center mb-6 mx-6">
+      <div class="flex justify-between items-center mb-6 mx-5">
         <div
-          :to="{ name: 'Results' }"
           @click="goBack()"
           class="stroke-white hover:stroke-lime-400 cursor-pointer"
         >
@@ -159,7 +158,11 @@ function goBack() {
         <span class="text-2xl font-extrabold">
           Байкальский веломарафон {{ selectedSeason }}
         </span>
-        <div class="opacity-0 cursor-default">Назад</div>
+        <div class="opacity-0 cursor-default">
+          <div>
+            <ArrowSvg />
+          </div>
+        </div>
       </div>
       <div class="px-4 mb-5 flex justify-between">
         <div class="flex items-center">
