@@ -39,7 +39,6 @@ let menu = [
 
 const currentPathName = computed(() => {
   if (route.matched[1]) {
-    console.log(route.matched, "route.matched");
     return route.matched[1].name;
   }
 });

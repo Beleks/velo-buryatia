@@ -1,12 +1,15 @@
 <script setup>
 import InputSelect from "../components/InputSelect.vue";
+import ArrowSvg from "../components/svg/ArrowSvg.vue";
+import EyeOffSvg from "../components/svg/EyeOffSvg.vue";
+import EyeSvg from "../components/svg/EyeSvg.vue";
 
 import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { useMainStore } from "@/stores/MainStore";
 
-// const router = useRouter();
+const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
 
@@ -136,13 +139,23 @@ function formatTime(time) {
     time.sec < 10 ? `0${time.sec}` : time.sec
   }`;
 }
+
+function goBack() {
+  router.back();
+}
 </script>
 
 <template>
   <div class="px-24 max-w-7xl m-auto">
     <template v-if="seasonMarathon">
       <div class="flex justify-between items-center mb-6 mx-6">
-        <router-link :to="{ name: 'Results' }"> Назад </router-link>
+        <div
+          :to="{ name: 'Results' }"
+          @click="goBack()"
+          class="stroke-white hover:stroke-lime-400 cursor-pointer"
+        >
+          <ArrowSvg />
+        </div>
         <span class="text-2xl font-extrabold">
           Байкальский веломарафон {{ selectedSeason }}
         </span>
@@ -168,7 +181,13 @@ function formatTime(time) {
             class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
           >
             <!-- Глаз svg -->
-            <span class="opacity-40">Общий зачёт</span>
+            <div
+              class="opacity-40 flex justify-between items-center stroke-white"
+            >
+              <div v-if="true"><EyeOffSvg :size="20" /></div>
+              <div v-else><EyeSvg :size="20" /></div>
+              <div class="ml-2">Общий зачёт</div>
+            </div>
           </div>
         </div>
       </div>

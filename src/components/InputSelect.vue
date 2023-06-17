@@ -2,6 +2,8 @@
 import { computed, ref, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
+import SimpleArrowSvg from "./svg/SimpleArrowSvg.vue";
+
 const props = defineProps({
   options: {
     type: Array,
@@ -41,7 +43,22 @@ watch(
 );
 
 onClickOutside(target, (event) => {
-  if (ignorEl.value == event.target) {
+  // console.log(event.target, "event.target");
+  // console.log([...ignorEl.value.children], "[...ignorEl.value.children]");
+  // console.log([...ignorEl.value.children].includes(event.target), "ignorEl");
+
+  // Не работает из-за "hover:"
+  // console.log(
+  //   event.target.closest(`.${[...ignorEl.value.classList].join(".")}`),
+  //   "closest"
+  // );
+  //
+  if (
+    ignorEl.value ==
+    event.target.closest(
+      `.border.my-border-color.rounded.px-2.py-1.bg-input-color`
+    )
+  ) {
     return;
   }
   closeDropdownMenu(event);
@@ -68,12 +85,16 @@ function selectOption(option) {
   <div class="">
     <div
       :style="{ width: `${width}px` }"
-      class="border my-border-color rounded px-2 py-1 bg-input-color transition ease-out mr-6"
+      class="border my-border-color rounded px-2 py-1 bg-input-color transition ease-out mr-6 flex justify-between items-center stroke-white"
       :class="[disable ? 'opacity-50' : 'hover:border-lime-400 cursor-pointer']"
       @click="switchDropdownMenu"
       ref="ignorEl"
     >
-      {{ selectedOption }}
+      <div>{{ selectedOption }}</div>
+      <SimpleArrowSvg
+        :class="[dropdownMenuIsOpen ? 'rotate-180' : '', 'transition ease-out']"
+        :size="20"
+      />
     </div>
     <div
       v-if="dropdownMenuIsOpen"
