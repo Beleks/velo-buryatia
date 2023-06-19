@@ -1,4 +1,5 @@
 <script setup>
+import _ from "lodash";
 import InputSelect from "../components/InputSelect.vue";
 import ArrowSvg from "../components/svg/ArrowSvg.vue";
 import EyeOffSvg from "../components/svg/EyeOffSvg.vue";
@@ -16,6 +17,7 @@ const mainStore = useMainStore();
 let selectedDistance = ref(null);
 let selectedTypeByke = ref(null);
 let selectedGroup = ref(null);
+let isTotalTime = ref(false);
 
 let selectedSeason = computed(() => {
   return route.params.season;
@@ -71,16 +73,48 @@ let groups = computed(() => {
 });
 
 let participants = computed(() => {
-  return seasonMarathon.value
-    .find(
-      (element) =>
-        element.distance == selectedDistance.value &&
-        element.type == selectedTypeByke.value
-    )
-    ?.participants.filter(
+  if (isTotalTime.value) {
+    let participants = _.cloneDeep(
+      seasonMarathon.value.find(
+        (element) => element.distance == selectedDistance.value
+      )?.participants
+    );
+
+    let descendedParticipants = participants.filter(
+      (element) => !element.place
+    );
+
+    return participants
+      .filter((element) => element.place)
+      .sort((firstEl, secondEl) => {
+        if (firstEl.time.hour - secondEl.time.hour < 0) {
+          return -1;
+        } else if (firstEl.time.hour - secondEl.time.hour == 0) {
+          if (firstEl.time.minute - secondEl.time.minute < 0) {
+            return -1;
+          } else if (firstEl.time.minute - secondEl.time.minute == 0) {
+            return firstEl.time.sec - secondEl.time.sec;
+          } else {
+            return 1;
+          }
+        } else {
+          return 1;
+        }
+      })
+      .concat(descendedParticipants);
+  } else {
+    let participants = _.cloneDeep(
+      seasonMarathon.value.find(
+        (element) =>
+          element.distance == selectedDistance.value &&
+          element.type == selectedTypeByke.value
+      )?.participants
+    );
+
+    return participants?.filter(
       (participant) => participant.group == selectedGroup.value
     );
-  //
+  }
 });
 
 function selectDistance(distance) {
@@ -102,35 +136,47 @@ function culcDelay(sourceTime) {
 
   let time = {};
   let bestTime = participants.value[0].time;
+
+  Object.assign(time, sourceTime);
+
   let delay = {
     hour: 0,
     minute: 0,
     sec: 0,
+    calcHour() {
+      this.hour = time.hour - bestTime.hour;
+    },
+    calcMinute() {
+      if (time.minute < bestTime.minute) {
+        time.hour -= 1;
+        time.minute += 60;
+      }
+      this.minute =
+        time.minute - bestTime.minute < 10
+          ? `0${time.minute - bestTime.minute}`
+          : time.minute - bestTime.minute;
+    },
+    calcSec() {
+      if (time.sec < bestTime.sec) {
+        time.minute -= 1;
+        time.sec += 60;
+      }
+      this.sec =
+        time.sec - bestTime.sec < 10
+          ? `0${time.sec - bestTime.sec}`
+          : time.sec - bestTime.sec;
+    },
   };
 
-  Object.assign(time, sourceTime);
+  delay.calcSec();
+  delay.calcMinute();
+  delay.calcHour();
 
-  delay.sec = () => {
-    if (time.sec < bestTime.sec) {
-      time.minute -= 1;
-      time.sec += 60;
-    }
-    return time.sec - bestTime.sec < 10
-      ? `0${time.sec - bestTime.sec}`
-      : time.sec - bestTime.sec;
-  };
-  delay.minute = () => {
-    if (time.minute < bestTime.minute) {
-      time.hour -= 1;
-      time.minute += 60;
-    }
-    return time.minute - bestTime.minute < 10
-      ? `0${time.minute - bestTime.minute}`
-      : time.minute - bestTime.minute;
-  };
-  delay.hour = time.hour - bestTime.hour;
+  return `+ ${delay.hour}:${delay.minute}:${delay.sec}`;
+}
 
-  return `+ ${delay.hour}:${delay.minute()}:${delay.sec()}`;
+function switchTotalTime() {
+  isTotalTime.value = !isTotalTime.value;
 }
 
 function formatTime(time) {
@@ -148,7 +194,7 @@ function goBack() {
 <template>
   <div class="px-24 max-w-7xl m-auto">
     <template v-if="seasonMarathon">
-      <div class="flex justify-between items-center mb-6 mx-5">
+      <div class="flex justify-between items-center mb-6 mx-5 select-none">
         <div
           @click="goBack()"
           class="stroke-white hover:stroke-lime-400 cursor-pointer"
@@ -164,7 +210,7 @@ function goBack() {
           </div>
         </div>
       </div>
-      <div class="px-4 mb-5 flex justify-between">
+      <div class="px-4 mb-5 flex justify-between select-none">
         <div class="flex items-center">
           <div class="flex items-center">
             <div class="opacity-60 mr-3">Дистанция:</div>
@@ -182,12 +228,18 @@ function goBack() {
         <div>
           <div
             class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
+            @click="switchTotalTime"
           >
             <!-- Глаз svg -->
             <div
-              class="opacity-40 flex justify-between items-center stroke-white"
+              class="flex justify-between items-center"
+              :class="[
+                !isTotalTime
+                  ? 'opacity-40 stroke-white'
+                  : 'stroke-lime-400 text-lime-400',
+              ]"
             >
-              <div v-if="true"><EyeOffSvg :size="20" /></div>
+              <div v-if="!isTotalTime"><EyeOffSvg :size="20" /></div>
               <div v-else><EyeSvg :size="20" /></div>
               <div class="ml-2">Общий зачёт</div>
             </div>
@@ -213,20 +265,20 @@ function goBack() {
         <div
           class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2"
           v-for="(participant, index) in participants"
-          :key="participant.place"
+          :key="index"
         >
           <div class="flex items-center">
             <div
               :class="[
                 {
-                  first: participant.place == 1,
-                  second: participant.place == 2,
-                  third: participant.place == 3,
+                  first: index == 0 && participant.place,
+                  second: index == 1 && participant.place,
+                  third: index == 2 && participant.place,
                 },
                 'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-4',
               ]"
             >
-              {{ participant.place ? participant.place : "-" }}
+              {{ participant.place ? index + 1 : "-" }}
             </div>
             <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
               {{ participant.number }}
@@ -237,7 +289,7 @@ function goBack() {
           </div>
           <div class="flex items-center">
             <div class="w-20 mr-2 opacity-70 text-end">
-              {{ participant.place !== 1 ? culcDelay(participant.time) : "" }}
+              {{ index !== 0 ? culcDelay(participant.time) : "" }}
             </div>
             <div class="w-20 text-end">
               {{ participant.time ? formatTime(participant.time) : "Сошёл" }}

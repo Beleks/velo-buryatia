@@ -292,7 +292,7 @@ export const useMainStore = defineStore("main", {
               team: null, // Пе-2
               group: "М 18-40",
               time: {
-                hour: 2,
+                hour: 3,
                 minute: 8,
                 sec: 43,
               },
@@ -307,7 +307,7 @@ export const useMainStore = defineStore("main", {
               team: null,
               group: "М 18-40",
               time: {
-                hour: 2,
+                hour: 3,
                 minute: 9,
                 sec: 52,
               },
@@ -606,7 +606,7 @@ export const useMainStore = defineStore("main", {
             },
             // 31-50
             // 51 +
-            
+
           ],
         },
       ],

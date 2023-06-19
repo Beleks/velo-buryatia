@@ -43,9 +43,6 @@ watch(
 );
 
 onClickOutside(target, (event) => {
-  // console.log(event.target, "event.target");
-  // console.log([...ignorEl.value.children], "[...ignorEl.value.children]");
-  // console.log([...ignorEl.value.children].includes(event.target), "ignorEl");
 
   // Не работает из-за "hover:"
   // console.log(
