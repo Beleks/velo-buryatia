@@ -74,11 +74,16 @@ let groups = computed(() => {
 
 let participants = computed(() => {
   if (isTotalTime.value) {
-    let participants = _.cloneDeep(
-      seasonMarathon.value.find(
-        (element) => element.distance == selectedDistance.value
-      )?.participants
+    let participants = [];
+    let neededMarathons = seasonMarathon.value.filter(
+      (element) => element.distance == selectedDistance.value
     );
+
+    neededMarathons.forEach((element) => {
+      participants.push(_.cloneDeep(element.participants));
+    });
+
+    participants = participants.flat();
 
     let descendedParticipants = participants.filter(
       (element) => !element.place
