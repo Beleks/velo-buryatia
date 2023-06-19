@@ -216,11 +216,11 @@ function goBack() {
             <div class="opacity-60 mr-3">Дистанция:</div>
             <InputSelect :options="distances" @input="selectDistance" />
           </div>
-          <div class="flex items-center">
+          <div v-show="!isTotalTime" class="flex items-center">
             <div class="opacity-60 mr-3">Тип велосипеда:</div>
             <InputSelect :options="typesBike" @input="selectTypeBike" />
           </div>
-          <div class="flex items-center">
+          <div v-show="!isTotalTime" class="flex items-center">
             <div class="opacity-60 mr-3">Группа:</div>
             <InputSelect :options="groups" @input="selectGroup" :width="160" />
           </div>
@@ -254,7 +254,7 @@ function goBack() {
             <div class="w-7 h-7 mr-4 flex justify-center items-center">#</div>
             <div class="w-7 text-center mr-2">№</div>
             <div class="w-60 mr-4">Имя Фамилия</div>
-            <div class="w-40 mr-4">Город</div>
+            <div class="w-40 mr-4">Нп.</div>
             <div class="w-40 mr-4">Команда</div>
           </div>
           <div class="flex items-center">
