@@ -29,7 +29,11 @@ const routes = [
       },
     ],
   },
-
+  {
+    name: "Admin",
+    path: "/admin", 
+    component: () => import("@/pages/Admin.vue")
+  },
   // { path: "/about", component: About },
 ];
 
