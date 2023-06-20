@@ -20,6 +20,11 @@ const routes = [
             path: ":season",
             component: () => import("@/pages/Season.vue"),
           },
+          {
+            name: "Cyclist",
+            path: "cyclist/:cyclistId",
+            component: () => import("@/pages/Cyclist.vue"),
+          },
         ],
       },
     ],

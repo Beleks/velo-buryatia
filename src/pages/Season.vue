@@ -191,6 +191,10 @@ function formatTime(time) {
   }`;
 }
 
+function goToCyclist(cyclist) {
+  router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
+}
+
 function goBack() {
   router.back();
 }
@@ -235,7 +239,6 @@ function goBack() {
             class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
             @click="switchTotalTime"
           >
-            <!-- Глаз svg -->
             <div
               class="flex justify-between items-center"
               :class="[
@@ -251,7 +254,7 @@ function goBack() {
           </div>
         </div>
       </div>
-      <div class="border my-border-color rounded">
+      <div class="border my-border-color rounded mb-8">
         <div
           class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
         >
@@ -268,7 +271,7 @@ function goBack() {
           </div>
         </div>
         <div
-          class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2"
+          class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
           v-for="(participant, index) in participants"
           :key="index"
         >
@@ -288,7 +291,14 @@ function goBack() {
             <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
               {{ participant.number }}
             </div>
-            <div class="w-60 mr-4">{{ participant.name }}</div>
+            <div class="w-60 mr-4">
+              <a
+                class="hover:underline cursor-pointer"
+                @click="goToCyclist(participant)"
+              >
+                {{ participant.name }}
+              </a>
+            </div>
             <div class="w-40 mr-4">{{ participant.city }}</div>
             <div class="w-40 mr-4">-</div>
           </div>
@@ -301,8 +311,8 @@ function goBack() {
             </div>
           </div>
         </div>
-      </div></template
-    >
+      </div>
+    </template>
     <div v-else class="text-2xl font-extrabold text-center">
       Нет результатов
     </div>
@@ -310,40 +320,4 @@ function goBack() {
 </template>
 
 <style>
-.bg-table-color {
-  background-color: rgba(49, 53, 56, 0.8);
-}
-.bg-my-color {
-  background-color: rgba(49, 53, 56, 1);
-}
-.bg-input-color {
-  background-color: #313538;
-}
-.bg-input-color-selected {
-  background-color: #242628;
-}
-.first {
-  background-color: #fee265;
-  color: #242627;
-  /* width: 36px; */
-  /* height: 36px; */
-  /* border-radius: 50px; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-}
-.second {
-  background-color: #a9d3d8;
-  color: #242627;
-  /* width: 36px;
-  height: 36px;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center; */
-}
-.third {
-  background-color: #a66f45;
-  color: #242627;
-}
 </style>

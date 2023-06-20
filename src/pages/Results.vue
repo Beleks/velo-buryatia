@@ -5,8 +5,8 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-let isSeasonSelected = computed(() => {
-  return !!route.params.season;
+let nothingIsSelected = computed(() => {
+  return route.name == "Results";
 });
 
 const seasons = [
@@ -30,7 +30,7 @@ function chooseSeason(season) {
 </script>
 
 <template>
-  <div v-if="!isSeasonSelected">
+  <div v-if="nothingIsSelected">
     <div
       v-for="season in seasons"
       :key="season.name"
@@ -48,4 +48,43 @@ function chooseSeason(season) {
 </template>
 
 <style>
+.hover-table-item:hover {
+  background-color: hsla(0, 0%, 100%, 0.08);
+}
+.bg-table-color {
+  background-color: rgba(49, 53, 56, 0.8);
+}
+.bg-my-color {
+  background-color: rgba(49, 53, 56, 1);
+}
+.bg-input-color {
+  background-color: #313538;
+}
+.bg-input-color-selected {
+  background-color: #242628;
+}
+.first {
+  background-color: #fee265;
+  color: #242627;
+  /* width: 36px; */
+  /* height: 36px; */
+  /* border-radius: 50px; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+.second {
+  background-color: #a9d3d8;
+  color: #242627;
+  /* width: 36px;
+  height: 36px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+.third {
+  background-color: #a66f45;
+  color: #242627;
+}
 </style>
