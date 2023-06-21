@@ -261,8 +261,8 @@ function goBack() {
           <div class="flex items-center">
             <div class="w-7 h-7 mr-4 flex justify-center items-center">#</div>
             <div class="w-7 text-center mr-2">№</div>
-            <div class="w-60 mr-4">Имя Фамилия</div>
-            <div class="w-40 mr-4">Нп.</div>
+            <div class="w-60 mr-4">Фамилия Имя</div>
+            <div class="w-40 mr-4">нп.</div>
             <div class="w-40 mr-4">Команда</div>
           </div>
           <div class="flex items-center">
