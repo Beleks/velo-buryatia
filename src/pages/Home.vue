@@ -7,33 +7,29 @@ const route = useRoute();
 
 let menu = [
   {
-    name: "",
+    name: "About",
     title: "О марафоне",
     // Убрать после 25.06.23
-    disable: true,
   },
   {
-    name: "",
+    name: "Reports",
     title: "Отчёты",
     // Убрать после 25.06.23
-    disable: true,
   },
-  {
-    name: "",
-    title: "FAQ",
-    // Убрать после 25.06.23
-    disable: true,
-  },
-  {
-    name: "",
-    title: "Регистрация",
-    // Убрать после 25.06.23
-    disable: true,
-  },
+  // {
+  //   name: "About",
+  //   title: "FAQ",
+  //   // Убрать после 25.06.23
+  // },
+  // {
+  //   name: "",
+  //   title: "Регистрация",
+  //   // Убрать после 25.06.23
+  //   disable: true,
+  // },
   {
     name: "Results",
     title: "Результаты",
-    disable: false,
   },
 ];
 
@@ -55,9 +51,8 @@ function chooseMenuItem(pathName) {
     <menu class="flex justify-center py-10">
       <div
         :class="[
-          ' mr-10 last:mr-0',
-          item.disable ? 'opacity-10' : ' cursor-pointer',
-          { ' text-lime-400': currentPathName === item.name },
+          ' mr-10 last:mr-0 cursor-pointer',
+          { ' text-emerald-400': currentPathName === item.name },
         ]"
         v-for="item in menu"
         :key="item.name"
@@ -67,9 +62,16 @@ function chooseMenuItem(pathName) {
         </div>
       </div>
     </menu>
-    <router-view />
+    <div class="mb-40">
+      <router-view />
+    </div>
+    <footer class="footer-bg fixed bottom-0 w-full">Footer</footer>
   </div>
 </template>
 
 <style>
+.footer-bg {
+  background-color: #292b2d;
+}
+
 </style>

@@ -6,7 +6,7 @@ const routes = [
     name: "Desktop",
     path: "/",
     redirect: () => {
-      return { name: "Results" };
+      return { name: "About" };
     },
     component: () => import("@/pages/Home.vue"),
     children: [
@@ -27,12 +27,22 @@ const routes = [
           },
         ],
       },
+      {
+        name: "About",
+        path: "/about",
+        component: () => import("@/pages/About.vue"),
+      },
+      {
+        name: "Reports",
+        path: "/reports",
+        component: () => import("@/pages/Reports.vue"),
+      },
     ],
   },
   {
     name: "Admin",
-    path: "/admin", 
-    component: () => import("@/pages/Admin.vue")
+    path: "/admin",
+    component: () => import("@/pages/Admin.vue"),
   },
   // { path: "/about", component: About },
 ];

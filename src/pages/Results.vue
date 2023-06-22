@@ -35,7 +35,7 @@ function chooseSeason(season) {
       v-for="season in seasons"
       :key="season.name"
       @click="chooseSeason(season)"
-      class="px-20 max-w-3xl m-auto text-center py-6 border-2 my-border-color mb-6 rounded hover:border-lime-400 hover:text-lime-400 transition ease-out cursor-pointer"
+      class="px-20 max-w-3xl m-auto text-center py-6 border-2 my-border-color mb-6 rounded hover:border-emerald-400 hover:text-emerald-400 transition ease-out cursor-pointer"
     >
       <div class="text-3xl">
         {{ season.title }}
