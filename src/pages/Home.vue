@@ -11,11 +11,11 @@ let menu = [
     title: "О марафоне",
     // Убрать после 25.06.23
   },
-  {
-    name: "Reports",
-    title: "Отчёты",
-    // Убрать после 25.06.23
-  },
+  // {
+  //   name: "Reports",
+  //   title: "Отчёты",
+  //   // Убрать после 25.06.23
+  // },
   // {
   //   name: "About",
   //   title: "FAQ",
@@ -73,5 +73,4 @@ function chooseMenuItem(pathName) {
 .footer-bg {
   background-color: #292b2d;
 }
-
 </style>

@@ -159,7 +159,7 @@ function toReports() {
             <div
               class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer"
             >
-              Подробнее
+              Результаты
             </div>
           </div>
         </div>
@@ -171,10 +171,10 @@ function toReports() {
         ><DocSvg />
       </div>
     </div>
-    <div class="mb-12">
+    <!-- <div class="mb-12">
       <div class="font-bold text-gradient text-center mb-8 text-xl">Отчёты</div>
       <div>
-        <div>
+        <div class="faq-bg">
           <div>img</div>
           <div>
             <div></div>
@@ -190,7 +190,7 @@ function toReports() {
       >
         Показать больше
       </div>
-    </div>
+    </div> -->
     <div class="mb-12">
       <div class="font-bold text-gradient text-center mb-8 text-xl">
         Партнёры

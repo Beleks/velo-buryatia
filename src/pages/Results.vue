@@ -12,7 +12,15 @@ let nothingIsSelected = computed(() => {
 const seasons = [
   {
     name: "2022",
-    title: "2022 XVV",
+    title: "XVV Байкальский веломарафон 2022",
+    disable: false,
+    img: "bg_01",
+  },
+  {
+    name: "2023",
+    title: "XVI Байкальский веломарафон 2023",
+    disable: true,
+    img: "bg_01",
   },
   // {
   //   name: "2021",
@@ -25,7 +33,9 @@ const seasons = [
 ];
 
 function chooseSeason(season) {
-  router.push({ name: "Season", params: { season: season.name } });
+  if (!season.disable) {
+    router.push({ name: "Season", params: { season: season.name } });
+  }
 }
 </script>
 
@@ -35,10 +45,21 @@ function chooseSeason(season) {
       v-for="season in seasons"
       :key="season.name"
       @click="chooseSeason(season)"
-      class="px-20 max-w-3xl m-auto text-center py-6 border-2 my-border-color mb-6 rounded hover:border-emerald-400 hover:text-emerald-400 transition ease-out cursor-pointer"
+      class="max-w-3xl m-auto border-2 my-border-color mb-6 rounded transition ease-out relative"
+      :class="[
+        season.disable
+          ? 'opacity-50'
+          : 'hover:border-emerald-400 hover:text-emerald-400 cursor-pointer',
+      ]"
     >
-      <div class="text-3xl">
-        {{ season.title }}
+      <img
+        v-if="!season.disable"
+        class="absolute w-full h-full object-cover -z-10 opacity-10"
+        src="../assets/bg_01.jpg"
+        alt=""
+      />
+      <div class="text-center py-10 px-20">
+        <div class="text-3xl">{{ season.title }}</div>
       </div>
     </div>
   </div>
@@ -48,6 +69,10 @@ function chooseSeason(season) {
 </template>
 
 <style>
+/* .bg-img{
+  background-image: ;
+} */
+
 .hover-table-item:hover {
   background-color: hsla(0, 0%, 100%, 0.08);
 }
