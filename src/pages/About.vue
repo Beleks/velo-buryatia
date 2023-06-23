@@ -167,7 +167,10 @@ function toReports() {
       <div
         class="flex justify-center text-center underline cursor-pointer mt-2"
       >
-        <span class="mr-2 opacity-70 hover:opacity-100">Положение</span
+        <a
+          class="mr-2 opacity-70 hover:opacity-100"
+          href="../src/assets/Polozhenie_BVM_24_06_2023.pdf"
+          >Положение</a
         ><DocSvg />
       </div>
     </div>
