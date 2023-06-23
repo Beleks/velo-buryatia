@@ -169,7 +169,9 @@ function toReports() {
       >
         <a
           class="mr-2 opacity-70 hover:opacity-100"
-          href="../src/assets/Polozhenie_BVM_24_06_2023.pdf"
+          href="https://velo.alekseybeletsky.ru/assets/Polozhenie_BVM_24_06_2023.pdf"
+          target="_blank"
+          rel="noreferrer noopener"
           >Положение</a
         ><DocSvg />
       </div>

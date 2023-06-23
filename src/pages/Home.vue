@@ -47,25 +47,64 @@ function chooseMenuItem(pathName) {
 </script>
 
 <template>
-  <div class="text-white font-sans font-semibold">
-    <menu class="flex justify-center py-10">
-      <div
-        :class="[
-          ' mr-10 last:mr-0 cursor-pointer',
-          { ' text-emerald-400': currentPathName === item.name },
-        ]"
-        v-for="item in menu"
-        :key="item.name"
-      >
-        <div @click="chooseMenuItem(item.name)" :to="item.name">
-          {{ item.title }}
+  <div
+    class="text-white font-sans font-semibold h-screen flex flex-col justify-between"
+  >
+    <div>
+      <menu class="flex justify-center py-10">
+        <div
+          :class="[
+            ' mr-10 last:mr-0 cursor-pointer',
+            { ' text-emerald-400': currentPathName === item.name },
+          ]"
+          v-for="item in menu"
+          :key="item.name"
+        >
+          <div @click="chooseMenuItem(item.name)" :to="item.name">
+            {{ item.title }}
+          </div>
+        </div>
+      </menu>
+      <div class="mb-10">
+        <router-view />
+      </div>
+    </div>
+    <!-- fixed bottom-0 -->
+    <footer class="footer-bg w-full py-4 self-end end">
+      <div class="px-12 max-w-7xl mx-auto flex flex-col">
+        <div class="flex text-lg">
+          <div class="w-1/2 mr-4">Директор соревнования: Гаськов Владимир</div>
+          <div class="w-1/2">Главный судья: Корсак Наталья</div>
+        </div>
+        <div class="mt-6 flex">
+          <div class="w-1/2 text-sm opacity-50 mr-4">
+            <!-- <div>
+              © 2022 г. Все права защищены. "Байкальский вело марафон - 2021"
+            </div> -->
+            <!-- <div class="mt-2">
+              Любое использование материалов допускается только с согласия
+              администрации сайта. При публикации или цитировании материалов
+              прямая активная ссылка на www.baikalmarafon.ru обязательна.
+            </div> -->
+            <div class="mt-2">
+              Вся информация была взята с сайта
+              <a
+                class="underline"
+                target="_blank"
+                rel="noreferrer noopener"
+                href="https://baikalmarafon.ru/"
+                >https://baikalmarafon.ru/</a
+              >
+            </div>
+            <div class="mt-2">Разработчики: Алексей Б. Вячеслав Б.</div>
+          </div>
+          <div class="w-1/2 text-lg">
+            <div>baikalmarafon.ru@gmail.com</div>
+            <div class="mt-2">+7 (924) 650-31-46</div>
+          </div>
         </div>
       </div>
-    </menu>
-    <div class="mb-40">
-      <router-view />
-    </div>
-    <footer class="footer-bg fixed bottom-0 w-full">Footer</footer>
+    </footer>
   </div>
 </template>
 
