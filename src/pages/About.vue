@@ -22,6 +22,9 @@ const route = useRoute();
 function toReports() {
   router.push({ name: "Reports" });
 }
+function goToResults(season) {
+  router.push({ name: "Season", params: { season: season } });
+}
 </script>
 
 <template>
@@ -158,6 +161,7 @@ function toReports() {
             <div class="select-none opacity-0">Подробнее</div>
             <div
               class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer"
+              @click="goToResults(2023)"
             >
               Результаты
             </div>

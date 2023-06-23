@@ -87,7 +87,7 @@ function chooseMenuItem(pathName) {
               прямая активная ссылка на www.baikalmarafon.ru обязательна.
             </div> -->
             <div class="mt-2">
-              Вся информация была взята с сайта
+              Данные были взяты с сайта
               <a
                 class="underline"
                 target="_blank"
@@ -96,7 +96,16 @@ function chooseMenuItem(pathName) {
                 >https://baikalmarafon.ru/</a
               >
             </div>
-            <div class="mt-2">Разработчики: Алексей Б. Вячеслав Б.</div>
+            <div class="mt-2">
+              Разработчики: Алексей Б. Вячеслав Б. |
+              <a
+                class="underline"
+                href="https://t.me/av_belek"
+                target="_blank"
+                rel="noreferrer noopener"
+                >Связаться с разработчиками</a
+              >
+            </div>
           </div>
           <div class="w-1/2 text-lg">
             <div>baikalmarafon.ru@gmail.com</div>
