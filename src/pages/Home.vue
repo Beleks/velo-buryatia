@@ -71,7 +71,7 @@ function chooseMenuItem(pathName) {
     </div>
     <!-- fixed bottom-0 -->
     <footer class="footer-bg w-full py-4 self-end end">
-      <div class="px-12 max-w-7xl mx-auto flex flex-col">
+      <div class="px-24 max-w-7xl mx-auto flex flex-col">
         <div class="flex text-lg">
           <div class="w-1/2 mr-4">Директор соревнования: Гаськов Владимир</div>
           <div class="w-1/2">Главный судья: Корсак Наталья</div>
@@ -97,7 +97,7 @@ function chooseMenuItem(pathName) {
               >
             </div>
             <div class="mt-2">
-              Разработчики: Алексей Б. Вячеслав Б. |
+              Разработчики: Белецкий А. Белецкий В. |
               <a
                 class="underline"
                 href="https://t.me/av_belek"

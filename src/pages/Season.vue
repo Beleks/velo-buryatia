@@ -226,7 +226,7 @@ function goBack() {
             <InputSelect :options="distances" @input="selectDistance" />
           </div>
           <div v-show="!isTotalTime" class="flex items-center">
-            <div class="opacity-60 mr-3">Тип велосипеда:</div>
+            <div class="opacity-60 mr-3">Велосипед:</div>
             <InputSelect :options="typesBike" @input="selectTypeBike" />
           </div>
           <div v-show="!isTotalTime" class="flex items-center">
