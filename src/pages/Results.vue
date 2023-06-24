@@ -18,18 +18,10 @@ const seasons = [
   },
   {
     name: "2022",
-    title: "XVV Байкальский веломарафон 2022",
+    title: "XV Байкальский веломарафон 2022",
     disable: false,
     img: "bg_01",
   },
-  // {
-  //   name: "2021",
-  //   title: "2021 XVV",
-  // },
-  // {
-  //   name: "2020",
-  //   title: "2020 XVV",
-  // },
 ];
 
 function chooseSeason(season) {
