@@ -1,9 +1,9 @@
 <script setup>
 import _ from "lodash";
-import InputSelect from "../components/InputSelect.vue";
-import ArrowSvg from "../components/svg/ArrowSvg.vue";
-import EyeOffSvg from "../components/svg/EyeOffSvg.vue";
-import EyeSvg from "../components/svg/EyeSvg.vue";
+import InputSelect from "@/components/InputSelect.vue";
+import ArrowSvg from "@/components/svg/ArrowSvg.vue";
+import EyeOffSvg from "@/components/svg/EyeOffSvg.vue";
+import EyeSvg from "@/components/svg/EyeSvg.vue";
 
 import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -192,7 +192,7 @@ function formatTime(time) {
 }
 
 function goToCyclist(cyclist) {
-  router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
+  router.push({ name: "Cyclist_m", params: { cyclistId: cyclist.id } });
 }
 
 function goBack() {
@@ -201,7 +201,7 @@ function goBack() {
 </script>
 
 <template>
-  <div class="px-24 max-w-7xl m-auto">
+  <div class="px-2 m-auto">
     <template v-if="seasonMarathon">
       <div class="flex justify-between items-center mb-6 mx-5 select-none">
         <div
@@ -210,8 +210,8 @@ function goBack() {
         >
           <ArrowSvg />
         </div>
-        <span class="text-2xl font-extrabold">
-          Байкальский веломарафон {{ selectedSeason }}
+        <span class="text-xl font-extrabold">
+          {{ selectedSeason }}
         </span>
         <div class="opacity-0 cursor-default">
           <div>
@@ -219,42 +219,52 @@ function goBack() {
           </div>
         </div>
       </div>
-      <div class="px-4 mb-5 flex justify-between select-none">
-        <div class="flex items-center">
-          <div class="flex items-center mr-6">
-            <div class="opacity-60 mr-3">Дистанция:</div>
-            <InputSelect :options="distances" @input="selectDistance" />
-          </div>
-          <div v-show="!isTotalTime" class="flex items-center mr-6">
-            <div class="opacity-60 mr-3">Велосипед:</div>
-            <InputSelect :options="typesBike" @input="selectTypeBike" />
-          </div>
-          <div v-show="!isTotalTime" class="flex items-center mr-6">
-            <div class="opacity-60 mr-3">Группа:</div>
-            <InputSelect :options="groups" @input="selectGroup" :width="160" />
-          </div>
+      <div class="px-4 mb-5 flex flex-col justify-between select-none">
+        <div class="flex justify-between items-center mb-2">
+          <div class="opacity-60 mr-3">Дистанция:</div>
+          <InputSelect
+            :options="distances"
+            @input="selectDistance"
+            :width="160"
+          />
         </div>
-        <div>
+        <div
+          v-show="!isTotalTime"
+          class="flex justify-between items-center mb-2"
+        >
+          <div class="opacity-60 mr-3">Велосипед:</div>
+          <InputSelect
+            :options="typesBike"
+            @input="selectTypeBike"
+            :width="160"
+          />
+        </div>
+        <div
+          v-show="!isTotalTime"
+          class="flex justify-between items-center mb-2"
+        >
+          <div class="opacity-60 mr-3">Группа:</div>
+          <InputSelect :options="groups" @input="selectGroup" :width="160" />
+        </div>
+        <div
+          class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
+          @click="switchTotalTime"
+        >
           <div
-            class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
-            @click="switchTotalTime"
+            class="flex justify-center items-center"
+            :class="[
+              !isTotalTime
+                ? 'opacity-40 stroke-white'
+                : 'stroke-lime-400 text-lime-400',
+            ]"
           >
-            <div
-              class="flex justify-between items-center"
-              :class="[
-                !isTotalTime
-                  ? 'opacity-40 stroke-white'
-                  : 'stroke-lime-400 text-lime-400',
-              ]"
-            >
-              <div v-if="!isTotalTime"><EyeOffSvg :size="20" /></div>
-              <div v-else><EyeSvg :size="20" /></div>
-              <div class="ml-2">Общий зачёт</div>
-            </div>
+            <div v-if="!isTotalTime"><EyeOffSvg :size="20" /></div>
+            <div v-else><EyeSvg :size="20" /></div>
+            <div class="ml-2">Общий зачёт</div>
           </div>
         </div>
       </div>
-      <div class="border my-border-color rounded mb-8">
+      <!-- <div class="border my-border-color rounded mb-8">
         <div
           class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
         >
@@ -311,7 +321,7 @@ function goBack() {
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </template>
     <div v-else class="text-2xl font-extrabold text-center">
       Нет результатов

@@ -1,0 +1,107 @@
+<script setup>
+import { computed, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
+
+let nothingIsSelected = computed(() => {
+  return route.name == "Results_m";
+});
+
+const seasons = [
+  {
+    name: "2023",
+    title: "XVI Байкальский веломарафон 2023",
+    disable: true,
+    img: "bg_01",
+  },
+  {
+    name: "2022",
+    title: "XV Байкальский веломарафон 2022",
+    disable: false,
+    img: "bg_01",
+  },
+];
+
+function chooseSeason(season) {
+  if (!season.disable) {
+    router.push({ name: "Season_m", params: { season: season.name } });
+  }
+}
+</script>
+
+<template>
+  <div v-if="nothingIsSelected">
+    <div
+      v-for="season in seasons"
+      :key="season.name"
+      @click="chooseSeason(season)"
+      class="m-auto border-2 my-border-color mb-4 mx-2 rounded transition ease-out relative"
+      :class="[
+        season.disable
+          ? 'opacity-50'
+          : 'hover:border-emerald-400 hover:text-emerald-400 cursor-pointer',
+      ]"
+    >
+      <img
+        v-if="!season.disable"
+        class="absolute w-full h-full object-cover -z-10 opacity-10"
+        src="@/assets/bg_01.jpg"
+        alt=""
+      />
+      <div class="text-center py-5 px-10">
+        <div class="text-xl">{{ season.title }}</div>
+      </div>
+    </div>
+  </div>
+  <div v-else>
+    <router-view></router-view>
+  </div>
+</template>
+
+<style>
+/* .bg-img{
+  background-image: ;
+} */
+
+.hover-table-item:hover {
+  background-color: hsla(0, 0%, 100%, 0.08);
+}
+.bg-table-color {
+  background-color: rgba(49, 53, 56, 0.8);
+}
+.bg-my-color {
+  background-color: rgba(49, 53, 56, 1);
+}
+.bg-input-color {
+  background-color: #313538;
+}
+.bg-input-color-selected {
+  background-color: #242628;
+}
+.first {
+  background-color: #fee265;
+  color: #242627;
+  /* width: 36px; */
+  /* height: 36px; */
+  /* border-radius: 50px; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+.second {
+  background-color: #a9d3d8;
+  color: #242627;
+  /* width: 36px;
+  height: 36px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+.third {
+  background-color: #a66f45;
+  color: #242627;
+}
+</style>

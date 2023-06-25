@@ -82,7 +82,7 @@ function selectOption(option) {
   <div class="">
     <div
       :style="{ width: `${width}px` }"
-      class="border my-border-color rounded px-2 py-1 bg-input-color transition ease-out mr-6 flex justify-between items-center stroke-white"
+      class="border my-border-color rounded px-2 py-1 bg-input-color transition ease-out flex justify-between items-center stroke-white"
       :class="[disable ? 'opacity-50' : 'hover:border-lime-400 cursor-pointer']"
       @click="switchDropdownMenu"
       ref="ignorEl"

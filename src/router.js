@@ -40,6 +40,43 @@ const routes = [
     ],
   },
   {
+    name: "Mobile",
+    path: "/m",
+    redirect: () => {
+      return { name: "About_m" };
+    },
+    component: () => import("@/pages/mobile/Home.vue"),
+    children: [
+      {
+        name: "Results_m",
+        path: "results",
+        component: () => import("@/pages/mobile/Results.vue"),
+        children: [
+          {
+            name: "Season_m",
+            path: ":season",
+            component: () => import("@/pages/mobile/Season.vue"),
+          },
+          {
+            name: "Cyclist_m",
+            path: "cyclist/:cyclistId",
+            component: () => import("@/pages/mobile/Cyclist.vue"),
+          },
+        ],
+      },
+      {
+        name: "About_m",
+        path: "about",
+        component: () => import("@/pages/mobile/About.vue"),
+      },
+      {
+        name: "Reports_m",
+        path: "reports",
+        component: () => import("@/pages/mobile/Reports.vue"),
+      },
+    ],
+  },
+  {
     name: "Admin",
     path: "/admin",
     component: () => import("@/pages/Admin.vue"),
