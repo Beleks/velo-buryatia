@@ -271,10 +271,10 @@ function goBack() {
           <!-- items-center -->
           <div class="flex">
             <div class="w-7 h-7 flex justify-center items-center mr-2">#</div>
-            <div class="w-7 text-center mr-2">№</div>
-            <div class="w-40 mr-4">
+            <!-- <div class="w-7 text-center mr-2">№</div> -->
+            <div class="w-48 mr-4">
               <div>Фамилия Имя</div>
-              <div class="font-normal opacity-50">нп. | Команда</div>
+              <div class="font-normal opacity-50">№ | нп. | Команда</div>
             </div>
             <!-- <div class="w-40 mr-4">нп.</div> -->
             <!-- <div class="w-40 mr-4">Команда</div> -->
@@ -306,18 +306,22 @@ function goBack() {
             >
               {{ participant.place ? index + 1 : "-" }}
             </div>
-            <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
+            <!-- <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
               {{ participant.number }}
-            </div>
-            <div class="w-40 mr-4 truncate">
+            </div> -->
+            <div class="w-48 mr-1 truncate">
               <a
                 class="hover:underline cursor-pointer"
                 @click="goToCyclist(participant)"
               >
                 {{ participant.name }}
               </a>
-              <div class="flex text-sm font-normal opacity-70">
-                <div class="mr-2">{{ participant.city }}</div>
+              <div class="flex items-center text-sm font-normal opacity-70">
+                <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
+                  {{ participant.number }}
+                </div>
+                |
+                <div class="mx-2">{{ participant.city }}</div>
                 |
                 <div class="ml-2">-</div>
               </div>

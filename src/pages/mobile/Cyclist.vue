@@ -101,16 +101,16 @@ function goBack() {
 </script>
 
 <template>
-  <div class="px-24 max-w-7xl m-auto">
+  <div class="px-2 max-w-7xl m-auto">
     <template v-if="cyclist">
-      <div class="flex justify-between items-center mb-4 mx-5 select-none">
+      <div class="flex justify-between items-center mb-4 mx-2 select-none">
         <div
           @click="goBack()"
           class="stroke-white hover:stroke-lime-400 cursor-pointer"
         >
           <ArrowSvg />
         </div>
-        <div class="text-2xl font-extrabold">
+        <div class="text-xl mx-1 font-extrabold">
           {{ cyclist.name }}
         </div>
         <div class="opacity-0 cursor-default">
@@ -131,33 +131,36 @@ function goBack() {
       <div class="">
         <div class="border my-border-color rounded">
           <div
-            class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
+            class="bg-table-color justify-between px-2 py-2 flex items-center opacity-80"
           >
             <div class="flex items-center">
-              <div class="w-12 h-7 mr-4 flex justify-center items-center">
+              <div class="w-12 h-7 mr-2 flex justify-center items-center">
                 Сезон
               </div>
-              <div class="w-12 mr-4">Место</div>
-              <div class="w-20 text-center mr-4">Дистанция</div>
-              <div class="w-32 mr-4">Тип велосипеда</div>
-              <div class="w-32 mr-4">Группа</div>
-              <div class="w-40 mr-4">Команда</div>
+              <div class="w-7 h-7 flex justify-center items-center mr-2">#</div>
+              <div class="w-40 mr-2">
+                <div>Дистанция</div>
+                <div class="font-normal text-sm opacity-50">Группа</div>
+              </div>
+              <!-- <div class="w-32 mr-2">Тип велосипеда</div>
+              <div class="w-32 mr-2">Группа</div> -->
+              <!-- <div class="w-40 mr-2">Команда</div> -->
             </div>
             <div class="flex items-center">
-              <div class="w-20 mr-2 text-end"></div>
+              <!-- <div class="w-20 mr-2 text-end"></div> -->
               <div class="w-20 text-end">Время</div>
             </div>
           </div>
           <div
-            class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
+            class="flex items-center justify-between px-2 border-b last:border-none my-border-color py-2 hover-table-item"
             v-for="(result, index) in cyclist.results"
             :key="index"
           >
             <div class="flex items-center">
-              <div class="w-12 text-center mr-4 text-green-500">
+              <div class="w-12 text-center mr-2 text-green-500">
                 {{ result.season }}
               </div>
-              <div class="w-12 flex justify-center mr-4">
+              <div class="w-7 h-7 flex justify-center items-center mr-2">
                 <span
                   :class="[
                     {
@@ -171,19 +174,25 @@ function goBack() {
                   {{ result.place ? result.place : "-" }}
                 </span>
               </div>
-              <div class="w-20 rounded mr-4">
-                {{ result.distance }}
+              <div class="rounded w-40 mr-2 truncate">
+                <div>
+                  {{ result.distance }}
+                  <span>{{ result.type !== "-" ? result.type : "" }}</span>
+                </div>
+                <div class="text-sm font-normal opacity-70">
+                  {{ result.group }}
+                </div>
               </div>
 
-              <div class="w-32 mr-4">{{ result.type ? result.type : "-" }}</div>
-              <div class="w-32 mr-4">{{ result.group }}</div>
+              <!-- <div class="w-32 mr-4">{{ result.type ? result.type : "-" }}</div> -->
+              <!-- <div class="w-32 mr-4">{{ result.group }}</div> -->
 
-              <div class="w-40 mr-4">-</div>
+              <!-- <div class="w-40 mr-4">-</div> -->
             </div>
             <div class="flex items-center">
-              <div class="w-20 mr-2 opacity-70 text-end">
-                <!-- {{ index !== 0 ? culcDelay(participant.time) : "" }} -->
-              </div>
+              <!-- <div class="w-20 mr-2 opacity-70 text-end"> -->
+              <!-- {{ index !== 0 ? culcDelay(participant.time) : "" }} -->
+              <!-- </div> -->
               <div class="w-20 text-end">
                 {{ result.time ? formatTime(result.time) : "Сошёл" }}
               </div>

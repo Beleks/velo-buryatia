@@ -51,7 +51,7 @@ function chooseMenuItem(pathName) {
     class="text-white font-sans font-semibold h-screen flex flex-col justify-between"
   >
     <div>
-      <menu class="flex justify-center py-10">
+      <menu class="flex justify-center py-5">
         <div
           :class="[
             ' mr-10 last:mr-0 cursor-pointer',
@@ -91,7 +91,7 @@ function chooseMenuItem(pathName) {
             target="_blank"
             rel="noreferrer noopener"
             href="https://baikalmarafon.ru/"
-            >https://baikalmarafon.ru/</a
+            >baikalmarafon.ru</a
           >
         </div>
         <div class="text-sm opacity-50">

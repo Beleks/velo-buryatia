@@ -1,10 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+function widthCheck(to) {
+  let width = window.innerWidth;
+
+  if (width < 1200) {
+    return { name: "Mobile" };
+  }
+}
+
 const routes = [
   { path: "/:pathMatch(.*)*", component: () => import("@/pages/NotFound.vue") },
   {
     name: "Desktop",
     path: "/",
+    beforeEnter: [widthCheck],
     redirect: () => {
       return { name: "About" };
     },

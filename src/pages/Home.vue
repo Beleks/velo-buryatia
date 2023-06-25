@@ -93,7 +93,7 @@ function chooseMenuItem(pathName) {
                 target="_blank"
                 rel="noreferrer noopener"
                 href="https://baikalmarafon.ru/"
-                >https://baikalmarafon.ru/</a
+                >baikalmarafon.ru</a
               >
             </div>
             <div class="mt-2">

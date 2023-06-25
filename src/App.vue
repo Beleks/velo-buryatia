@@ -1,14 +1,36 @@
 <script setup>
-import { onBeforeMount, ref, watch } from "vue";
+import {
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  onActivated,
+  ref,
+  watch,
+} from "vue";
 import { useRouter, useRoute } from "vue-router";
-
-onBeforeMount(() => {
-  width.value = window.innerWidth;
-});
 
 const router = useRouter();
 const route = useRoute();
 
+onBeforeMount(() => {});
+
+// onMounted(() => {
+//   let pathName = route.matched[0]?.name;
+//   width.value = window.innerWidth;
+
+//   // console.log(pathName, " pathName");
+// });
+// onBeforeUpdate(() => {
+//   console.log("ssdfsdfdsf");
+//   let pathName = route.matched[0]?.name;
+//   console.log(pathName, "pathName");
+// });
+
+// onActivated(() => {
+//   console.log("sfdsf");
+//   let pathName = route.matched[0]?.name;
+//   console.log(pathName, "pathName");
+// });
 let width = ref(0);
 
 watch(
@@ -25,11 +47,14 @@ watch(
       router.replace({ name: "Mobile" });
     } else if (oldWidth <= 1200 && newWidth > 1200 && pathName !== "Desktop") {
       router.replace({ name: "Desktop" });
-    } else if (newWidth < 1200 && pathName !== "Mobile") {
-      router.replace({ name: "Mobile" });
-    } else if (newWidth >= 1200 && pathName !== "Desktop") {
-      router.replace({ name: "Desktop" });
     }
+    //  else if (newWidth < 1200 && pathName !== "Mobile") {
+    //   console.log("3");
+    //   router.replace({ name: "Mobile" });
+    // } else if (newWidth >= 1200 && pathName !== "Desktop") {
+    //   console.log("4");
+    //   router.replace({ name: "Desktop" });
+    // }
   },
   { immediate: false }
 );
