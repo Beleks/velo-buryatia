@@ -43,7 +43,7 @@ const routes = [
     name: "Mobile",
     path: "/m",
     redirect: () => {
-      return { name: "About_m" };
+      return { name: "Results_m" };
     },
     component: () => import("@/pages/mobile/Home.vue"),
     children: [

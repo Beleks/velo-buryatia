@@ -17,17 +17,17 @@ watch(
     // console.log(oldWidth, "oldWidth");
     // console.log(newWidth, "newWidth");
 
-    // let pathName = route.matched[0]?.name;
+    let pathName = route.matched[0]?.name;
     // console.log(oldWidth >= 1200 && newWidth < 1200, "To Mobile");
     // console.log(oldWidth <= 1200 && newWidth > 1200, "To Desktop");
 
-    if (oldWidth >= 1200 && newWidth < 1200) {
+    if (oldWidth >= 1200 && newWidth < 1200 && pathName !== "Mobile") {
       router.replace({ name: "Mobile" });
-    } else if (oldWidth <= 1200 && newWidth > 1200) {
+    } else if (oldWidth <= 1200 && newWidth > 1200 && pathName !== "Desktop") {
       router.replace({ name: "Desktop" });
-    } else if (newWidth < 1200) {
+    } else if (newWidth < 1200 && pathName !== "Mobile") {
       router.replace({ name: "Mobile" });
-    } else if (newWidth >= 1200) {
+    } else if (newWidth >= 1200 && pathName !== "Desktop") {
       router.replace({ name: "Desktop" });
     }
   },

@@ -264,24 +264,32 @@ function goBack() {
           </div>
         </div>
       </div>
-      <!-- <div class="border my-border-color rounded mb-8">
+      <div class="border my-border-color rounded mb-8">
         <div
-          class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
+          class="bg-table-color justify-between px-2 py-2 flex font-normal items-center opacity-80"
         >
-          <div class="flex items-center">
-            <div class="w-7 h-7 mr-4 flex justify-center items-center">#</div>
+          <!-- items-center -->
+          <div class="flex">
+            <div class="w-7 h-7 flex justify-center items-center mr-2">#</div>
             <div class="w-7 text-center mr-2">№</div>
-            <div class="w-60 mr-4">Фамилия Имя</div>
-            <div class="w-40 mr-4">нп.</div>
-            <div class="w-40 mr-4">Команда</div>
+            <div class="w-40 mr-4">
+              <div>Фамилия Имя</div>
+              <div class="font-normal opacity-50">нп. | Команда</div>
+            </div>
+            <!-- <div class="w-40 mr-4">нп.</div> -->
+            <!-- <div class="w-40 mr-4">Команда</div> -->
           </div>
           <div class="flex items-center">
-            <div class="w-20 mr-2 text-end"></div>
-            <div class="w-20 text-end">Время</div>
+            <div>
+              <div class="w-22 text-end">Вермя</div>
+              <div class="w-22 text-end opacity-50">Отставание</div>
+            </div>
+            <!-- <div class="w-20 mr-2 text-end"></div>
+            <div class="w-20 text-end">Время</div> -->
           </div>
         </div>
         <div
-          class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
+          class="flex items-center justify-between px-2 border-b last:border-none my-border-color py-2 hover-table-item"
           v-for="(participant, index) in participants"
           :key="index"
         >
@@ -293,7 +301,7 @@ function goBack() {
                   second: index == 1 && participant.place,
                   third: index == 2 && participant.place,
                 },
-                'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-4',
+                'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-2',
               ]"
             >
               {{ participant.place ? index + 1 : "-" }}
@@ -301,27 +309,32 @@ function goBack() {
             <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
               {{ participant.number }}
             </div>
-            <div class="w-60 mr-4">
+            <div class="w-40 mr-4 truncate">
               <a
                 class="hover:underline cursor-pointer"
                 @click="goToCyclist(participant)"
               >
                 {{ participant.name }}
               </a>
+              <div class="flex text-sm font-normal opacity-70">
+                <div class="mr-2">{{ participant.city }}</div>
+                |
+                <div class="ml-2">-</div>
+              </div>
             </div>
-            <div class="w-40 mr-4">{{ participant.city }}</div>
-            <div class="w-40 mr-4">-</div>
+            <!-- <div class="w-40 mr-4">{{ participant.city }}</div>
+            <div class="w-40 mr-4">-</div> -->
           </div>
-          <div class="flex items-center">
-            <div class="w-20 mr-2 opacity-70 text-end">
-              {{ index !== 0 ? culcDelay(participant.time) : "" }}
-            </div>
+          <div class="flex flex-col items-center">
             <div class="w-20 text-end">
               {{ participant.time ? formatTime(participant.time) : "Сошёл" }}
             </div>
+            <div class="w-20 font-normal opacity-70 text-end">
+              {{ index !== 0 ? culcDelay(participant.time) : "" }}
+            </div>
           </div>
         </div>
-      </div> -->
+      </div>
     </template>
     <div v-else class="text-2xl font-extrabold text-center">
       Нет результатов

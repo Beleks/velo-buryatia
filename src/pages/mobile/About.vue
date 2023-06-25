@@ -28,7 +28,7 @@ function goToResults(season) {
 </script>
 
 <template>
-  <div class="px-12 max-w-7xl mx-auto">
+  <div v-if="false" class="px-12 max-w-7xl mx-auto">
     <div class="fixed -z-30 opacity-5 right-2">
       <VeloDarkSvg :size="1000" />
     </div>
@@ -309,6 +309,10 @@ function goToResults(season) {
         </AccordionItem>
       </AccordionList>
     </div>
+  </div>
+  <div v-else class="px-2 text-center">
+    Мобильная версия страницы "О марафоне" <br />
+    в разработке
   </div>
 </template>
 
