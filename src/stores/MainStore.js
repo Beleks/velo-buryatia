@@ -42,7 +42,7 @@ export const useMainStore = defineStore("main", {
               id: 1,
               country: "Россия",
               city: "Чита",
-              team: 1,
+              team: "GoRide",
               group: "М 18 и старше",
               time: {
                 hour: 8,
@@ -76,7 +76,7 @@ export const useMainStore = defineStore("main", {
               id: 3,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null,
+              team: "У-УАЗ",
               group: "М 18 и старше",
               time: {
                 hour: 5,
@@ -92,7 +92,7 @@ export const useMainStore = defineStore("main", {
               id: 4,
               country: "Россия",
               city: "Чита",
-              team: 1,
+              team: "GoRide",
               group: "М 18 и старше",
               time: {
                 hour: 6,
@@ -108,7 +108,7 @@ export const useMainStore = defineStore("main", {
               id: 5,
               country: "Россия",
               city: "Улан-Удэ",
-              team: 3,
+              team: "Велотяга",
               group: "М 18 и старше",
               time: {
                 hour: 6,
@@ -124,7 +124,7 @@ export const useMainStore = defineStore("main", {
               id: 6,
               country: "Россия",
               city: "Улан-Удэ",
-              team: 4,
+              team: "ТФОМС РБ",
               group: "М 18 и старше",
               time: {
                 hour: 6,
@@ -194,7 +194,7 @@ export const useMainStore = defineStore("main", {
               id: 10,
               country: "Россия",
               city: "Улан-Удэ",
-              team: 5,
+              team: "БРО Динамо",
               group: "Ж 18-40",
               time: {
                 hour: 3,
@@ -242,7 +242,7 @@ export const useMainStore = defineStore("main", {
               id: 13,
               country: "Россия",
               city: "Чита",
-              team: 1,
+              team: "GoRide",
               group: "М 18-40",
               time: {
                 hour: 2,
@@ -258,7 +258,7 @@ export const useMainStore = defineStore("main", {
               id: 14,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null, // ФВС РБ
+              team: "ФВС РБ",
               group: "М 18-40",
               time: {
                 hour: 2,
@@ -274,7 +274,7 @@ export const useMainStore = defineStore("main", {
               id: 15,
               country: "Россия",
               city: "Чита",
-              team: 1,
+              team: "GoRide",
               group: "М 18-40",
               time: {
                 hour: 2,
@@ -306,7 +306,7 @@ export const useMainStore = defineStore("main", {
               id: 17,
               country: "Россия",
               city: "Шенестуй",
-              team: null, // Пе-2
+              team: "Пе-2", // Пе-2
               group: "М 18-40",
               time: {
                 hour: 3,
@@ -338,7 +338,7 @@ export const useMainStore = defineStore("main", {
               id: 19,
               country: "Россия",
               city: "Улан-Удэ",
-              team: 3,
+              team: "Велотяга",
               group: "М 18-40",
               time: {
                 hour: 3,
@@ -370,7 +370,7 @@ export const useMainStore = defineStore("main", {
               id: 21,
               country: "Россия",
               city: "Улан-Удэ",
-              team: 2,
+              team: "У-УАЗ",
               group: "М 18-40",
               time: {
                 hour: 4,
@@ -386,7 +386,7 @@ export const useMainStore = defineStore("main", {
               id: 22,
               country: "Россия",
               city: "Чита",
-              team: 1,
+              team: "GoRide",
               group: "М 41-50",
               time: {
                 hour: 2,
@@ -402,7 +402,7 @@ export const useMainStore = defineStore("main", {
               id: 23,
               country: "Россия",
               city: "Чита",
-              team: 1,
+              team: "GoRide",
               group: "М 41-50",
               time: {
                 hour: 2,
@@ -418,7 +418,7 @@ export const useMainStore = defineStore("main", {
               id: 24,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null,
+              team: "КЛЛ Соболь",
               group: "М 41-50",
               time: {
                 hour: 2,
@@ -434,7 +434,7 @@ export const useMainStore = defineStore("main", {
               id: 25,
               country: "Россия",
               city: "Ангарск",
-              team: null,
+              team: "БайкалСпортТим",
               group: "М 51 и старше",
               time: {
                 hour: 2,
@@ -450,7 +450,7 @@ export const useMainStore = defineStore("main", {
               id: 26,
               country: "Россия",
               city: "Чита",
-              team: 1,
+              team: "GoRide",
               group: "М 51 и старше",
               time: {
                 hour: 2,
@@ -466,7 +466,7 @@ export const useMainStore = defineStore("main", {
               id: 27,
               country: "Россия",
               city: "Ангарск",
-              team: null,
+              team: "Пе-2",
               group: "М 51 и старше",
               time: {
                 hour: 2,
@@ -520,7 +520,7 @@ export const useMainStore = defineStore("main", {
               id: 30,
               country: "Россия",
               city: "Улан-Удэ",
-              team: 6,
+              team: "Веломания 03",
               group: "Ж 18-40",
               time: {
                 hour: 4,
@@ -552,7 +552,7 @@ export const useMainStore = defineStore("main", {
               id: 32,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null, // X-RIDE
+              team: "X-RIDE", // X-RIDE
               group: "Ж 18-40",
               time: {
                 hour: 4,
@@ -729,7 +729,7 @@ export const useMainStore = defineStore("main", {
               id: 43,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null,
+              team: "Веломания 03",
               group: "М 31-50",
               time: {
                 hour: 3,
@@ -793,7 +793,7 @@ export const useMainStore = defineStore("main", {
               id: 47,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null,
+              team: "Веломания 03",
               group: "М 31-50",
               time: {
                 hour: 3,
@@ -857,7 +857,7 @@ export const useMainStore = defineStore("main", {
               id: 51,
               country: "Россия",
               city: "Кяхта",
-              team: null,
+              team: "Бурятская таможня",
               group: "М 31-50",
               time: {
                 hour: 4,
@@ -873,7 +873,7 @@ export const useMainStore = defineStore("main", {
               id: 52,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null,
+              team: "X-RIDE",
               group: "М 31-50",
               time: {
                 hour: 4,
@@ -1419,7 +1419,7 @@ export const useMainStore = defineStore("main", {
               id: 86,
               country: "Россия",
               city: "Улан-Удэ",
-              team: null,
+              team: "Велотяга",
               group: "М 36 и старше",
               time: {
                 hour: 1,
@@ -1435,7 +1435,7 @@ export const useMainStore = defineStore("main", {
               id: 87,
               country: "Россия",
               city: "Наушки",
-              team: null,
+              team: "Бурятская таможня",
               group: "М 36 и старше",
               time: {
                 hour: 1,

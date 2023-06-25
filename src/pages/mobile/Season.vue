@@ -321,9 +321,13 @@ function goBack() {
                   {{ participant.number }}
                 </div>
                 |
-                <div class="mx-2">{{ participant.city }}</div>
+                <div class="mx-2">
+                  {{ participant.city ? participant.city : "-" }}
+                </div>
                 |
-                <div class="ml-2">-</div>
+                <div class="ml-2 truncate">
+                  {{ participant.team ? participant.team : "-" }}
+                </div>
               </div>
             </div>
             <!-- <div class="w-40 mr-4">{{ participant.city }}</div>

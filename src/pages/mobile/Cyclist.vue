@@ -138,7 +138,7 @@ function goBack() {
                 Сезон
               </div>
               <div class="w-7 h-7 flex justify-center items-center mr-2">#</div>
-              <div class="w-40 mr-2">
+              <div class="w-36">
                 <div>Дистанция</div>
                 <div class="font-normal text-sm opacity-50">Группа</div>
               </div>
@@ -148,7 +148,7 @@ function goBack() {
             </div>
             <div class="flex items-center">
               <!-- <div class="w-20 mr-2 text-end"></div> -->
-              <div class="w-20 text-end">Время</div>
+              <div class="w-16 text-end">Время</div>
             </div>
           </div>
           <div
@@ -174,7 +174,7 @@ function goBack() {
                   {{ result.place ? result.place : "-" }}
                 </span>
               </div>
-              <div class="rounded w-40 mr-2 truncate">
+              <div class="rounded w-36 mr-2 truncate">
                 <div>
                   {{ result.distance }}
                   <span>{{ result.type !== "-" ? result.type : "" }}</span>
@@ -193,7 +193,7 @@ function goBack() {
               <!-- <div class="w-20 mr-2 opacity-70 text-end"> -->
               <!-- {{ index !== 0 ? culcDelay(participant.time) : "" }} -->
               <!-- </div> -->
-              <div class="w-20 text-end">
+              <div class="w-16 text-end">
                 {{ result.time ? formatTime(result.time) : "Сошёл" }}
               </div>
             </div>

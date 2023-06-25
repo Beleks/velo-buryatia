@@ -299,8 +299,12 @@ function goBack() {
                 {{ participant.name }}
               </a>
             </div>
-            <div class="w-40 mr-4">{{ participant.city }}</div>
-            <div class="w-40 mr-4">-</div>
+            <div class="w-40 mr-4">
+              {{ participant.city ? participant.city : "-" }}
+            </div>
+            <div class="w-40 mr-4">
+              {{ participant.team ? participant.team : "-" }}
+            </div>
           </div>
           <div class="flex items-center">
             <div class="w-20 mr-2 opacity-70 text-end">
