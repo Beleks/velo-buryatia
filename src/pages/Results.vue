@@ -13,14 +13,50 @@ const seasons = [
   {
     name: "2023",
     title: "XVI Байкальский веломарафон 2023",
-    disable: true,
-    img: "bg_01",
+    disable: false,
+    img: new URL("@/assets/bg_04.jpg", import.meta.url),
   },
   {
     name: "2022",
     title: "XV Байкальский веломарафон 2022",
     disable: false,
-    img: "bg_01",
+    img: new URL("@/assets/bg_01.jpg", import.meta.url),
+  },
+  {
+    name: "2019",
+    title: "XII Байкальский веломарафон 2019",
+    disable: false,
+    img: new URL("@/assets/bg_02.jpg", import.meta.url),
+  },
+  {
+    name: "2018",
+    title: "XI Байкальский веломарафон 2018",
+    disable: false,
+    img: new URL("@/assets/bg_03.jpg", import.meta.url),
+  },
+  {
+    name: "2017",
+    title: "X Байкальский веломарафон 2017",
+    disable: false,
+    img: new URL("@/assets/bg_08.jpg", import.meta.url),
+  },
+  {
+    name: "2016",
+    title: "IX Байкальский веломарафон 2016",
+    disable: false,
+    img: new URL("@/assets/bg_05.jpg", import.meta.url),
+  },
+  {
+    name: "2015",
+    title: "VIII Байкальский веломарафон 2015",
+    disable: false,
+    img: new URL("@/assets/bg_06.jpg", import.meta.url),
+  },
+  {
+    name: "2014",
+    title: "VII Байкальский веломарафон 2014",
+    disable: false,
+    img: new URL("@/assets/bg_07.jpg", import.meta.url),
   },
 ];
 
@@ -47,7 +83,7 @@ function chooseSeason(season) {
       <img
         v-if="!season.disable"
         class="absolute w-full h-full object-cover -z-10 opacity-10"
-        src="../assets/bg_01.jpg"
+        :src="season.img"
         alt=""
       />
       <div class="text-center py-10 px-20">
@@ -61,9 +97,6 @@ function chooseSeason(season) {
 </template>
 
 <style>
-/* .bg-img{
-  background-image: ;
-} */
 
 .hover-table-item:hover {
   background-color: hsla(0, 0%, 100%, 0.08);
