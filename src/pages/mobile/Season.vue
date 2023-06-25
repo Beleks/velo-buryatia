@@ -219,7 +219,7 @@ function goBack() {
           </div>
         </div>
       </div>
-      <div class="px-4 mb-5 flex flex-col justify-between select-none">
+      <div class="mb-5 flex flex-col justify-between select-none">
         <div class="flex justify-between items-center mb-2">
           <div class="opacity-60 mr-3">Дистанция:</div>
           <InputSelect

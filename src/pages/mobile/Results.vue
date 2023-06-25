@@ -1,4 +1,7 @@
 <script setup>
+import VeloDarkSvg from "@/components/svg/VeloDarkSvg.vue";
+import VeloColorSvg from "@/components/svg/VeloColorSvg.vue";
+
 import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
@@ -65,10 +68,24 @@ function chooseSeason(season) {
     router.push({ name: "Season_m", params: { season: season.name } });
   }
 }
+function goToCyclists() {
+  router.push({ name: "Cyclists_m" });
+}
 </script>
 
 <template>
   <div v-if="nothingIsSelected">
+    <div
+      @click="goToCyclists"
+      class="m-auto border-2 my-border-color mb-4 mx-2 rounded transition ease-out relative cursor-pointer hover:border-emerald-400 hover:text-emerald-400 fill-svg-velo hover:fill-emerald-400"
+    >
+      <div class="text-center flex justify-center items-center py-5 px-5">
+        <VeloDarkSvg />
+        <div class="text-xl mx-4">Велосипедисты</div>
+        <VeloDarkSvg />
+      </div>
+    </div>
+    <hr class="dashed-2 mx-2 my-4" />
     <div
       v-for="season in seasons"
       :key="season.name"

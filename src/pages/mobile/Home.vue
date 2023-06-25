@@ -77,11 +77,11 @@ function chooseMenuItem(pathName) {
           <div class="mb-4">Главный судья: Корсак Наталья</div>
         </div>
         <div class="mb-2 flex">
-          <div class="opacity-70 w-32">Почта:</div>
+          <div class="opacity-70 w-20">Почта:</div>
           baikalmarafon.ru@gmail.com
         </div>
         <div class="mb-2 flex">
-          <div class="opacity-70 w-32">Телефон:</div>
+          <div class="opacity-70 w-20">Телефон:</div>
           +7 (924) 650-31-46
         </div>
         <div class="mt-2 text-sm opacity-50">

@@ -79,4 +79,22 @@ html {
 .my-border-color {
   border-color: #4d5155;
 }
+.dashed {
+  border-bottom: dashed 1px #000000;
+}
+.dashed-2 {
+  border: none;
+  height: 2px;
+  background: #4d5155;
+  background: repeating-linear-gradient(
+    90deg,
+    #4d5155,
+    #4d5155 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+.fill-svg-velo {
+  fill: #4d5155;
+}
 </style>

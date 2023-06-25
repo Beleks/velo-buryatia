@@ -1,13 +1,13 @@
 <script setup>
-import MainMapSvg from "../components/svg/MainMapSvg.vue";
-import DistenceSvg from "../components/svg/DistenceSvg.vue";
-import FanySvg from "../components/svg/FanySvg.vue";
-import OzeroSvg from "../components/svg/OzeroSvg.vue";
-import PeoplsSvg from "../components/svg/PeoplsSvg.vue";
-import ServiceSvg from "../components/svg/ServiceSvg.vue";
-import VeloDarkSvg from "../components/svg/VeloDarkSvg.vue";
-import VeloColorSvg from "../components/svg/VeloColorSvg.vue";
-import DocSvg from "../components/svg/DocSvg.vue";
+import MainMapSvg from "@/components/svg/MainMapSvg.vue";
+import DistenceSvg from "@/components/svg/DistenceSvg.vue";
+import FanySvg from "@/components/svg/FanySvg.vue";
+import OzeroSvg from "@/components/svg/OzeroSvg.vue";
+import PeoplsSvg from "@/components/svg/PeoplsSvg.vue";
+import ServiceSvg from "@/components/svg/ServiceSvg.vue";
+import VeloDarkSvg from "@/components/svg/VeloDarkSvg.vue";
+import VeloColorSvg from "@/components/svg/VeloColorSvg.vue";
+import DocSvg from "@/components/svg/DocSvg.vue";
 
 import { AccordionList, AccordionItem } from "vue3-rich-accordion";
 
@@ -126,7 +126,7 @@ function goToResults(season) {
         <div
           class="flex items-center border-r-2 border-dashed border-dashed-color h-full pl-10 relative min-w-52"
         >
-          <div><VeloDarkSvg :size="80" /></div>
+          <div><VeloDarkSvg class="fill-svg-velo" :size="80" /></div>
           <div class="absolute circle-ticket-bottom rounded-3xl"></div>
           <div class="absolute circle-ticket-top rounded-3xl"></div>
           <div class="text-rotate">
@@ -313,6 +313,7 @@ function goToResults(season) {
 </template>
 
 <style>
+
 .text-gradient {
   color: transparent;
   background-clip: text;

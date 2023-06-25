@@ -25,13 +25,18 @@ const routes = [
         component: () => import("@/pages/Results.vue"),
         children: [
           {
+            name: "Cyclists",
+            path: "cyclists",
+            component: () => import("@/pages/Cyclists.vue"),
+          },
+          {
             name: "Season",
             path: ":season",
             component: () => import("@/pages/Season.vue"),
           },
           {
             name: "Cyclist",
-            path: "cyclist/:cyclistId",
+            path: "cyclists/:cyclistId",
             component: () => import("@/pages/Cyclist.vue"),
           },
         ],
@@ -62,13 +67,18 @@ const routes = [
         component: () => import("@/pages/mobile/Results.vue"),
         children: [
           {
+            name: "Cyclists_m",
+            path: "cyclists",
+            component: () => import("@/pages/Cyclists.vue"),
+          },
+          {
             name: "Season_m",
             path: ":season",
             component: () => import("@/pages/mobile/Season.vue"),
           },
           {
             name: "Cyclist_m",
-            path: "cyclist/:cyclistId",
+            path: "cyclists/:cyclistId",
             component: () => import("@/pages/mobile/Cyclist.vue"),
           },
         ],
