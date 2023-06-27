@@ -81,7 +81,7 @@ function goToCyclists() {
     >
       <div class="text-center flex justify-center items-center py-5 px-5">
         <VeloDarkSvg />
-        <div class="text-3xl mx-4">Велосипедисты</div>
+        <div class="text-3xl mx-4">Участники</div>
         <VeloDarkSvg />
       </div>
     </div>

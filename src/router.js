@@ -69,7 +69,7 @@ const routes = [
           {
             name: "Cyclists_m",
             path: "cyclists",
-            component: () => import("@/pages/Cyclists.vue"),
+            component: () => import("@/pages/mobile/Cyclists.vue"),
           },
           {
             name: "Season_m",

@@ -344,8 +344,17 @@ function goBack() {
         </div>
       </div>
     </template>
-    <div v-else class="text-2xl font-extrabold text-center">
-      Нет результатов
+    <div v-else class="flex justify-between items-center mb-6 mx-5 select-none">
+      <div
+        @click="goBack()"
+        class="stroke-white hover:stroke-lime-400 cursor-pointer"
+      >
+        <ArrowSvg />
+      </div>
+      <div>Нет результатов</div>
+      <div class="opacity-0 cursor-default">
+        <ArrowSvg />
+      </div>
     </div>
   </div>
 </template>

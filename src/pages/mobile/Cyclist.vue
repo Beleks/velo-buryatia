@@ -47,7 +47,6 @@ function setId() {
       });
     }
   }
-  console.log(cyclistsStore.cyclists, "cyclistsStore.cyclists");
 }
 // setId();
 

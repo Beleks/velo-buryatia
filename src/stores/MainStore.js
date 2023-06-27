@@ -536,7 +536,7 @@ export const useMainStore = defineStore("main", {
               id: 31,
               country: "Россия",
               city: "Улан-Удэ",
-              team: 6,
+              team: null,
               group: "Ж 18-40",
               time: {
                 hour: 4,
