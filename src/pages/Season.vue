@@ -9,10 +9,12 @@ import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { useMainStore } from "@/stores/MainStore";
+import { useCyclistsStore } from "@/stores/CyclistsStore";
 
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
+const cyclistsStore = useCyclistsStore();
 
 let selectedDistance = ref(null);
 let selectedTypeByke = ref(null);
@@ -89,7 +91,7 @@ let participants = computed(() => {
       (element) => !element.place
     );
 
-    return participants
+    participants = participants
       .filter((element) => element.place)
       .sort((firstEl, secondEl) => {
         if (firstEl.time.hour - secondEl.time.hour < 0) {
@@ -105,8 +107,34 @@ let participants = computed(() => {
         } else {
           return 1;
         }
-      })
-      .concat(descendedParticipants);
+      });
+
+    for (let index = 0; index < participants.length; index++) {
+      if (index !== 0) {
+        if (
+          participants[index].time.hour == participants[index - 1].time.hour &&
+          participants[index].time.minute ==
+            participants[index - 1].time.minute &&
+          participants[index].time.sec == participants[index - 1].time.sec
+        ) {
+          participants[index].place = participants[index - 1].place;
+        } else {
+          participants[index].place = participants[index - 1].place + 1;
+        }
+      }
+    }
+
+    participants = participants.concat(descendedParticipants);
+
+    if (participants) {
+      for (let index = 0; index < participants.length; index++) {
+        participants[index].male = cyclistsStore.cyclists.find(
+          (cyclist) => cyclist.id === participants[index].id
+        ).male;
+      }
+    }
+
+    return participants;
   } else {
     let participants = _.cloneDeep(
       seasonMarathon.value.find(
@@ -115,6 +143,14 @@ let participants = computed(() => {
           element.type == selectedTypeByke.value
       )?.participants
     );
+
+    if (participants) {
+      for (let index = 0; index < participants.length; index++) {
+        participants[index].male = cyclistsStore.cyclists.find(
+          (cyclist) => cyclist.id === participants[index].id
+        ).male;
+      }
+    }
 
     return participants?.filter(
       (participant) => participant.group == selectedGroup.value
@@ -240,9 +276,7 @@ function goBack() {
             <div
               class="flex justify-between items-center"
               :class="[
-                !isTotalTime
-                  ? 'opacity-40 stroke-white'
-                  : 'stroke-lime-400 text-lime-400',
+                !isTotalTime ? 'stroke-white' : 'stroke-lime-400 text-lime-400',
               ]"
             >
               <div v-if="!isTotalTime"><EyeOffSvg :size="20" /></div>
@@ -277,16 +311,21 @@ function goBack() {
             <div
               :class="[
                 {
-                  first: index == 0 && participant.place,
-                  second: index == 1 && participant.place,
-                  third: index == 2 && participant.place,
+                  first: participant.place == 1 && participant.place,
+                  second: participant.place == 2 && participant.place,
+                  third: participant.place == 3 && participant.place,
                 },
                 'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-4',
               ]"
             >
-              {{ participant.place ? index + 1 : "-" }}
+              {{ participant.place ? participant.place : "-" }}
             </div>
-            <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
+            <div
+              :class="[
+                participant.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black',
+              ]"
+              class="w-7 text-xs rounded text-center mr-2"
+            >
               {{ participant.number }}
             </div>
             <div class="w-60 mr-4">
@@ -308,8 +347,11 @@ function goBack() {
             <div class="w-20 mr-2 opacity-70 text-end">
               {{ index !== 0 ? culcDelay(participant.time) : "" }}
             </div>
-            <div class="w-20 text-end">
-              {{ participant.time ? formatTime(participant.time) : "Сошёл" }}
+            <div v-if="participant.time" class="w-20 text-end">
+              {{ formatTime(participant.time) }}
+            </div>
+            <div v-else class="w-20 text-end">
+              {{ participant.male ? "Сошёл" : "Сошла" }}
             </div>
           </div>
         </div>

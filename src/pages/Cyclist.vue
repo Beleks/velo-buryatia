@@ -67,20 +67,22 @@ let cyclist = computed(() => {
         );
       });
 
-      let cyclistResult = result.participants.find(
-        (participant) => participant?.id == cyclist.id
-      );
+      if (result) {
+        let cyclistResult = result.participants.find(
+          (participant) => participant?.id == cyclist.id
+        );
 
-      cyclist.results.push({
-        season: key,
-        distance: result.distance,
-        type: result.type,
-        group: cyclistResult.group,
-        place: cyclistResult.place,
-        number: cyclistResult.number,
-        time: cyclistResult.time,
-        team: cyclistResult.team,
-      });
+        cyclist.results.push({
+          season: key,
+          distance: result.distance,
+          type: result.type,
+          group: cyclistResult.group,
+          place: cyclistResult.place,
+          number: cyclistResult.number,
+          time: cyclistResult.time,
+          team: cyclistResult.team,
+        });
+      }
     }
   }
 

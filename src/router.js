@@ -8,6 +8,14 @@ function widthCheck(to) {
   }
 }
 
+function widthCheckM(to) {
+  let width = window.innerWidth;
+
+  if (width >= 1200) {
+    return { name: "Desktop" };
+  }
+}
+
 const routes = [
   { path: "/:pathMatch(.*)*", component: () => import("@/pages/NotFound.vue") },
   {
@@ -56,6 +64,7 @@ const routes = [
   {
     name: "Mobile",
     path: "/m",
+    beforeEnter: [widthCheckM],
     redirect: () => {
       return { name: "Results_m" };
     },
