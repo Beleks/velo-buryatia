@@ -84,7 +84,7 @@ function goBack() {
         class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
       >
         <div class="flex">
-          <div class="w-5 text-center mr-2">№</div>
+          <div class="w-7 text-center mr-2">№</div>
           <div>Фамилия Имя</div>
         </div>
         <div></div>
@@ -96,7 +96,7 @@ function goBack() {
         class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item cursor-pointer"
       >
         <div class="flex">
-          <div class="w-5 text-center mr-2">{{ index + 1 }}</div>
+          <div class="w-7 text-center mr-2">{{ index + 1 }}</div>
           <div class="hover:underline cursor-pointer">
             {{ cyclist.name }}
           </div>
