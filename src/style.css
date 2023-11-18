@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  box-sizing: border-box; 
+* {
+  box-sizing: border-box;
   /* ?? */
 }
 
@@ -28,8 +28,6 @@
     background: #27272a;
   }
 }
-
-
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

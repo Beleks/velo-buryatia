@@ -33,19 +33,14 @@ const routes = [
         component: () => import("@/pages/Results.vue"),
         children: [
           {
-            name: "Cyclists",
-            path: "cyclists",
-            component: () => import("@/pages/Cyclists.vue"),
-          },
-          {
-            name: "Season",
-            path: ":season",
-            component: () => import("@/pages/Season.vue"),
-          },
-          {
             name: "Cyclist",
             path: "cyclists/:cyclistId",
             component: () => import("@/pages/Cyclist.vue"),
+          },
+          {
+            name: "Events",
+            path: "",
+            component: () => import("@/pages/Events.vue"),
           },
         ],
       },
@@ -54,10 +49,20 @@ const routes = [
         path: "/about",
         component: () => import("@/pages/About.vue"),
       },
+      // { Страница отчётов, отзывов
+      //   name: "Reports",
+      //   path: "/reports",
+      //   component: () => import("@/pages/Reports.vue"),
+      // },
       {
-        name: "Reports",
-        path: "/reports",
-        component: () => import("@/pages/Reports.vue"),
+        name: "Cyclists",
+        path: "cyclists",
+        component: () => import("@/pages/Cyclists.vue"),
+      },
+      {
+        name: "Season",
+        path: "results/:eventId",
+        component: () => import("@/pages/Season.vue"),
       },
     ],
   },

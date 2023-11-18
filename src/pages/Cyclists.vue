@@ -27,9 +27,7 @@ let activePage = ref(0);
 
 let cyclists = computed(() => {
   let cyclists = cyclistsStore.cyclists
-    .filter((cyclist) =>
-      cyclist.name.toLowerCase().includes(searchInput.value.toLowerCase())
-    )
+    .filter((cyclist) => cyclist.name.toLowerCase().includes(searchInput.value.toLowerCase()))
     .sort((first, second) => {
       if (first.name.toLowerCase() < second.name.toLowerCase()) {
         return -1;
@@ -54,18 +52,6 @@ function goBack() {
 
 <template>
   <div class="px-24 max-w-7xl m-auto">
-    <div class="flex justify-between items-center mb-6 mx-5 select-none">
-      <div
-        @click="goBack()"
-        class="stroke-white hover:stroke-lime-400 cursor-pointer"
-      >
-        <ArrowSvg />
-      </div>
-      <div class="text-2xl font-extrabold">Участники</div>
-      <div class="opacity-0 cursor-default">
-        <ArrowSvg />
-      </div>
-    </div>
     <div class="mb-2 flex">
       <input
         type="text"
@@ -80,9 +66,7 @@ function goBack() {
       </div> -->
     </div>
     <div class="border my-border-color rounded mb-4">
-      <div
-        class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
-      >
+      <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
         <div class="flex">
           <div class="w-7 text-center mr-2">№</div>
           <div>Фамилия Имя</div>
@@ -117,5 +101,4 @@ function goBack() {
   </div>
 </template>
 
-<style>
-</style>
+<style></style>

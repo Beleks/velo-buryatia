@@ -32,9 +32,7 @@ function goToResults(season) {
     <div class="fixed -z-30 opacity-5 right-2">
       <VeloDarkSvg :size="1000" />
     </div>
-    <div
-      class="text-3xl font-extrabold uppercase text-center text-gradient mt-14 mb-10"
-    >
+    <div class="text-3xl font-extrabold uppercase text-center text-gradient mt-14 mb-10">
       Байкальский ВелоМарафон
     </div>
     <div class="flex items-center">
@@ -55,7 +53,9 @@ function goToResults(season) {
     <div class="mt-14 mb-14">
       <div class="flex mb-10">
         <div class="mr-8">
-          <div><OzeroSvg /></div>
+          <div>
+            <OzeroSvg />
+          </div>
         </div>
         <div>
           <div class="text-xl font-bold">
@@ -70,7 +70,9 @@ function goToResults(season) {
       </div>
       <div class="flex mb-10">
         <div class="mr-8">
-          <div><ServiceSvg /></div>
+          <div>
+            <ServiceSvg />
+          </div>
         </div>
         <div>
           <div class="text-xl font-bold">УДОБНЫЙ СЕРВИС</div>
@@ -83,7 +85,9 @@ function goToResults(season) {
       </div>
       <div class="flex mb-10">
         <div class="mr-8">
-          <div><PeoplsSvg /></div>
+          <div>
+            <PeoplsSvg />
+          </div>
         </div>
         <div>
           <div class="text-xl font-bold">25 ВОЗРАСТНЫХ ГРУПП</div>
@@ -96,7 +100,9 @@ function goToResults(season) {
       </div>
       <div class="flex mb-10">
         <div class="mr-8">
-          <div><DistenceSvg /></div>
+          <div>
+            <DistenceSvg />
+          </div>
         </div>
         <div>
           <div class="text-xl font-bold">ДИСТАНЦИИ ДЛЯ ВСЕХ</div>
@@ -107,7 +113,9 @@ function goToResults(season) {
       </div>
       <div class="flex mb-10">
         <div class="mr-8">
-          <div><FanySvg /></div>
+          <div>
+            <FanySvg />
+          </div>
         </div>
         <div>
           <div class="text-xl font-bold">
@@ -123,10 +131,10 @@ function goToResults(season) {
     </div>
     <div class="px-20 mb-14">
       <div class="ticket-bg rounded-3xl h-72 max-w-4xl m-auto flex">
-        <div
-          class="flex items-center border-r-2 border-dashed border-dashed-color h-full pl-10 relative min-w-52"
-        >
-          <div><VeloDarkSvg class="fill-svg-velo" :size="80" /></div>
+        <div class="flex items-center border-r-2 border-dashed border-dashed-color h-full pl-10 relative min-w-52">
+          <div>
+            <VeloDarkSvg class="fill-svg-velo" :size="80" />
+          </div>
           <div class="absolute circle-ticket-bottom rounded-3xl"></div>
           <div class="absolute circle-ticket-top rounded-3xl"></div>
           <div class="text-rotate">
@@ -136,9 +144,7 @@ function goToResults(season) {
         </div>
         <div class="px-6 py-3 flex flex-col justify-between w-full">
           <div>
-            <div
-              class="flex text-2xl text-gradient font-extrabold uppercase tracking-wide"
-            >
+            <div class="flex text-2xl text-gradient font-extrabold uppercase tracking-wide">
               Baikal Marathon XVI 2023
               <VeloColorSvg class="ml-4" />
             </div>
@@ -159,25 +165,17 @@ function goToResults(season) {
           </div>
           <div class="flex justify-between">
             <div class="select-none opacity-0">Подробнее</div>
-            <div
-              class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer"
-              @click="goToResults(2023)"
-            >
+            <div class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer" @click="goToResults(2023)">
               Результаты
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="flex justify-center text-center underline cursor-pointer mt-2"
-      >
-        <a
-          class="mr-2 opacity-70 hover:opacity-100"
-          href="https://velo.alekseybeletsky.ru/assets/Polozhenie_BVM_24_06_2023.pdf"
-          target="_blank"
-          rel="noreferrer noopener"
-          >Положение</a
-        ><DocSvg />
+      <div class="flex justify-center text-center underline cursor-pointer mt-2">
+        <a class="mr-2 opacity-70 hover:opacity-100"
+          href="https://velo.alekseybeletsky.ru/assets/Polozhenie_BVM_24_06_2023.pdf" target="_blank"
+          rel="noreferrer noopener">Положение</a>
+        <DocSvg />
       </div>
     </div>
     <!-- <div class="mb-12">
@@ -205,36 +203,22 @@ function goToResults(season) {
         Партнёры
       </div>
       <div class="flex justify-around items-center">
-        <img
-          src="../assets/image-2.png"
-          alt="Не удалось загрузить картинку :("
-        />
-        <img
-          src="../assets/image-3.png"
-          alt="Не удалось загрузить картинку :("
-        />
-        <img
-          src="../assets/image-4.png"
-          alt="Не удалось загрузить картинку :("
-        />
-        <img
-          src="../assets/image-5.png"
-          alt="Не удалось загрузить картинку :("
-        />
+        <img src="../assets/image-2.png" alt="Не удалось загрузить картинку :(" />
+        <img src="../assets/image-3.png" alt="Не удалось загрузить картинку :(" />
+        <img src="../assets/image-4.png" alt="Не удалось загрузить картинку :(" />
+        <img src="../assets/image-5.png" alt="Не удалось загрузить картинку :(" />
       </div>
     </div>
     <div>
-      <div
-        class="font-bold text-gradient text-center mb-8 text-xl stroke-white"
-      >
+      <div class="font-bold text-gradient text-center mb-8 text-xl stroke-white">
         FAQ
       </div>
       <AccordionList openMultipleItems>
         <AccordionItem>
           <template #summary>Стартовый номер остается участнику ?</template>
-          <template #icon
-            ><SimpleArrowSvg class="stroke-white" :size="20"
-          /></template>
+          <template #icon>
+            <SimpleArrowSvg class="stroke-white" :size="20" />
+          </template>
           <div>
             Стартовый № не в ходит в оплату изготовление на деньги стартового
             взноса. Он печатается на деньги бюджета соревнований.
@@ -313,18 +297,20 @@ function goToResults(season) {
 </template>
 
 <style>
-
 .text-gradient {
   color: transparent;
   background-clip: text;
   background-image: linear-gradient(90.41deg, #79ffdb 0%, #abff75 98.38%);
 }
+
 .faq-bg {
   background-color: #313538;
 }
+
 .ticket-bg {
   background-color: #313538;
 }
+
 .text-rotate {
   /* margin-top: 8rem; */
   margin-right: -4rem;
@@ -332,36 +318,43 @@ function goToResults(season) {
   transform: rotate(270deg);
   opacity: 0.3;
 }
+
 .border-dashed-color {
   border-color: #242627;
 }
-.circle-ticket {
-}
+
+.circle-ticket {}
+
 .circle-ticket-top {
   width: 40px;
   height: 40px;
-  background-color: #242627;
+  background-color: #18181B;
   top: -20px;
   left: 186px;
 }
+
 .circle-ticket-bottom {
   width: 40px;
   height: 40px;
-  background-color: #242627;
+  background-color: #18181B;
   left: 186px;
   bottom: -20px;
 }
+
 .dark-bg {
   background-color: #4d5155;
 }
+
 .min-w-52 {
   min-width: 208px;
 }
+
 .my-button {
   border: 1px solid #79ffdb;
   color: #79ffdb;
   transition: all 0.3s ease-in-out;
 }
+
 .my-button:hover {
   border: 1px solid #34d399;
   color: #fff;
