@@ -25,21 +25,22 @@ let activePage = ref(0);
 //   return pages;
 // });
 
-let cyclists = computed(() => {
-  let cyclists = cyclistsStore.cyclists
-    .filter((cyclist) => cyclist.name.toLowerCase().includes(searchInput.value.toLowerCase()))
-    .sort((first, second) => {
-      if (first.name.toLowerCase() < second.name.toLowerCase()) {
-        return -1;
-      }
-      if (first.name.toLowerCase() > second.name.toLowerCase()) {
-        return 1;
-      }
-      return 0;
-    });
-  // .slice(50 * activePage.value, 50 * (activePage.value + 1));
-  return cyclists;
-});
+// let cyclists = computed(() => {
+// let cyclists = cyclistsStore.cyclists
+//   .filter((cyclist) => cyclist.name.toLowerCase().includes(searchInput.value.toLowerCase()))
+//   .sort((first, second) => {
+//     if (first.name.toLowerCase() < second.name.toLowerCase()) {
+//       return -1;
+//     }
+//     if (first.name.toLowerCase() > second.name.toLowerCase()) {
+//       return 1;
+//     }
+//     return 0;
+//   });
+// .slice(50 * activePage.value, 50 * (activePage.value + 1));
+// return [];
+// });
+let cyclists = [];
 
 function goToCyclist(cyclist) {
   router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });

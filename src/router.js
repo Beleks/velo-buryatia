@@ -31,16 +31,20 @@ const routes = [
         name: "Results",
         path: "results",
         component: () => import("@/pages/Results.vue"),
+        redirect: () => {
+          return { name: "Events" };
+        },
         children: [
-          {
-            name: "Cyclist",
-            path: "cyclists/:cyclistId",
-            component: () => import("@/pages/Cyclist.vue"),
-          },
+          // default path ?
           {
             name: "Events",
             path: "",
             component: () => import("@/pages/Events.vue"),
+          },
+          {
+            name: "Season",
+            path: ":eventId",
+            component: () => import("@/pages/Season.vue"),
           },
         ],
       },
@@ -59,11 +63,11 @@ const routes = [
         path: "cyclists",
         component: () => import("@/pages/Cyclists.vue"),
       },
-      {
-        name: "Season",
-        path: "results/:eventId",
-        component: () => import("@/pages/Season.vue"),
-      },
+      // {
+      //   name: "Season",
+      //   path: "results/:eventId",
+      //   component: () => import("@/pages/Season.vue"),
+      // },
     ],
   },
   {

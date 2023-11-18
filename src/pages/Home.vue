@@ -46,6 +46,7 @@ const currentPathName = computed(() => {
 
 function chooseMenuItem(pathName) {
   if (currentPathName.value !== pathName) {
+    console.log('');
     router.push({ name: pathName });
   }
 }

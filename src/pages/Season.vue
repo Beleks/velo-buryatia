@@ -25,7 +25,8 @@ let eventId = computed(() => {
   return route.params.eventId;
 });
 
-let event = ref([]);
+let event = ref({});
+let results = ref([]);
 
 // let distances = computed(() => {
 //   let distances = [];
@@ -211,6 +212,11 @@ function goBack() {
 }
 
 onMounted(() => {
+  mainStore.getEvents().then((response) => {
+    event.value = response.data.data.find((event) => event.id == eventId.value);
+    console.log(response.data.data.find((event) => event.id == eventId.value));
+  });
+
   mainStore.getEventResults(eventId.value).then((response) => {
     console.log(response.data.data, "response");
   });
@@ -219,12 +225,12 @@ onMounted(() => {
 
 <template>
   <div class="px-24 max-w-7xl m-auto">
-    <template v-if="event">
+    <template v-if="event.id">
       <div class="flex justify-between items-center mb-6 mx-5 select-none">
         <div @click="goBack()" class="stroke-white hover:stroke-lime-400 cursor-pointer">
           <ArrowSvg />
         </div>
-        <span class="text-2xl font-extrabold"> {{  }} </span>
+        <span class="text-2xl font-extrabold"> {{ event.name }} </span>
         <div class="opacity-0 cursor-default">
           <ArrowSvg />
         </div>
@@ -253,8 +259,12 @@ onMounted(() => {
               class="flex justify-between items-center"
               :class="[!isTotalTime ? 'stroke-white' : 'stroke-lime-400 text-lime-400']"
             >
-              <div v-if="!isTotalTime"><EyeOffSvg :size="20" /></div>
-              <div v-else><EyeSvg :size="20" /></div>
+              <div v-if="!isTotalTime">
+                <EyeOffSvg :size="20" />
+              </div>
+              <div v-else>
+                <EyeSvg :size="20" />
+              </div>
               <div class="ml-2">Общий зачёт</div>
             </div>
           </div>
@@ -324,14 +334,14 @@ onMounted(() => {
         </div>
       </div>
     </template>
-    <div v-else class="flex justify-between items-center mb-6 mx-5 select-none">
-      <div @click="goBack()" class="stroke-white hover:stroke-lime-400 cursor-pointer">
+    <div v-else class="flex justify-center items-center mb-6 mx-5 select-none">
+      <!-- <div @click="goBack()" class="stroke-white hover:stroke-lime-400 cursor-pointer">
         <ArrowSvg />
-      </div>
-      <div>Нет результатов</div>
-      <div class="opacity-0 cursor-default">
+      </div> -->
+      <div>Загрузка...</div>
+      <!-- <div class="opacity-0 cursor-default">
         <ArrowSvg />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
