@@ -27,6 +27,7 @@ let eventId = computed(() => {
 
 let event = ref({});
 let results = ref([]);
+let participants = ref([]);
 
 // let distances = computed(() => {
 //   let distances = [];
@@ -196,12 +197,12 @@ function selectGroup(group) {
 //   isTotalTime.value = !isTotalTime.value;
 // }
 
-// function formatTime(time) {
-//   // hour:minute:sec 00:00:00
-//   return `${time.hour}:${time.minute < 10 ? `0${time.minute}` : time.minute}:${
-//     time.sec < 10 ? `0${time.sec}` : time.sec
-//   }`;
-// }
+function formatTime(time) {
+  // hour:minute:sec 00:00:00
+  // return `${time.hour}:${time.minute < 10 ? `0${time.minute}` : time.minute}:${
+  //   time.sec < 10 ? `0${time.sec}` : time.sec
+  // }`;
+}
 
 // function goToCyclist(cyclist) {
 //   router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
@@ -213,12 +214,14 @@ function goBack() {
 
 onMounted(() => {
   mainStore.getEvents().then((response) => {
+    // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
     event.value = response.data.data.find((event) => event.id == eventId.value);
     console.log(response.data.data.find((event) => event.id == eventId.value));
   });
 
   mainStore.getEventResults(eventId.value).then((response) => {
-    console.log(response.data.data, "response");
+    console.log(response.data.data, "response.data.data");
+    participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
   });
 });
 </script>
@@ -236,7 +239,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="px-4 mb-5 flex justify-between select-none">
-        <div class="flex items-center">
+        <!-- <div class="flex items-center">
           <div class="flex items-center mr-6">
             <div class="opacity-60 mr-3">Дистанция:</div>
             <InputSelect :options="distances" @input="selectDistance" />
@@ -249,9 +252,9 @@ onMounted(() => {
             <div class="opacity-60 mr-3">Группа:</div>
             <InputSelect :options="groups" @input="selectGroup" :width="160" />
           </div>
-        </div>
+        </div> -->
         <div>
-          <div
+          <!-- <div
             class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
             @click="switchTotalTime"
           >
@@ -267,7 +270,7 @@ onMounted(() => {
               </div>
               <div class="ml-2">Общий зачёт</div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="border my-border-color rounded mb-8">
@@ -303,32 +306,34 @@ onMounted(() => {
               {{ participant.place ? participant.place : "-" }}
             </div>
             <div
-              :class="[participant.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black']"
+              :class="[participant.cyclist.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black']"
               class="w-7 text-xs rounded text-center mr-2"
             >
-              {{ participant.number }}
+              {{ participant.bip }}
             </div>
             <div class="w-60 mr-4">
               <a class="hover:underline cursor-pointer" @click="goToCyclist(participant)">
-                {{ participant.name }}
+                {{ participant.cyclist.lastname }} {{ participant.cyclist.firstname }}
               </a>
             </div>
             <div class="w-40 mr-4">
-              {{ participant.city ? participant.city : "-" }}
+              {{ participant.city.name ? participant.city.name : "-" }}
             </div>
             <div class="w-40 mr-4">
-              {{ participant.team ? participant.team : "-" }}
+              {{ participant.team.name ? participant.team.name : "-" }}
             </div>
           </div>
           <div class="flex items-center">
             <div class="w-20 mr-2 opacity-70 text-end">
-              {{ index !== 0 ? culcDelay(participant.time) : "" }}
+              <!--{{ index !== 0 ? culcDelay(participant.time) : "" }}  -->
+              <!-- {{ index }} -->
             </div>
-            <div v-if="participant.time" class="w-20 text-end">
-              {{ formatTime(participant.time) }}
+            <div v-if="participant.status == 2" class="w-20 text-end">
+              {{ participant.result }}
+              <!-- {{ formatTime(participant.result) }} -->
             </div>
             <div v-else class="w-20 text-end">
-              {{ participant.male ? "Сошёл" : "Сошла" }}
+              {{ participant.cyclist.male ? "Сошёл" : "Сошла" }}
             </div>
           </div>
         </div>

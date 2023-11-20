@@ -14,87 +14,52 @@ const route = useRoute();
 const cyclistsStore = useCyclistsStore();
 const mainStore = useMainStore();
 
-function setId() {
-  // mainStore.marathons;
 
-  for (const key in mainStore.marathons) {
-    // Берём имя участника с ВМ проверяем есть ли он в cyclistsStore
-    // Если нет то добавляем его с id-ком предыушего + 1
+// let cyclistId = computed(() => {
+//   return route.params.cyclistId;
+// });
 
-    if (Object.hasOwnProperty.call(mainStore.marathons, key)) {
-      mainStore.marathons[key].forEach((distance) => {
-        distance.participants.forEach((participant) => {
-          if (
-            !cyclistsStore.cyclists.find(
-              (cyclist) => participant.name == cyclist.name
-            )
-          ) {
-            cyclistsStore.cyclists.push({
-              id:
-                cyclistsStore.cyclists[cyclistsStore.cyclists.length - 1].id +
-                1,
-              name: participant.name,
-              birthdate: null,
-              country: {
-                name: null,
-                title: participant.country,
-              },
-              city: participant.city,
-              results: [],
-            });
-          }
-        });
-      });
-    }
-  }
-}
-// setId();
+// let cyclist = computed(() => {
+//   let cyclist = _.cloneDeep(
+//     cyclistsStore.cyclists.find((cyclist) => cyclistId.value == cyclist.id)
+//   );
 
-let cyclistId = computed(() => {
-  return route.params.cyclistId;
-});
+//   for (const key in mainStore.marathons) {
+//     if (Object.hasOwnProperty.call(mainStore.marathons, key)) {
+//       let result = mainStore.marathons[key].find((element) => {
+//         return element.participants.find(
+//           (participant) => participant?.id == cyclist.id
+//         );
+//       });
 
-let cyclist = computed(() => {
-  let cyclist = _.cloneDeep(
-    cyclistsStore.cyclists.find((cyclist) => cyclistId.value == cyclist.id)
-  );
+//       if (result) {
+//         let cyclistResult = result.participants.find(
+//           (participant) => participant?.id == cyclist.id
+//         );
 
-  for (const key in mainStore.marathons) {
-    if (Object.hasOwnProperty.call(mainStore.marathons, key)) {
-      let result = mainStore.marathons[key].find((element) => {
-        return element.participants.find(
-          (participant) => participant?.id == cyclist.id
-        );
-      });
+//         cyclist.results.push({
+//           season: key,
+//           distance: result.distance,
+//           type: result.type,
+//           group: cyclistResult.group,
+//           place: cyclistResult.place,
+//           number: cyclistResult.number,
+//           time: cyclistResult.time,
+//           team: cyclistResult.team,
+//         });
+//       }
+//     }
+//   }
 
-      if (result) {
-        let cyclistResult = result.participants.find(
-          (participant) => participant?.id == cyclist.id
-        );
+//   return cyclist;
+// });
 
-        cyclist.results.push({
-          season: key,
-          distance: result.distance,
-          type: result.type,
-          group: cyclistResult.group,
-          place: cyclistResult.place,
-          number: cyclistResult.number,
-          time: cyclistResult.time,
-          team: cyclistResult.team,
-        });
-      }
-    }
-  }
-
-  return cyclist;
-});
-
-function formatTime(time) {
-  // hour:minute:sec 00:00:00
-  return `${time.hour}:${time.minute < 10 ? `0${time.minute}` : time.minute}:${
-    time.sec < 10 ? `0${time.sec}` : time.sec
-  }`;
-}
+// function formatTime(time) {
+//   // hour:minute:sec 00:00:00
+//   return `${time.hour}:${time.minute < 10 ? `0${time.minute}` : time.minute}:${
+//     time.sec < 10 ? `0${time.sec}` : time.sec
+//   }`;
+// }
 
 function goBack() {
   router.back();

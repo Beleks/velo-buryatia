@@ -109,7 +109,7 @@ onMounted(() => {
         <div class="flex">
           <!-- <div class="w-7 text-center mr-2">№</div> -->
           <div class="w-[400px]">Фамилия Имя Отчество</div>
-          <div class="ml-2">Кол-во участий</div>
+          <div class="ml-2 w-[115px]">Кол-во участий</div>
         </div>
         <div></div>
       </div>
@@ -119,14 +119,14 @@ onMounted(() => {
         v-for="(cyclist, index) in visibleCyclists"
         :key="cyclist.id"
         @click="goToCyclist(cyclist)"
-        class="flex items-center justify-between px-4 border-t my-border-color py-2 hover-table-item cursor-pointer"
+        class="group flex items-center justify-between px-4 border-t my-border-color py-2 hover-table-item cursor-pointer"
       >
         <div class="flex">
           <!-- TODO: Сделать underline при наведении на всю строку -->
-          <div class="hover:underline cursor-pointer w-[400px]">
+          <div class="group-hover:underline cursor-pointer w-[400px]">
             {{ cyclist.lastname }} {{ cyclist.firstname }} {{ cyclist.middlename }}
           </div>
-          <div class="ml-2">{{ cyclist.cnt }}</div>
+          <div class="ml-2 w-[115px] text-center">{{ cyclist.cnt }}</div>
         </div>
         <div></div>
       </div>
