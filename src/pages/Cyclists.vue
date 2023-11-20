@@ -1,7 +1,5 @@
 <script setup>
-import ArrowSvg from "../components/svg/ArrowSvg.vue";
-
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { useMainStore } from "@/stores/MainStore";
@@ -10,7 +8,43 @@ import { useCyclistsStore } from "@/stores/CyclistsStore";
 const router = useRouter();
 const route = useRoute();
 const cyclistsStore = useCyclistsStore();
+const mainStore = useMainStore();
 
+const cyclists = ref([]);
+const visibleCyclists = computed(() => {
+  // Сортировка по количеству участий от большего к меньшему
+  // TODO: сделать дебаунс
+  // let cyclists = cyclists.value;
+
+  let searchValuesArr = [];
+  let searchResult = cyclists.value;
+  if (searchInput.value.length > 0) {
+    // .split(" ")
+    searchValuesArr = searchInput.value.trim().toLowerCase();
+  }
+
+  function searchByName(cyclist) {
+    let cyclistName = [
+      cyclist.lastname?.toLowerCase(),
+      cyclist.firstname?.toLowerCase(),
+      cyclist.middlename?.toLowerCase(),
+    ].join(" ");
+
+    // if (searchValuesArr.length == 1) {
+
+    // }
+    // if (searchValuesArr.searchParamsArr.length > 1) {
+    //   searchValuesArr[0];
+    // }
+    return cyclistName.includes(searchValuesArr);
+  }
+
+  if (searchValuesArr.length > 0) {
+    searchResult = cyclists.value.filter(searchByName);
+  }
+
+  return searchResult.sort((cyclist_1, cyclist_2) => cyclist_2.cnt - cyclist_1.cnt);
+});
 let searchInput = ref("");
 let activePage = ref(0);
 // let qtyPages = computed(() => {
@@ -40,54 +74,63 @@ let activePage = ref(0);
 // .slice(50 * activePage.value, 50 * (activePage.value + 1));
 // return [];
 // });
-let cyclists = [];
 
 function goToCyclist(cyclist) {
-  router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
+  // router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
 }
 
 function goBack() {
   router.back();
 }
+onMounted(() => {
+  mainStore.getCyclists().then((response) => {
+    cyclists.value = response.data.data;
+  });
+});
 </script>
 
 <template>
   <div class="px-24 max-w-7xl m-auto">
-    <div class="mb-2 flex">
+    <div class="ml-4 mb-2 flex items-center">
+      <div class="whitespace-nowrap mr-4">
+        <!-- TODO: Показать элемент загрузки-->
+        <span class="opacity-80">Участников за всё время: </span>{{ cyclists.length }}
+      </div>
       <input
         type="text"
-        class="px-4 bg-input-color h-10 outline-none border my-border-color text-sm rounded focus:ring-lime-400 focus:border-lime-400 w-full flex items-center"
-        placeholder="Поиск велосипедистов"
+        class="px-4 bg-[#262628] h-10 outline-none border my-border-color placeholder:text-neutral-400 rounded focus:border-white w-full flex items-center"
+        placeholder="Введите ФИО участника"
         v-model="searchInput"
       />
-      <!-- <div
-        class="ml-4 px-5 text-lime-400 bg-input-color flex items-center h-10 cursor-pointer border border-lime-400 hover:bg-lime-400 rounded hover:text-black transition ease-in-out"
-      >
-        Поиск
-      </div> -->
     </div>
     <div class="border my-border-color rounded mb-4">
-      <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
+      <!-- bg-table-color -->
+      <div class="bg-[#262628] justify-between px-4 py-2 flex font-normal items-center opacity-80">
         <div class="flex">
-          <div class="w-7 text-center mr-2">№</div>
-          <div>Фамилия Имя</div>
+          <!-- <div class="w-7 text-center mr-2">№</div> -->
+          <div class="w-[400px]">Фамилия Имя Отчество</div>
+          <div class="ml-2">Кол-во участий</div>
         </div>
         <div></div>
       </div>
+      <!-- border-b last:border-none -->
       <div
-        v-for="(cyclist, index) in cyclists"
+        v-if="cyclists.length"
+        v-for="(cyclist, index) in visibleCyclists"
         :key="cyclist.id"
         @click="goToCyclist(cyclist)"
-        class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item cursor-pointer"
+        class="flex items-center justify-between px-4 border-t my-border-color py-2 hover-table-item cursor-pointer"
       >
         <div class="flex">
-          <div class="w-7 text-center mr-2">{{ index + 1 }}</div>
-          <div class="hover:underline cursor-pointer">
-            {{ cyclist.name }}
+          <!-- TODO: Сделать underline при наведении на всю строку -->
+          <div class="hover:underline cursor-pointer w-[400px]">
+            {{ cyclist.lastname }} {{ cyclist.firstname }} {{ cyclist.middlename }}
           </div>
+          <div class="ml-2">{{ cyclist.cnt }}</div>
         </div>
         <div></div>
       </div>
+      <div v-else class="text-center p-4">Загрузка...</div>
     </div>
     <div class="flex justify-center">
       <!-- <div
