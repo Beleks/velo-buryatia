@@ -1,9 +1,7 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
   <div>Reports</div>
 </template>
 
-<style>
-</style>
+<style></style>

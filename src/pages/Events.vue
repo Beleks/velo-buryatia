@@ -1,6 +1,7 @@
 <script setup>
 import VeloDarkSvg from "@/components/svg/VeloDarkSvg.vue";
 import VeloColorSvg from "@/components/svg/VeloColorSvg.vue";
+import PeoplsSvg from "@/components/svg/PeoplsSvg.vue";
 
 import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -82,7 +83,10 @@ onMounted(() => {
           class="w-[344px] m-0.5 h-[136px] rounded-lg py-3 px-3 flex flex-col justify-between absolute z-10 bg-[#202022]"
         >
           <div class="text-xl w-[250px]">{{ season.name }}</div>
-          <div class="">{{ season.cyclists }}</div>
+          <div class="flex items-center fill-white">
+            <PeoplsSvg :size="26" class="mr-2" />
+            {{ season.cyclists }}
+          </div>
         </div>
         <div
           :class="['w-[348px] h-[140px] transition-opacity ease-out opacity-0 group-hover:opacity-100', season.style]"
