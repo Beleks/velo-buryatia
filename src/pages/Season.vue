@@ -1,4 +1,6 @@
 <script setup>
+import { convertMsToTime } from "@/utils/utils.js";
+
 import _ from "lodash";
 import InputSelect from "../components/InputSelect.vue";
 import ArrowSvg from "../components/svg/ArrowSvg.vue";
@@ -21,13 +23,17 @@ let selectedTypeByke = ref(null);
 let selectedGroup = ref(null);
 let isTotalTime = ref(false);
 
+let event = ref({});
+let results = ref([]);
+let participants = ref([]);
+
 let eventId = computed(() => {
   return route.params.eventId;
 });
 
-let event = ref({});
-let results = ref([]);
-let participants = ref([]);
+let filteredParticipants = computed(() => {
+  return setPlaces(participants.value);
+});
 
 // let distances = computed(() => {
 //   let distances = [];
@@ -152,61 +158,40 @@ function selectGroup(group) {
   selectedGroup.value = group.value;
 }
 
-// function culcDelay(sourceTime) {
-//   if (!sourceTime) {
-//     return;
-//   }
+function setPlaces(participants) {
+  let placeNumber = 1;
+  let newArr = participants.map((participant, index) => {
+    let handledParticipant = { ...participant };
+    if (index === 0) {
+      handledParticipant.place = placeNumber;
+    } else {
+      // TODO: Обработать случай если результат предыдущего больше
+      if (participants[index - 1].result < participant.result) {
+        placeNumber++;
+        handledParticipant.place = placeNumber;
+      } else if (participants[index - 1].result === participant.result) {
+        handledParticipant.place = placeNumber;
+      }
+    }
+    return handledParticipant;
+  });
 
-//   let time = {};
-//   let bestTime = participants.value[0].time;
-
-//   Object.assign(time, sourceTime);
-
-//   let delay = {
-//     hour: 0,
-//     minute: 0,
-//     sec: 0,
-//     calcHour() {
-//       this.hour = time.hour - bestTime.hour;
-//     },
-//     calcMinute() {
-//       if (time.minute < bestTime.minute) {
-//         time.hour -= 1;
-//         time.minute += 60;
-//       }
-//       this.minute =
-//         time.minute - bestTime.minute < 10 ? `0${time.minute - bestTime.minute}` : time.minute - bestTime.minute;
-//     },
-//     calcSec() {
-//       if (time.sec < bestTime.sec) {
-//         time.minute -= 1;
-//         time.sec += 60;
-//       }
-//       this.sec = time.sec - bestTime.sec < 10 ? `0${time.sec - bestTime.sec}` : time.sec - bestTime.sec;
-//     },
-//   };
-
-//   delay.calcSec();
-//   delay.calcMinute();
-//   delay.calcHour();
-
-//   return `+ ${delay.hour}:${delay.minute}:${delay.sec}`;
-// }
-
-// function switchTotalTime() {
-//   isTotalTime.value = !isTotalTime.value;
-// }
-
-function formatTime(time) {
-  // hour:minute:sec 00:00:00
-  // return `${time.hour}:${time.minute < 10 ? `0${time.minute}` : time.minute}:${
-  //   time.sec < 10 ? `0${time.sec}` : time.sec
-  // }`;
+  return newArr;
 }
 
-// function goToCyclist(cyclist) {
-//   router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
-// }
+function culcDelay(resultMs) {
+  if (!resultMs) {
+    return;
+  }
+
+  let bestTimeMs = participants.value[0].result;
+
+  return `+ ${convertMsToTime(resultMs - bestTimeMs)}`;
+}
+
+function goToCyclist(cyclist) {
+  // router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
+}
 
 function goBack() {
   router.back();
@@ -289,7 +274,7 @@ onMounted(() => {
         </div>
         <div
           class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
-          v-for="(participant, index) in participants"
+          v-for="(participant, index) in filteredParticipants"
           :key="index"
         >
           <div class="flex items-center">
@@ -324,12 +309,11 @@ onMounted(() => {
             </div>
           </div>
           <div class="flex items-center">
-            <div class="w-20 mr-2 opacity-70 text-end">
-              <!--{{ index !== 0 ? culcDelay(participant.time) : "" }}  -->
-              <!-- {{ index }} -->
+            <div v-if="participant.status == 2" class="w-20 mr-2 opacity-70 text-end">
+              {{ index !== 0 ? culcDelay(participant.result) : "" }}
             </div>
             <div v-if="participant.status == 2" class="w-20 text-end">
-              {{ participant.result }}
+              {{ convertMsToTime(participant.result) }}
               <!-- {{ formatTime(participant.result) }} -->
             </div>
             <div v-else class="w-20 text-end">
