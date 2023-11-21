@@ -57,7 +57,7 @@ function chooseMenuItem(pathName) {
       <menu class="flex justify-center py-10">
         <!-- text-emerald-400 -->
         <div
-          :class="[' mr-10 last:mr-0 cursor-pointer', { 'text-neutral-400': currentPathName !== item.name }]"
+          :class="[' mr-10 last:mr-0 cursor-pointer', { 'text-emerald-400': currentPathName == item.name }]"
           v-for="item in menu"
           :key="item.name"
         >

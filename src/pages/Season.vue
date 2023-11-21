@@ -18,6 +18,8 @@ const route = useRoute();
 const mainStore = useMainStore();
 const cyclistsStore = useCyclistsStore();
 
+let distances = ref([]);
+
 let selectedDistance = ref(null);
 let selectedTypeByke = ref(null);
 let selectedGroup = ref(null);
@@ -32,119 +34,61 @@ let eventId = computed(() => {
 });
 
 let filteredParticipants = computed(() => {
-  return setPlaces(participants.value);
+  let filteredParticipants = participants.value.filter((participant) => {
+    return (
+      participant.distance.name == selectedDistance.value &&
+      participant.biketype.name == selectedTypeByke.value &&
+      participant.category.name == selectedGroup.value
+    );
+  });
+
+  return setPlaces(filteredParticipants);
 });
 
-// let distances = computed(() => {
-//   let distances = [];
+let typesBike = computed(() => {
+  let typesBike = [];
 
-//   seasonMarathon.value.forEach((element) => {
-//     if (!distances.includes(element.distance)) {
-//       distances.push(element.distance);
-//     }
-//   });
+  let filteredByDistance = participants.value.filter(
+    (participant) => participant.distance.name === selectedDistance.value
+  );
 
-//   return distances;
-// });
+  filteredByDistance.forEach((participant) => {
+    if (!typesBike.includes(participant.biketype.name)) {
+      typesBike.push(participant.biketype.name);
+    }
+  });
 
-// let typesBike = computed(() => {
-//   let typesBike = [];
+  return typesBike;
+});
 
-//   let filteredSeasonMarathon = seasonMarathon.value.filter((marathon) => marathon.distance == selectedDistance.value);
+// TODO: Поменять на category
+let groups = computed(() => {
+  let groups = [];
 
-//   filteredSeasonMarathon.forEach((element) => {
-//     typesBike.push(element.type);
-//   });
+  let filteredByDistanceAndBiketypes = participants.value.filter((participant) => {
+    return participant.distance.name === selectedDistance.value && participant.biketype.name === selectedTypeByke.value;
+  });
 
-//   return typesBike;
-// });
+  filteredByDistanceAndBiketypes.forEach((participant) => {
+    if (!groups.includes(participant.category.name)) {
+      groups.push(participant.category.name);
+    }
+  });
 
-// let groups = computed(() => {
-//   let groups = [];
+  return groups;
+});
 
-//   let filteredSeasonMarathon = seasonMarathon.value.filter((marathon) => {
-//     return marathon.distance == selectedDistance.value && marathon.type == selectedTypeByke.value;
-//   });
+function getDistances(participants) {
+  let distances = [];
 
-//   filteredSeasonMarathon[0]?.participants.forEach((element) => {
-//     if (!groups.includes(element.group)) {
-//       groups.push(element.group);
-//     }
-//   });
+  participants.forEach((participant) => {
+    if (!distances.includes(participant.distance.name)) {
+      distances.push(participant.distance.name);
+    }
+  });
 
-//   return groups;
-// });
-
-// let participants = computed(() => {
-//   if (isTotalTime.value) {
-//     let participants = [];
-//     let neededMarathons = seasonMarathon.value.filter((element) => element.distance == selectedDistance.value);
-
-//     neededMarathons.forEach((element) => {
-//       participants.push(_.cloneDeep(element.participants));
-//     });
-
-//     participants = participants.flat();
-
-//     let descendedParticipants = participants.filter((element) => !element.place);
-
-//     participants = participants
-//       .filter((element) => element.place)
-//       .sort((firstEl, secondEl) => {
-//         if (firstEl.time.hour - secondEl.time.hour < 0) {
-//           return -1;
-//         } else if (firstEl.time.hour - secondEl.time.hour == 0) {
-//           if (firstEl.time.minute - secondEl.time.minute < 0) {
-//             return -1;
-//           } else if (firstEl.time.minute - secondEl.time.minute == 0) {
-//             return firstEl.time.sec - secondEl.time.sec;
-//           } else {
-//             return 1;
-//           }
-//         } else {
-//           return 1;
-//         }
-//       });
-
-//     for (let index = 0; index < participants.length; index++) {
-//       if (index !== 0) {
-//         if (
-//           participants[index].time.hour == participants[index - 1].time.hour &&
-//           participants[index].time.minute == participants[index - 1].time.minute &&
-//           participants[index].time.sec == participants[index - 1].time.sec
-//         ) {
-//           participants[index].place = participants[index - 1].place;
-//         } else {
-//           participants[index].place = participants[index - 1].place + 1;
-//         }
-//       }
-//     }
-
-//     participants = participants.concat(descendedParticipants);
-
-//     if (participants) {
-//       for (let index = 0; index < participants.length; index++) {
-//         participants[index].male = cyclistsStore.cyclists.find((cyclist) => cyclist.id === participants[index].id).male;
-//       }
-//     }
-
-//     return participants;
-//   } else {
-//     let participants = _.cloneDeep(
-//       seasonMarathon.value.find(
-//         (element) => element.distance == selectedDistance.value && element.type == selectedTypeByke.value
-//       )?.participants
-//     );
-
-//     if (participants) {
-//       for (let index = 0; index < participants.length; index++) {
-//         participants[index].male = cyclistsStore.cyclists.find((cyclist) => cyclist.id === participants[index].id).male;
-//       }
-//     }
-
-//     return participants?.filter((participant) => participant.group == selectedGroup.value);
-//   }
-// });
+  return distances;
+}
 
 function selectDistance(distance) {
   selectedDistance.value = distance.value;
@@ -207,6 +151,7 @@ onMounted(() => {
   mainStore.getEventResults(eventId.value).then((response) => {
     console.log(response.data.data, "response.data.data");
     participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
+    distances.value = getDistances(participants.value);
   });
 });
 </script>
@@ -214,8 +159,8 @@ onMounted(() => {
 <template>
   <div class="px-24 max-w-7xl m-auto">
     <template v-if="event.id">
-      <div class="flex justify-between items-center mb-6 mx-5 select-none">
-        <div @click="goBack()" class="stroke-white hover:stroke-lime-400 cursor-pointer">
+      <div class="flex justify-between items-center mb-6 mx-5">
+        <div @click="goBack()" class="select-none stroke-neutral-400 hover:stroke-white cursor-pointer">
           <ArrowSvg />
         </div>
         <span class="text-2xl font-extrabold"> {{ event.name }} </span>
@@ -224,7 +169,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="px-4 mb-5 flex justify-between select-none">
-        <!-- <div class="flex items-center">
+        <div class="flex items-center">
           <div class="flex items-center mr-6">
             <div class="opacity-60 mr-3">Дистанция:</div>
             <InputSelect :options="distances" @input="selectDistance" />
@@ -237,7 +182,7 @@ onMounted(() => {
             <div class="opacity-60 mr-3">Группа:</div>
             <InputSelect :options="groups" @input="selectGroup" :width="160" />
           </div>
-        </div> -->
+        </div>
         <div>
           <!-- <div
             class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"

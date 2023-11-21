@@ -105,7 +105,7 @@ onMounted(() => {
     </div>
     <div class="border my-border-color rounded mb-4">
       <!-- bg-table-color -->
-      <div class="bg-[#262628] justify-between px-4 py-2 flex font-normal items-center opacity-80">
+      <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
         <div class="flex">
           <!-- <div class="w-7 text-center mr-2">№</div> -->
           <div class="w-[400px]">Фамилия Имя Отчество</div>

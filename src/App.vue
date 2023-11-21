@@ -108,7 +108,7 @@ html {
 }
 
 .hover-table-item:hover {
-  background-color: hsla(0, 0%, 100%, 0.08);
+  background-color: #222225;
 }
 
 .bg-table-color {

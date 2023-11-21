@@ -74,19 +74,31 @@ function selectOption(option) {
 
 <template>
   <div class="">
-    <div :style="{ width: `${width}px` }"
-      class="border my-border-color rounded px-2 py-1 bg-input-color transition ease-out flex justify-between items-center stroke-white"
-      :class="[disable ? 'opacity-50' : 'hover:border-lime-400 cursor-pointer']" @click="switchDropdownMenu"
-      ref="ignorEl">
+    <div
+      :style="{ width: `${width}px` }"
+      class="h-[34px] border my-border-color rounded px-2 py-1 bg-input-color transition ease-out flex justify-between items-center stroke-white"
+      :class="[disable ? 'opacity-50' : 'hover:border-emerald-400 cursor-pointer']"
+      @click="switchDropdownMenu"
+      ref="ignorEl"
+    >
       <div>{{ selectedOption }}</div>
       <SimpleArrowSvg :class="[dropdownMenuIsOpen ? 'rotate-180' : '', 'transition ease-out']" :size="20" />
     </div>
-    <div v-if="dropdownMenuIsOpen" :style="{ width: `${width}px` }" ref="target"
-      class="absolute mt-2 border my-border-color rounded z-10 shadow-md flex flex-col overflow-hidden">
-      <span :class="[
-        'px-2 py-1 cursor-pointer hover:text-lime-400',
-        option == selectedOption ? 'bg-input-color-selected' : 'bg-input-color',
-      ]" v-for="option in options" :key="option" @click="selectOption(option)">
+    <div
+      v-if="dropdownMenuIsOpen"
+      :style="{ width: `${width}px` }"
+      ref="target"
+      class="absolute mt-2 border my-border-color rounded z-10 shadow-md flex flex-col overflow-hidden"
+    >
+      <span
+        :class="[
+          'px-2 py-1 cursor-pointer hover:text-emerald-400',
+          option == selectedOption ? 'bg-input-color-selected' : 'bg-input-color',
+        ]"
+        v-for="option in options"
+        :key="option"
+        @click="selectOption(option)"
+      >
         {{ option }}
       </span>
     </div>
