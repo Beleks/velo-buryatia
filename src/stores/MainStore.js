@@ -15,6 +15,7 @@ export const useMainStore = defineStore("main", () => {
     return await axios.get(`results/${eventId}`, apiOptions);
   }
 
+  // TODO: Поменять на participant
   async function getCyclists() {
     apiOptions = {
       // headers: { Authorization: `Bearer ${mainStore.accessToken}` },
@@ -23,9 +24,18 @@ export const useMainStore = defineStore("main", () => {
     return await axios.get(`st/list/ev_cyclists?tag_id=1`, apiOptions);
   }
 
+  async function getCyclistsResults(cyclistId) {
+    apiOptions = {
+      // headers: { Authorization: `Bearer ${mainStore.accessToken}` },
+    };
+    //apivelo.bielecki.ru/api/st/list/cyclist_events?tag_id=1&cyclist_id=121
+    return await axios.get(`st/list/cyclist_events?tag_id=1&cyclist_id=${cyclistId}`, apiOptions);
+  }
+
   return {
     getEvents,
     getEventResults,
     getCyclists,
+    getCyclistsResults,
   };
 });

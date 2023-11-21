@@ -35,7 +35,6 @@ const routes = [
           return { name: "Events" };
         },
         children: [
-          // default path ?
           {
             name: "Events",
             path: "",
@@ -62,12 +61,22 @@ const routes = [
         name: "Cyclists",
         path: "cyclists",
         component: () => import("@/pages/Cyclists.vue"),
+        redirect: () => {
+          return { name: "CyclistsTable" };
+        },
+        children: [
+          {
+            name: "CyclistsTable",
+            path: "",
+            component: () => import("@/pages/CyclistsTable.vue"),
+          },
+          {
+            name: "Cyclist",
+            path: ":cyclistId",
+            component: () => import("@/pages/Cyclist.vue"),
+          },
+        ],
       },
-      // {
-      //   name: "Season",
-      //   path: "results/:eventId",
-      //   component: () => import("@/pages/Season.vue"),
-      // },
     ],
   },
   {
@@ -83,21 +92,19 @@ const routes = [
         name: "Results_m",
         path: "results",
         component: () => import("@/pages/mobile/Results.vue"),
+        redirect: () => {
+          return { name: "Events_m" };
+        },
         children: [
           {
-            name: "Cyclists_m",
-            path: "cyclists",
-            component: () => import("@/pages/mobile/Cyclists.vue"),
+            name: "Events_m",
+            path: "",
+            component: () => import("@/pages/mobile/Events.vue"),
           },
           {
             name: "Season_m",
-            path: ":season",
+            path: ":eventId",
             component: () => import("@/pages/mobile/Season.vue"),
-          },
-          {
-            name: "Cyclist_m",
-            path: "cyclists/:cyclistId",
-            component: () => import("@/pages/mobile/Cyclist.vue"),
           },
         ],
       },
@@ -106,17 +113,32 @@ const routes = [
         path: "about",
         component: () => import("@/pages/mobile/About.vue"),
       },
+      // {
+      //   name: "Reports_m",
+      //   path: "reports",
+      //   component: () => import("@/pages/mobile/Reports.vue"),
+      // },
       {
-        name: "Reports_m",
-        path: "reports",
-        component: () => import("@/pages/mobile/Reports.vue"),
+        name: "Cyclists_m",
+        path: "cyclists",
+        component: () => import("@/pages/mobile/Cyclists.vue"),
+        redirect: () => {
+          return { name: "CyclistsTable_m" };
+        },
+        children: [
+          {
+            name: "CyclistsTable_m",
+            path: "",
+            component: () => import("@/pages/mobile/CyclistsTable.vue"),
+          },
+          {
+            name: "Cyclist_m",
+            path: ":cyclistId",
+            component: () => import("@/pages/mobile/Cyclist.vue"),
+          },
+        ],
       },
     ],
-  },
-  {
-    name: "Admin",
-    path: "/admin",
-    component: () => import("@/pages/Admin.vue"),
   },
   // { path: "/about", component: About },
 ];

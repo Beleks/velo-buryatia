@@ -3,7 +3,7 @@
 import ArrowSvg from "../components/svg/ArrowSvg.vue";
 
 import _ from "lodash";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { useCyclistsStore } from "@/stores/cyclistsStore";
@@ -13,11 +13,14 @@ const router = useRouter();
 const route = useRoute();
 const cyclistsStore = useCyclistsStore();
 const mainStore = useMainStore();
+const results = ref([]);
 
-
-// let cyclistId = computed(() => {
-//   return route.params.cyclistId;
-// });
+let emptyText = computed(() => {
+  // TODO: "Загрузка..." "Нет такого велосипедиста" "Велосипедист не найден"
+});
+let cyclistId = computed(() => {
+  return route.params.cyclistId;
+});
 
 // let cyclist = computed(() => {
 //   let cyclist = _.cloneDeep(
@@ -54,30 +57,32 @@ const mainStore = useMainStore();
 //   return cyclist;
 // });
 
-// function formatTime(time) {
-//   // hour:minute:sec 00:00:00
-//   return `${time.hour}:${time.minute < 10 ? `0${time.minute}` : time.minute}:${
-//     time.sec < 10 ? `0${time.sec}` : time.sec
-//   }`;
-// }
-
 function goBack() {
   router.back();
 }
+
+onMounted(() => {
+  mainStore
+    .getCyclistsResults(cyclistId.value)
+    .then((response) => {
+      console.log(response.data.data, "getCyclistsResults");
+      results.value = response.data.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 </script>
 
 <template>
   <div class="px-24 max-w-7xl m-auto">
-    <template v-if="cyclist">
+    <template v-if="results[0]">
       <div class="flex justify-between items-center mb-4 mx-5 select-none">
-        <div
-          @click="goBack()"
-          class="stroke-white hover:stroke-lime-400 cursor-pointer"
-        >
+        <div @click="goBack()" class="stroke-neutral-400 hover:stroke-white cursor-pointer">
           <ArrowSvg />
         </div>
         <div class="text-2xl font-extrabold">
-          {{ cyclist.name }}
+          {{ results[0].lastname }} {{ results[0].firstname }} {{ results[0].middlename }}
         </div>
         <div class="opacity-0 cursor-default">
           <div>
@@ -86,23 +91,17 @@ function goBack() {
         </div>
       </div>
       <div class="flex justify-center opacity-80 mb-6">
-        <div class="mr-3">
-          {{ cyclist.country.title }}
-          <span v-if="cyclist.city">, {{ cyclist.city }}</span>
+        <div>
+          {{ results[0].count_name }}
+          <span v-if="results[0].city_name">, {{ results[0].city_name }}</span>
         </div>
-        <div v-if="cyclist.birthdate">
-          {{ cyclist.birthdate }}
-        </div>
+        <div class="ml-3" v-if="results[0].year">{{ results[0].year }} г.</div>
       </div>
       <div class="">
         <div class="border my-border-color rounded">
-          <div
-            class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
-          >
+          <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
             <div class="flex items-center">
-              <div class="w-12 h-7 mr-4 flex justify-center items-center">
-                Сезон
-              </div>
+              <div class="w-12 h-7 mr-4 flex justify-center items-center">Сезон</div>
               <div class="w-12 mr-4">Место</div>
               <div class="w-20 text-center mr-4">Дистанция</div>
               <div class="w-32 mr-4">Тип велосипеда</div>
@@ -116,7 +115,7 @@ function goBack() {
           </div>
           <div
             class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
-            v-for="(result, index) in cyclist.results"
+            v-for="(result, index) in results"
             :key="index"
           >
             <div class="flex items-center">
@@ -158,9 +157,8 @@ function goBack() {
         </div>
       </div>
     </template>
-    <template v-else>Нет такого велосипедиста</template>
+    <template v-else><div class="text-center">Нет такого велосипедиста</div></template>
   </div>
 </template>
 
-<style>
-</style>
+<style></style>

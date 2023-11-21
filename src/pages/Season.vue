@@ -133,8 +133,8 @@ function culcDelay(resultMs) {
   return `+ ${convertMsToTime(resultMs - bestTimeMs)}`;
 }
 
-function goToCyclist(cyclist) {
-  // router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
+function goToCyclist(participant) {
+  router.push({ name: "Cyclist", params: { cyclistId: participant.cyclist.id } });
 }
 
 function goBack() {
