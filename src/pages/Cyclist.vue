@@ -1,4 +1,6 @@
 <script setup>
+import { convertMsToTime } from "@/utils/utils.js";
+
 // import InputSelect from "../components/InputSelect.vue";
 import ArrowSvg from "../components/svg/ArrowSvg.vue";
 
@@ -57,6 +59,27 @@ let cyclistId = computed(() => {
 //   return cyclist;
 // });
 
+function loadCyclistEvents() {
+  let allEvents = [];
+  mainStore.getEvents().then((response) => {
+    allEvents = response.data.data;
+
+    results.value.forEach((result) => {
+      // TODO: Анимация загрузки
+      console.log(allEvents, "allEvents");
+      let foundEvent = allEvents.find((event) => result.event_id === event.id);
+      console.log(foundEvent.start.slice(0, 4), "foundEvent");
+      result.season = foundEvent.start.slice(0, 4);
+      // TODO: Вытащить год из start
+
+      mainStore.getEventResults(result.event_id).then((response) => {
+        console.log(result.event_id, "result.event_id");
+        console.log(response.data.data);
+      });
+    });
+  });
+}
+
 function goBack() {
   router.back();
 }
@@ -67,6 +90,7 @@ onMounted(() => {
     .then((response) => {
       console.log(response.data.data, "getCyclistsResults");
       results.value = response.data.data;
+      loadCyclistEvents();
     })
     .catch((err) => {
       console.log(err);
@@ -119,7 +143,7 @@ onMounted(() => {
             :key="index"
           >
             <div class="flex items-center">
-              <div class="w-12 text-center mr-4 text-green-500">
+              <div class="w-12 text-center mr-4 text-emerald-500">
                 {{ result.season }}
               </div>
               <div class="w-12 flex justify-center mr-4">
@@ -137,20 +161,20 @@ onMounted(() => {
                 </span>
               </div>
               <div class="w-20 rounded mr-4">
-                {{ result.distance }}
+                {{ result.dist_name }}
               </div>
 
-              <div class="w-32 mr-4">{{ result.type ? result.type : "-" }}</div>
-              <div class="w-32 mr-4">{{ result.group }}</div>
+              <div class="w-32 mr-4">{{ result.bike_name ? result.bike_name : "-" }}</div>
+              <div class="w-32 mr-4">{{ result.cat_name }}</div>
 
-              <div class="w-40 mr-4">-</div>
+              <div class="w-40 mr-4">{{ result.team_name ? result.team_name : "-" }}</div>
             </div>
             <div class="flex items-center">
               <div class="w-20 mr-2 opacity-70 text-end">
                 <!-- {{ index !== 0 ? culcDelay(participant.time) : "" }} -->
               </div>
               <div class="w-20 text-end">
-                {{ result.time ? formatTime(result.time) : "Сошёл" }}
+                {{ result.status == 2 ? convertMsToTime(result.result) : "Сошёл" }}
               </div>
             </div>
           </div>
