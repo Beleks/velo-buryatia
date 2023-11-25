@@ -24,40 +24,26 @@ let cyclistId = computed(() => {
   return route.params.cyclistId;
 });
 
-// let cyclist = computed(() => {
-//   let cyclist = _.cloneDeep(
-//     cyclistsStore.cyclists.find((cyclist) => cyclistId.value == cyclist.id)
-//   );
+function setPlaces(participants) {
+  let placeNumber = 1;
+  let newArr = participants.map((participant, index) => {
+    let handledParticipant = { ...participant };
+    if (index === 0) {
+      handledParticipant.place = placeNumber;
+    } else {
+      // TODO: Обработать случай если результат предыдущего больше
+      if (participants[index - 1].result < participant.result) {
+        placeNumber++;
+        handledParticipant.place = placeNumber;
+      } else if (participants[index - 1].result === participant.result) {
+        handledParticipant.place = placeNumber;
+      }
+    }
+    return handledParticipant;
+  });
 
-//   for (const key in mainStore.marathons) {
-//     if (Object.hasOwnProperty.call(mainStore.marathons, key)) {
-//       let result = mainStore.marathons[key].find((element) => {
-//         return element.participants.find(
-//           (participant) => participant?.id == cyclist.id
-//         );
-//       });
-
-//       if (result) {
-//         let cyclistResult = result.participants.find(
-//           (participant) => participant?.id == cyclist.id
-//         );
-
-//         cyclist.results.push({
-//           season: key,
-//           distance: result.distance,
-//           type: result.type,
-//           group: cyclistResult.group,
-//           place: cyclistResult.place,
-//           number: cyclistResult.number,
-//           time: cyclistResult.time,
-//           team: cyclistResult.team,
-//         });
-//       }
-//     }
-//   }
-
-//   return cyclist;
-// });
+  return newArr;
+}
 
 function loadCyclistEvents() {
   let allEvents = [];
@@ -65,16 +51,31 @@ function loadCyclistEvents() {
     allEvents = response.data.data;
 
     results.value.forEach((result) => {
+      allEvents.forEach((event) => {
+        if (event.id === result.event_id) {
+          // Вытаскиваем год из start
+          result.season = event.start.slice(0, 4);
+        }
+      });
+    });
+
+    results.value = results.value.sort((result_1, result_2) => {
+      return result_2.season - result_1.season;
+    });
+
+    results.value.forEach((result) => {
       // TODO: Анимация загрузки
-      console.log(allEvents, "allEvents");
-      let foundEvent = allEvents.find((event) => result.event_id === event.id);
-      console.log(foundEvent.start.slice(0, 4), "foundEvent");
-      result.season = foundEvent.start.slice(0, 4);
-      // TODO: Вытащить год из start
 
       mainStore.getEventResults(result.event_id).then((response) => {
-        console.log(result.event_id, "result.event_id");
-        console.log(response.data.data);
+        let relevantParticipants = response.data.data.filter(
+          (participant) =>
+            participant.category.id === result.category_id &&
+            participant.distance.id === result.distance_id &&
+            participant.biketype.id === result.biketype_id
+        );
+        result.place = setPlaces(relevantParticipants).find(
+          (participant) => participant.cyclist.id === result.cyclist_id
+        ).place;
       });
     });
   });
@@ -157,7 +158,7 @@ onMounted(() => {
                     'w-7 h-7 text-center text-lg font-bold flex justify-center items-center rounded-full',
                   ]"
                 >
-                  {{ result.place ? result.place : "-" }}
+                  {{ result.status == 2 ? result.place : "-" }}
                 </span>
               </div>
               <div class="w-20 rounded mr-4">
