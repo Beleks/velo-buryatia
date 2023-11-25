@@ -203,14 +203,14 @@ onMounted(() => {
           </div> -->
         </div>
       </div>
-      <div class="border my-border-color rounded mb-8">
+      <div class="border my-border-color rounded mb-8 overflow-hidden">
         <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
           <div class="flex items-center">
             <div class="w-7 h-7 mr-4 flex justify-center items-center">#</div>
             <div class="w-7 text-center mr-2">№</div>
             <div class="w-60 mr-4">Фамилия Имя</div>
             <div class="w-40 mr-4">нп.</div>
-            <div class="w-40 mr-4">Команда</div>
+            <div class="w-56 mr-4">Команда</div>
           </div>
           <div class="flex items-center">
             <div class="w-20 mr-2 text-end"></div>
@@ -249,7 +249,7 @@ onMounted(() => {
             <div class="w-40 mr-4">
               {{ participant.city.name ? participant.city.name : "-" }}
             </div>
-            <div class="w-40 mr-4">
+            <div class="w-56 mr-4 truncate">
               {{ participant.team.name ? participant.team.name : "-" }}
             </div>
           </div>

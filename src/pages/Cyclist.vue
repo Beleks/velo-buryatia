@@ -25,9 +25,14 @@ let emptyPageText = computed(() => {
     return "Загрузка...";
   }
 });
+
 let cyclistId = computed(() => {
   return route.params.cyclistId;
 });
+
+function toEvent(eventId) {
+  router.push({ name: "Season", params: { eventId } });
+}
 
 function setPlaces(participants) {
   let placeNumber = 1;
@@ -115,7 +120,7 @@ onMounted(() => {
 <template>
   <div class="px-24 max-w-7xl m-auto">
     <template v-if="results[0]">
-      <div class="flex justify-between items-center mb-4 mx-5 select-none">
+      <div class="flex justify-between items-center mb-4 mx-5">
         <div @click="goBack()" class="stroke-neutral-400 hover:stroke-white cursor-pointer">
           <ArrowSvg />
         </div>
@@ -136,7 +141,7 @@ onMounted(() => {
         <div class="ml-3" v-if="results[0].year">{{ results[0].year }} г.</div>
       </div>
       <div class="">
-        <div class="border my-border-color rounded">
+        <div class="border my-border-color rounded overflow-hidden">
           <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
             <div class="flex items-center">
               <div class="w-12 h-7 mr-4 flex justify-center items-center">Сезон</div>
@@ -157,7 +162,10 @@ onMounted(() => {
             :key="index"
           >
             <div class="flex items-center">
-              <div class="w-12 text-center mr-4 text-emerald-500">
+              <div
+                class="w-12 text-center mr-4 text-emerald-500 cursor-pointer underline hover:text-emerald-300"
+                @click="toEvent(result.event_id)"
+              >
                 {{ result.season }}
               </div>
               <div class="w-12 flex justify-center mr-4">
@@ -185,7 +193,7 @@ onMounted(() => {
               <div class="w-32 mr-4">{{ result.bike_name ? result.bike_name : "-" }}</div>
               <div class="w-32 mr-4">{{ result.cat_name }}</div>
 
-              <div class="w-40 mr-4">{{ result.team_name ? result.team_name : "-" }}</div>
+              <div class="w-56 mr-4 truncate">{{ result.team_name ? result.team_name : "-" }}</div>
             </div>
             <div class="flex items-center">
               <div class="w-20 mr-2 opacity-70 text-end">
