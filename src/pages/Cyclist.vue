@@ -15,10 +15,15 @@ const router = useRouter();
 const route = useRoute();
 const cyclistsStore = useCyclistsStore();
 const mainStore = useMainStore();
+const pageIsLoading = ref(false);
 const results = ref([]);
 
-let emptyText = computed(() => {
-  // TODO: "Загрузка..." "Нет такого велосипедиста" "Велосипедист не найден"
+let emptyPageText = computed(() => {
+  if (!pageIsLoading.value && !results.value[0]?.cyclist_id) {
+    return "Велосипедист не найден";
+  } else {
+    return "Загрузка...";
+  }
 });
 let cyclistId = computed(() => {
   return route.params.cyclistId;
@@ -45,12 +50,12 @@ function setPlaces(participants) {
   return newArr;
 }
 
-function loadCyclistEvents() {
+function loadCyclistEvents(cyclistEvents) {
   let allEvents = [];
   mainStore.getEvents().then((response) => {
     allEvents = response.data.data;
 
-    results.value.forEach((result) => {
+    cyclistEvents.forEach((result) => {
       allEvents.forEach((event) => {
         if (event.id === result.event_id) {
           // Вытаскиваем год из start
@@ -59,9 +64,11 @@ function loadCyclistEvents() {
       });
     });
 
-    results.value = results.value.sort((result_1, result_2) => {
+    results.value = cyclistEvents.sort((result_1, result_2) => {
       return result_2.season - result_1.season;
     });
+
+    pageIsLoading.value = false;
 
     results.value.forEach((result) => {
       // TODO: Анимация загрузки
@@ -86,15 +93,21 @@ function goBack() {
 }
 
 onMounted(() => {
+  pageIsLoading.value = true;
+
   mainStore
     .getCyclistsResults(cyclistId.value)
     .then((response) => {
       console.log(response.data.data, "getCyclistsResults");
-      results.value = response.data.data;
-      loadCyclistEvents();
+      // results.value = response.data.data;
+      loadCyclistEvents(response.data.data);
     })
     .catch((err) => {
       console.log(err);
+      pageIsLoading.value = false;
+    })
+    .finally(() => {
+      // pageIsLoading.value = false;
     });
 });
 </script>
@@ -139,7 +152,7 @@ onMounted(() => {
             </div>
           </div>
           <div
-            class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
+            class="h-[45px] flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
             v-for="(result, index) in results"
             :key="index"
           >
@@ -149,6 +162,7 @@ onMounted(() => {
               </div>
               <div class="w-12 flex justify-center mr-4">
                 <span
+                  v-if="result.place"
                   :class="[
                     {
                       first: result.place == 1 && result.place,
@@ -160,6 +174,9 @@ onMounted(() => {
                 >
                   {{ result.status == 2 ? result.place : "-" }}
                 </span>
+                <div v-else class="animate-pulse">
+                  <div class="w-7 h-7 bg-neutral-800 rounded-full"></div>
+                </div>
               </div>
               <div class="w-20 rounded mr-4">
                 {{ result.dist_name }}
@@ -182,7 +199,9 @@ onMounted(() => {
         </div>
       </div>
     </template>
-    <template v-else><div class="text-center">Нет такого велосипедиста</div></template>
+    <template v-else>
+      <div class="text-center">{{ emptyPageText }}</div>
+    </template>
   </div>
 </template>
 
