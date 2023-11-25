@@ -226,14 +226,14 @@ onMounted(() => {
             <div
               :class="[
                 {
-                  first: participant.place == 1 && participant.place,
-                  second: participant.place == 2 && participant.place,
-                  third: participant.place == 3 && participant.place,
+                  first: participant.place == 1 && participant.place && participant.status == 2,
+                  second: participant.place == 2 && participant.place && participant.status == 2,
+                  third: participant.place == 3 && participant.place && participant.status == 2,
                 },
                 'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-4',
               ]"
             >
-              {{ participant.place ? participant.place : "-" }}
+              {{ participant.status == 2 ? participant.place : "-" }}
             </div>
             <div
               :class="[participant.cyclist.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black']"

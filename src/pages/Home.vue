@@ -71,7 +71,7 @@ function chooseMenuItem(pathName) {
       </div>
     </div>
     <!-- fixed bottom-0 -->
-    <footer class="footer-bg w-full py-4 self-end end">
+    <footer class="bg-[#202022] w-full py-4 self-end end">
       <div class="mx-auto flex flex-col items-center">
         <div class="flex text-lg">
           <div class="w-[600px] mr-4">Директор соревнования: Гаськов Владимир</div>
@@ -111,7 +111,7 @@ function chooseMenuItem(pathName) {
 </template>
 
 <style>
-.footer-bg {
+/* .footer-bg {
   background-color: #202022;
-}
+} */
 </style>

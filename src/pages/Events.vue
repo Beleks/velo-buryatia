@@ -13,10 +13,6 @@ const route = useRoute();
 const mainStore = useMainStore();
 let seasons = ref([]);
 
-let nothingIsSelected = computed(() => {
-  return route.name == "Results";
-});
-
 function chooseEvent(event) {
   if (!event.disable) {
     router.push({ name: "Season", params: { eventId: event.id } });

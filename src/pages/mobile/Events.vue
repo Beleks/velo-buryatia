@@ -1,4 +1,6 @@
 <script setup>
+import VeloDarkSvg from "@/components/svg/VeloDarkSvg.vue";
+import VeloColorSvg from "@/components/svg/VeloColorSvg.vue";
 import PeoplsSvg from "@/components/svg/PeoplsSvg.vue";
 
 import { computed, ref } from "vue";
@@ -11,13 +13,9 @@ const route = useRoute();
 const mainStore = useMainStore();
 let seasons = ref([]);
 
-let nothingIsSelected = computed(() => {
-  return route.name == "Results";
-});
-
 function chooseEvent(event) {
   if (!event.disable) {
-    router.push({ name: "Season", params: { eventId: event.id } });
+    router.push({ name: "Season_m", params: { eventId: event.id } });
   }
 }
 // function goToCyclists() {
@@ -66,7 +64,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="flex max-w-[730px] mx-auto flex-wrap justify-between font-normal">
+  <div class="flex max-w-[730px] px-2 mx-auto flex-col items-center font-normal">
     <template v-if="seasons.length">
       <div
         v-for="(season, index) in seasons"
@@ -74,7 +72,7 @@ onMounted(() => {
         @click="chooseEvent(season)"
         :class="[
           season.disable ? 'opacity-50' : 'cursor-pointer',
-          'mb-8 rounded-lg relative overflow-hidden group bg-[#202022]',
+          'mb-4 rounded-lg relative overflow-hidden group bg-[#202022]',
         ]"
       >
         <div
@@ -96,7 +94,7 @@ onMounted(() => {
           :class="['rounded-full h-[100px] w-[100px] absolute z-10 right-[57px] top-[105px]', season.circles.small]"
         ></div>
       </div>
-      <div class="w-[348px] h-[140px] rounded-lg border border-dashed flex justify-center items-center px-14">
+      <div class="max-w-[344px] h-[140px] rounded-lg border border-dashed flex justify-center items-center px-14">
         <div class="text-center">Скоро тут появятся результаты за другие года</div>
       </div>
     </template>

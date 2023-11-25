@@ -76,7 +76,7 @@ let activePage = ref(0);
 // });
 
 function goToCyclist(cyclist) {
-  router.push({ name: "Cyclist", params: { cyclistId: cyclist.id } });
+  router.push({ name: "Cyclist_m", params: { cyclistId: cyclist.id } });
 }
 
 function goBack() {
@@ -90,47 +90,47 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-24 max-w-7xl m-auto">
-    <div class="ml-4 mb-2 flex items-center">
-      <div class="whitespace-nowrap mr-4">
-        <!-- TODO: Показать элемент загрузки-->
-        <span class="opacity-80">Участников за всё время: </span>{{ cyclists.length }}
-      </div>
+  <div class="px-2 m-auto">
+    <div class="flex justify-center items-center mb-6 mx-5 select-none">
+      <div><span class="opacity-80">Участников за всё время:</span> {{ cyclists.length }}</div>
+    </div>
+    <div class="mb-2 flex">
       <input
         type="text"
-        class="px-4 bg-[#262628] h-10 outline-none border my-border-color placeholder:text-neutral-400 rounded focus:border-emerald-400 w-full flex items-center"
+        class="px-4 bg-[#262628] placeholder:text-neutral-400 h-10 outline-none border my-border-color text-sm rounded focus:border-emerald-400 w-full flex items-center"
         placeholder="Введите ФИО участника"
         v-model="searchInput"
       />
+      <!-- <div
+        class="ml-4 px-5 text-lime-400 bg-input-color flex items-center h-10 cursor-pointer border border-lime-400 hover:bg-lime-400 rounded hover:text-black transition ease-in-out"
+      >
+        Поиск
+      </div> -->
     </div>
     <div class="border my-border-color rounded mb-4">
-      <!-- bg-table-color -->
       <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
         <div class="flex">
           <!-- <div class="w-7 text-center mr-2">№</div> -->
-          <div class="w-[400px]">Фамилия Имя Отчество</div>
-          <div class="ml-2 w-[115px]">Кол-во участий</div>
+          <div>Фамилия Имя</div>
         </div>
-        <div></div>
+        <div>
+          <div class="text-right w-[60px]">Участий</div>
+        </div>
       </div>
-      <!-- border-b last:border-none -->
       <div
-        v-if="cyclists.length"
         v-for="(cyclist, index) in visibleCyclists"
         :key="cyclist.id"
         @click="goToCyclist(cyclist)"
-        class="group flex items-center justify-between px-4 border-t my-border-color py-2 hover-table-item cursor-pointer"
+        class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item cursor-pointer"
       >
         <div class="flex">
-          <!-- TODO: Сделать underline при наведении на всю строку -->
-          <div class="group-hover:underline cursor-pointer w-[400px]">
-            {{ cyclist.lastname }} {{ cyclist.firstname }} {{ cyclist.middlename }}
-          </div>
-          <div class="ml-2 w-[115px] text-center">{{ cyclist.cnt }}</div>
+          <!-- <div class="w-7 text-center mr-2">{{ index + 1 }}</div> -->
+          <div class="hover:underline cursor-pointer">{{ cyclist.lastname }} {{ cyclist.firstname }}</div>
         </div>
-        <div></div>
+        <div>
+          <div class="text-right w-[60px]">{{ cyclist.cnt }}</div>
+        </div>
       </div>
-      <div v-else class="text-center p-4">Загрузка...</div>
     </div>
     <div class="flex justify-center">
       <!-- <div

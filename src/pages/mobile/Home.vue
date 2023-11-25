@@ -31,6 +31,10 @@ let menu = [
     name: "Results_m",
     title: "Результаты",
   },
+  {
+    name: "Cyclists_m",
+    title: "Участники",
+  },
 ];
 
 const currentPathName = computed(() => {
@@ -47,16 +51,11 @@ function chooseMenuItem(pathName) {
 </script>
 
 <template>
-  <div
-    class="text-white font-sans font-semibold h-screen flex flex-col justify-between"
-  >
+  <div class="text-white font-sans font-semibold h-screen flex flex-col justify-between">
     <div>
       <menu class="flex justify-center py-5">
         <div
-          :class="[
-            ' mr-10 last:mr-0 cursor-pointer',
-            { ' text-emerald-400': currentPathName === item.name },
-          ]"
+          :class="[' mr-10 last:mr-0 cursor-pointer', { ' text-emerald-400': currentPathName === item.name }]"
           v-for="item in menu"
           :key="item.name"
         >
@@ -70,7 +69,7 @@ function chooseMenuItem(pathName) {
       </div>
     </div>
     <!-- fixed bottom-0 -->
-    <footer class="footer-bg w-full py-4 self-end end font-normal mx-auto">
+    <footer class="bg-[#202022] w-full py-4 self-end end font-normal mx-auto">
       <div class="px-2 mx-auto flex flex-col max-w-sm">
         <div class="flex flex-col">
           <div class="mb-2">Директор соревнования: Гаськов Владимир</div>
@@ -86,11 +85,7 @@ function chooseMenuItem(pathName) {
         </div>
         <div class="mt-2 text-sm opacity-50">
           Данные были взяты с сайта
-          <a
-            class="underline"
-            target="_blank"
-            rel="noreferrer noopener"
-            href="https://baikalmarafon.ru/"
+          <a class="underline" target="_blank" rel="noreferrer noopener" href="https://baikalmarafon.ru/"
             >baikalmarafon.ru</a
           >
         </div>
@@ -106,11 +101,7 @@ function chooseMenuItem(pathName) {
 
           <div class="mt-2">Разработчики: Белецкий А. Белецкий В.</div>
           <div class="flex justify-center mt-2">
-            <a
-              class="underline"
-              href="https://t.me/av_belek"
-              target="_blank"
-              rel="noreferrer noopener"
+            <a class="underline" href="https://t.me/av_belek" target="_blank" rel="noreferrer noopener"
               >Связаться с разработчиками</a
             >
           </div>
@@ -121,7 +112,7 @@ function chooseMenuItem(pathName) {
 </template>
 
 <style>
-.footer-bg {
+/* .footer-bg {
   background-color: #292b2d;
-}
+} */
 </style>
