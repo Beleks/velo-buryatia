@@ -163,7 +163,7 @@ onMounted(() => {
           >
             <div class="flex items-center">
               <div
-                class="w-12 text-center mr-4 text-emerald-500 cursor-pointer underline hover:text-emerald-300"
+                class="w-12 text-center mr-4 text-emerald-500 cursor-pointer underline underline-offset-2 hover:text-emerald-300"
                 @click="toEvent(result.event_id)"
               >
                 {{ result.season }}

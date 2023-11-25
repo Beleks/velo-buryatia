@@ -218,7 +218,7 @@ onMounted(() => {
           </div>
         </div>
         <div
-          class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item"
+          class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item group"
           v-for="(participant, index) in filteredParticipants"
           :key="index"
         >
@@ -242,7 +242,10 @@ onMounted(() => {
               {{ participant.bip }}
             </div>
             <div class="w-60 mr-4">
-              <a class="hover:underline cursor-pointer" @click="goToCyclist(participant)">
+              <a
+                class="underline-offset-2 hover:text-emerald-400 group-hover:underline cursor-pointer"
+                @click="goToCyclist(participant)"
+              >
                 {{ participant.cyclist.lastname }} {{ participant.cyclist.firstname }}
               </a>
             </div>
