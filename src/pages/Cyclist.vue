@@ -199,8 +199,11 @@ onMounted(() => {
               <div class="w-20 mr-2 opacity-70 text-end">
                 <!-- {{ index !== 0 ? culcDelay(participant.time) : "" }} -->
               </div>
-              <div class="w-20 text-end">
-                {{ result.status == 2 ? convertMsToTime(result.result) : "Сошёл" }}
+              <div v-if="result.status == 2" class="w-20 text-end">
+                {{ convertMsToTime(result.result) }}
+              </div>
+              <div v-else class="w-20 text-end">
+                {{ result.male ? "Сошёл" : "Сошла" }}
               </div>
             </div>
           </div>
