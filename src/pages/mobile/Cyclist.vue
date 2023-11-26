@@ -31,7 +31,7 @@ let cyclistId = computed(() => {
 });
 
 function toEvent(eventId) {
-  router.push({ name: "Season", params: { eventId } });
+  router.push({ name: "Season_m", params: { eventId } });
 }
 
 function setPlaces(participants) {
