@@ -176,9 +176,9 @@ onMounted(() => {
                   v-if="result.place"
                   :class="[
                     {
-                      first: result.place == 1 && result.place,
-                      second: result.place == 2 && result.place,
-                      third: result.place == 3 && result.place,
+                      first: result.place == 1 && result.place && result.status == 2,
+                      second: result.place == 2 && result.place && result.status == 2,
+                      third: result.place == 3 && result.place && result.status == 2,
                     },
                     'w-7 h-7 text-center text-lg font-bold flex justify-center items-center rounded-full',
                   ]"

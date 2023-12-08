@@ -1,6 +1,5 @@
 <script setup>
-import VeloDarkSvg from "@/components/svg/VeloDarkSvg.vue";
-import VeloColorSvg from "@/components/svg/VeloColorSvg.vue";
+import AlertSvg from "@/components/svg/AlertSvg.vue";
 import PeoplsSvg from "@/components/svg/PeoplsSvg.vue";
 
 import { computed, ref } from "vue";
@@ -11,6 +10,7 @@ import { useMainStore } from "@/stores/MainStore";
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
+let alertIsVisible = ref(true);
 let seasons = ref([]);
 
 function chooseEvent(event) {
@@ -18,9 +18,6 @@ function chooseEvent(event) {
     router.push({ name: "Season", params: { eventId: event.id } });
   }
 }
-// function goToCyclists() {
-//   router.push({ name: "Cyclists" });
-// }
 
 function getCirclesColor(index) {
   // index - всегда должен быть целым числом
@@ -51,6 +48,11 @@ function getCirclesColor(index) {
   return circles;
 }
 
+function acceptAlert() {
+  localStorage.setItem("alertMessageIsAccept", 1);
+  alertIsVisible.value = false;
+}
+
 onMounted(() => {
   mainStore.getEvents().then((response) => {
     seasons.value = response.data.data.map((season, index) => {
@@ -62,8 +64,35 @@ onMounted(() => {
     console.log(seasons.value, "response");
   });
 });
+
+if (localStorage.getItem("alertMessageIsAccept") == null) {
+  localStorage.setItem("alertMessageIsAccept", 0);
+} else if (localStorage.getItem("alertMessageIsAccept") == 1) {
+  alertIsVisible.value = false;
+}
 </script>
 <template>
+  <div
+    v-if="alertIsVisible"
+    class="max-w-[730px] mx-auto border mb-8 border-yellow-400 rounded-lg flex justify-between px-4 py-5 items-center"
+  >
+    <div class="flex items-center">
+      <div class="stroke-yellow-400 mr-4">
+        <AlertSvg :size="32" />
+      </div>
+      <div class="text-yellow-400">
+        <div class="text-base text-yellow-400 mb-1">Эти результаты являются обработкой бумажных протоколов</div>
+        <div class="text-sm font-normal">Сообщите нам, если найдёте ошибку</div>
+      </div>
+    </div>
+    <div
+      class="bg-[#453C1A] px-7 py-2 rounded-lg text-yellow-400 cursor-pointer hover:bg-[#5C4E19] ease-in-out transition"
+      @click="acceptAlert"
+    >
+      Хорошо
+    </div>
+  </div>
+
   <div class="flex max-w-[730px] mx-auto flex-wrap justify-between font-normal">
     <template v-if="seasons.length">
       <div
