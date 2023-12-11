@@ -155,7 +155,7 @@ function goToResults(season) {
       <div class="flex justify-center text-center underline cursor-pointer mt-2">
         <a
           class="mr-2 opacity-70 hover:opacity-100"
-          href="https://velo.alekseybeletsky.ru/assets/Polozhenie_BVM_24_06_2023.pdf"
+          href="https://bm.cyclists03.ru/Polozhenie_BVM_24_06_2023.pdf"
           target="_blank"
           rel="noreferrer noopener"
           >Положение</a

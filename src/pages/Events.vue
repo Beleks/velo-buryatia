@@ -41,6 +41,10 @@ function getCirclesColor(index) {
       circles.small = "bg-indigo-400";
       circles.big = "bg-violet-400";
       break;
+    case 3:
+      circles.small = "bg-sky-400";
+      circles.big = "bg-blue-400";
+      break;
     default:
       break;
   }

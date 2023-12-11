@@ -4,8 +4,7 @@ import { convertMsToTime } from "@/utils/utils.js";
 import _ from "lodash";
 import InputSelect from "../components/InputSelect.vue";
 import ArrowSvg from "../components/svg/ArrowSvg.vue";
-import EyeOffSvg from "../components/svg/EyeOffSvg.vue";
-import EyeSvg from "../components/svg/EyeSvg.vue";
+import DocSvg from "@/components/svg/DocSvg.vue";
 
 import { computed, ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -29,6 +28,9 @@ let event = ref({});
 let results = ref([]);
 let participants = ref([]);
 
+let protocolName = computed(() => {
+  return mainStore.protocols.find((protocol) => protocol.id === event.value.id).name;
+});
 let eventId = computed(() => {
   return route.params.eventId;
 });
@@ -184,6 +186,15 @@ onMounted(() => {
           </div>
         </div>
         <div>
+          <a
+            target="_blank"
+            :href="`https://bm.cyclists03.ru/protocols/${protocolName}.pdf`"
+            class="flex items-center h-[34px] border my-border-color rounded px-4 py-1 cursor-pointer bg-input-color transition ease-out hover:border-emerald-400"
+          >
+            <DocSvg class="mr-2" />
+            Протокол
+          </a>
+
           <!-- <div
             class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
             @click="switchTotalTime"

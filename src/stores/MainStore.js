@@ -1,9 +1,32 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 import axios from "axios";
 
 export const useMainStore = defineStore("main", () => {
+  // TODO: ?
   let apiOptions;
-  // state, getters, actions
+  // ?
+
+  let protocols = ref([
+    // ID соревнования смотреть в БД, таблица events
+    {
+      name: "БВМ-2023",
+      id: 3,
+    },
+    {
+      name: "БВМ-2022",
+      id: 1,
+    },
+    {
+      name: "БВМ-2019",
+      id: 2,
+    },
+    {
+      name: "БВМ-2014",
+      id: 8,
+    },
+  ]);
+
   async function getEvents() {
     return await axios.get("st/counts/ev_cyclists?tag_id=1", apiOptions);
   }
@@ -33,6 +56,7 @@ export const useMainStore = defineStore("main", () => {
   }
 
   return {
+    protocols,
     getEvents,
     getEventResults,
     getCyclists,

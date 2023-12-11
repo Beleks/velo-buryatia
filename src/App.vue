@@ -106,6 +106,9 @@ html {
 .bg-gradient-2 {
   background: linear-gradient(261deg, #a78bfa 6.96%, #818cf8 56.96%);
 }
+.bg-gradient-3 {
+  background: linear-gradient(261deg, #38bdf8 6.96%, #38bdf8 56.96%);
+}
 
 .hover-table-item:hover {
   background-color: #222225;
