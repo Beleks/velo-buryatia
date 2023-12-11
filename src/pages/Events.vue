@@ -45,6 +45,22 @@ function getCirclesColor(index) {
       circles.small = "bg-sky-400";
       circles.big = "bg-blue-400";
       break;
+    case 4:
+      circles.small = "bg-teal-400";
+      circles.big = "bg-cyan-400";
+      break;
+    case 5:
+      circles.small = "bg-green-400";
+      circles.big = "bg-emerald-400";
+      break;
+    case 6:
+      circles.small = "bg-yellow-400";
+      circles.big = "bg-lime-400";
+      break;
+    case 7:
+      circles.small = "bg-orange-400";
+      circles.big = "bg-amber-400";
+      break;
     default:
       break;
   }
@@ -127,9 +143,9 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
           :class="['rounded-full h-[100px] w-[100px] absolute z-10 right-[57px] top-[105px]', season.circles.small]"
         ></div>
       </div>
-      <div class="w-[348px] h-[140px] rounded-lg border border-dashed flex justify-center items-center px-14">
+      <!-- <div class="w-[348px] h-[140px] rounded-lg border border-dashed flex justify-center items-center px-14">
         <div class="text-center">Скоро тут появятся результаты за другие года</div>
-      </div>
+      </div> -->
     </template>
     <template v-else>
       <div class="flex w-full justify-center">Загрузка результатов...</div>

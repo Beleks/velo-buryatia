@@ -22,6 +22,22 @@ export const useMainStore = defineStore("main", () => {
       id: 2,
     },
     {
+      name: "БВМ-2018",
+      id: 4,
+    },
+    {
+      name: "БВМ-2017",
+      id: 5,
+    },
+    {
+      name: "БВМ-2016",
+      id: 6,
+    },
+    {
+      name: "БВМ-2015",
+      id: 7,
+    },
+    {
       name: "БВМ-2014",
       id: 8,
     },
