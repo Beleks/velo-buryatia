@@ -130,7 +130,7 @@ function culcDelay(resultMs) {
     return;
   }
 
-  let bestTimeMs = participants.value[0].result;
+  let bestTimeMs = filteredParticipants.value[0].result;
 
   return `+ ${convertMsToTime(resultMs - bestTimeMs)}`;
 }
