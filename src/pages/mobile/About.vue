@@ -22,8 +22,8 @@ const route = useRoute();
 function toReports() {
   router.push({ name: "Reports_m" });
 }
-function goToResults(season) {
-  router.push({ name: "Season_m", params: { season: season } });
+function goToResults(eventId) {
+  router.push({ name: "Season_m", params: { eventId } });
 }
 </script>
 
@@ -32,24 +32,13 @@ function goToResults(season) {
     <div class="fixed -z-30 opacity-5 right-2">
       <VeloDarkSvg :size="1000" />
     </div>
-    <div
-      class="text-3xl font-extrabold uppercase text-center text-gradient mt-14 mb-10"
-    >
-      Байкальский ВелоМарафон
-    </div>
+    <div class="text-3xl font-extrabold uppercase text-center text-gradient mt-14 mb-10">Байкальский ВелоМарафон</div>
     <div class="flex items-center">
       <MainMapSvg />
       <div class="ml-4 text-xl font-extrabold">
-        <div class="mb-14">
-          Самое статусное велосоревнование от Сибири и до Камчатки
-        </div>
-        <div class="mb-14">
-          Максимальная дистанция <span class="text-emerald-400">260 км</span>
-        </div>
-        <div>
-          Более <span class="text-emerald-400">1000</span> участников с разных
-          регионов
-        </div>
+        <div class="mb-14">Самое статусное велосоревнование от Сибири и до Камчатки</div>
+        <div class="mb-14">Максимальная дистанция <span class="text-emerald-400">260 км</span></div>
+        <div>Более <span class="text-emerald-400">1000</span> участников с разных регионов</div>
       </div>
     </div>
     <div class="mt-14 mb-14">
@@ -58,13 +47,10 @@ function goToResults(season) {
           <div><OzeroSvg /></div>
         </div>
         <div>
-          <div class="text-xl font-bold">
-            ТРАССА ВДОЛЬ ВОСТОЧНОГО ПОБЕРЕЖЬЯ БАЙКАЛА
-          </div>
+          <div class="text-xl font-bold">ТРАССА ВДОЛЬ ВОСТОЧНОГО ПОБЕРЕЖЬЯ БАЙКАЛА</div>
           <div class="font-normal">
-            Такой красоты вы нигде больше не увидите. Только представь себе, как
-            едешь на велосипеде вдоль побережья Байкала… морской ветерок бодрит,
-            а свежий воздух наполняет энергией.
+            Такой красоты вы нигде больше не увидите. Только представь себе, как едешь на велосипеде вдоль побережья
+            Байкала… морской ветерок бодрит, а свежий воздух наполняет энергией.
           </div>
         </div>
       </div>
@@ -75,9 +61,8 @@ function goToResults(season) {
         <div>
           <div class="text-xl font-bold">УДОБНЫЙ СЕРВИС</div>
           <div class="font-normal">
-            Можете не переживать о том, как добраться до места, где жить, чем
-            питаться. За 10 лет организаторы продумали всё до мелочей. Просто
-            выбираете удобный для вас пакет и наслаждаетесь отдыхом.
+            Можете не переживать о том, как добраться до места, где жить, чем питаться. За 10 лет организаторы продумали
+            всё до мелочей. Просто выбираете удобный для вас пакет и наслаждаетесь отдыхом.
           </div>
         </div>
       </div>
@@ -88,9 +73,8 @@ function goToResults(season) {
         <div>
           <div class="text-xl font-bold">25 ВОЗРАСТНЫХ ГРУПП</div>
           <div class="font-normal">
-            Можете быть уверены, что будучи даже новичком вы можете победить.
-            Здесь всё чётко – равный соревнуются с равным. Есть даже отдельные
-            группы для школьников и пенсионеров.
+            Можете быть уверены, что будучи даже новичком вы можете победить. Здесь всё чётко – равный соревнуются с
+            равным. Есть даже отдельные группы для школьников и пенсионеров.
           </div>
         </div>
       </div>
@@ -100,9 +84,7 @@ function goToResults(season) {
         </div>
         <div>
           <div class="text-xl font-bold">ДИСТАНЦИИ ДЛЯ ВСЕХ</div>
-          <div class="font-normal">
-            10 различных дистанций от 100 метров до 260 км. Каждый найдёт свою!
-          </div>
+          <div class="font-normal">10 различных дистанций от 100 метров до 260 км. Каждый найдёт свою!</div>
         </div>
       </div>
       <div class="flex mb-10">
@@ -110,22 +92,17 @@ function goToResults(season) {
           <div><FanySvg /></div>
         </div>
         <div>
-          <div class="text-xl font-bold">
-            ИНТЕРЕСНАЯ РАЗВЛЕКАТЕЛЬНАЯ ПРОГРАММА
-          </div>
+          <div class="text-xl font-bold">ИНТЕРЕСНАЯ РАЗВЛЕКАТЕЛЬНАЯ ПРОГРАММА</div>
           <div class="font-normal">
-            После велогонки вас ждут дискотека на берегу Байкала, пионерский
-            костёр, песни под гитару, игры, конкурсы. Сюда даже можно приехать
-            просто в качестве болельщика – своеобразный «Тур выходного дня».
+            После велогонки вас ждут дискотека на берегу Байкала, пионерский костёр, песни под гитару, игры, конкурсы.
+            Сюда даже можно приехать просто в качестве болельщика – своеобразный «Тур выходного дня».
           </div>
         </div>
       </div>
     </div>
     <div class="px-20 mb-14">
       <div class="ticket-bg rounded-3xl h-72 max-w-4xl m-auto flex">
-        <div
-          class="flex items-center border-r-2 border-dashed border-dashed-color h-full pl-10 relative min-w-52"
-        >
+        <div class="flex items-center border-r-2 border-dashed border-dashed-color h-full pl-10 relative min-w-52">
           <div><VeloDarkSvg :size="80" /></div>
           <div class="absolute circle-ticket-bottom rounded-3xl"></div>
           <div class="absolute circle-ticket-top rounded-3xl"></div>
@@ -136,9 +113,7 @@ function goToResults(season) {
         </div>
         <div class="px-6 py-3 flex flex-col justify-between w-full">
           <div>
-            <div
-              class="flex text-2xl text-gradient font-extrabold uppercase tracking-wide"
-            >
+            <div class="flex text-2xl text-gradient font-extrabold uppercase tracking-wide">
               Baikal Marathon XVI 2023
               <VeloColorSvg class="ml-4" />
             </div>
@@ -159,18 +134,13 @@ function goToResults(season) {
           </div>
           <div class="flex justify-between">
             <div class="select-none opacity-0">Подробнее</div>
-            <div
-              class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer"
-              @click="goToResults(2023)"
-            >
+            <div class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer" @click="goToResults(3)">
               Результаты
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="flex justify-center text-center underline cursor-pointer mt-2"
-      >
+      <div class="flex justify-center text-center underline cursor-pointer mt-2">
         <a
           class="mr-2 opacity-70 hover:opacity-100"
           href="https://bm.cyclists03.ru/Polozhenie_BVM_24_06_2023.pdf"
@@ -201,100 +171,65 @@ function goToResults(season) {
       </div>
     </div> -->
     <div class="mb-12">
-      <div class="font-bold text-gradient text-center mb-8 text-xl">
-        Партнёры
-      </div>
+      <div class="font-bold text-gradient text-center mb-8 text-xl">Партнёры</div>
       <div class="flex justify-around items-center">
-        <img
-          src="@/assets/image-2.png"
-          alt="Не удалось загрузить картинку :("
-        />
-        <img
-          src="@/assets/image-3.png"
-          alt="Не удалось загрузить картинку :("
-        />
-        <img
-          src="@/assets/image-4.png"
-          alt="Не удалось загрузить картинку :("
-        />
-        <img
-          src="@/assets/image-5.png"
-          alt="Не удалось загрузить картинку :("
-        />
+        <img src="@/assets/image-2.png" alt="Не удалось загрузить картинку :(" />
+        <img src="@/assets/image-3.png" alt="Не удалось загрузить картинку :(" />
+        <img src="@/assets/image-4.png" alt="Не удалось загрузить картинку :(" />
+        <img src="@/assets/image-5.png" alt="Не удалось загрузить картинку :(" />
       </div>
     </div>
     <div>
-      <div
-        class="font-bold text-gradient text-center mb-8 text-xl stroke-white"
-      >
-        FAQ
-      </div>
+      <div class="font-bold text-gradient text-center mb-8 text-xl stroke-white">FAQ</div>
       <AccordionList openMultipleItems>
         <AccordionItem>
           <template #summary>Стартовый номер остается участнику ?</template>
-          <template #icon
-            ><SimpleArrowSvg class="stroke-white" :size="20"
-          /></template>
+          <template #icon><SimpleArrowSvg class="stroke-white" :size="20" /></template>
           <div>
-            Стартовый № не в ходит в оплату изготовление на деньги стартового
-            взноса. Он печатается на деньги бюджета соревнований.
+            Стартовый № не в ходит в оплату изготовление на деньги стартового взноса. Он печатается на деньги бюджета
+            соревнований.
             <br />
 
-            Стартовый взнос оплачивает затраты (бейджек участника, наклейка для
-            маркировки велосипеда, карта маршрута, программа, мешок для вещей,
-            медицинское сопровождение, питание на дистанции, транспортировка
-            велосипеда до места старта, питание и проживание волонтёров,
-            организаторов).
+            Стартовый взнос оплачивает затраты (бейджек участника, наклейка для маркировки велосипеда, карта маршрута,
+            программа, мешок для вещей, медицинское сопровождение, питание на дистанции, транспортировка велосипеда до
+            места старта, питание и проживание волонтёров, организаторов).
             <br />
 
-            Еcли мы будем дарить стартовый № то нам придётся поднимать стартовый
-            взнос на 10%.
+            Еcли мы будем дарить стартовый № то нам придётся поднимать стартовый взнос на 10%.
           </div>
         </AccordionItem>
         <AccordionItem>
-          <template #summary>
-            Как с обеспечением скорой медицинской помощи ?
-          </template>
+          <template #summary> Как с обеспечением скорой медицинской помощи ? </template>
           <template #icon>
             <SimpleArrowSvg class="stroke-white" :size="20" />
           </template>
           <div>
-            Медицинское сопровождения это первая задача которую мы решаем каждый
-            год. Мы пишим письмо в мин. здрав РБ они согласовывают с ФК
-            диспансером, к сожалению они больше напрягают чем помогают. (все
-            участники должны пройти их медосмотр). Но мы тесно работаем с мин.
-            здрав РБ они пишут приказ по районам для дежурств на дорогах
-            населённых пунктах бригады скорой помощи. Также с нами в автобусе
-            едет медицинский работник.
+            Медицинское сопровождения это первая задача которую мы решаем каждый год. Мы пишим письмо в мин. здрав РБ
+            они согласовывают с ФК диспансером, к сожалению они больше напрягают чем помогают. (все участники должны
+            пройти их медосмотр). Но мы тесно работаем с мин. здрав РБ они пишут приказ по районам для дежурств на
+            дорогах населённых пунктах бригады скорой помощи. Также с нами в автобусе едет медицинский работник.
           </div>
         </AccordionItem>
         <AccordionItem>
-          <template #summary>
-            Как получить стартовый пакет на БВМ бесплатно ?
-          </template>
+          <template #summary> Как получить стартовый пакет на БВМ бесплатно ? </template>
           <template #icon>
             <SimpleArrowSvg class="stroke-white" :size="20" />
           </template>
           <div>
             Стать чемпионом «Золотой дистанции».
             <br />
-            Все победители Байкальского Веломарафона на 260 км получают статус
-            VIP.
+            Все победители Байкальского Веломарафона на 260 км получают статус VIP.
             <br />
-            Что это даёт? Бесплатное участие (пожизненно). Как в качестве
-            спортсмена, так и болельщика!
+            Что это даёт? Бесплатное участие (пожизненно). Как в качестве спортсмена, так и болельщика!
           </div>
         </AccordionItem>
         <AccordionItem>
-          <template #summary>
-            Сколько будет пунктов питания и где они будут располагаться ?
-          </template>
+          <template #summary> Сколько будет пунктов питания и где они будут располагаться ? </template>
           <template #icon>
             <SimpleArrowSvg class="stroke-white" :size="20" />
           </template>
           <div>
-            Расположение пункта питания/питья Отдалённость от г. Улан-Удэ (в
-            км.)
+            Расположение пункта питания/питья Отдалённость от г. Улан-Удэ (в км.)
             <br />
             начиная с 9км. л. «Огонёк»
             <br />

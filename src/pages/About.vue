@@ -22,8 +22,8 @@ const route = useRoute();
 function toReports() {
   router.push({ name: "Reports" });
 }
-function goToResults(season) {
-  router.push({ name: "Season", params: { season: season } });
+function goToResults(eventId) {
+  router.push({ name: "Season", params: { eventId } });
 }
 </script>
 
@@ -146,7 +146,7 @@ function goToResults(season) {
           </div>
           <div class="flex justify-between">
             <div class="select-none opacity-0">Подробнее</div>
-            <div class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer" @click="goToResults(2023)">
+            <div class="my-button px-8 py-2 rounded-3xl text-xl uppercase cursor-pointer" @click="goToResults(3)">
               Результаты
             </div>
           </div>
@@ -263,68 +263,5 @@ function goToResults(season) {
 </template>
 
 <style>
-.text-gradient {
-  color: transparent;
-  background-clip: text;
-  background-image: linear-gradient(90.41deg, #79ffdb 0%, #abff75 98.38%);
-}
 
-.faq-bg {
-  background-color: #313538;
-}
-
-.ticket-bg {
-  background-color: #313538;
-}
-
-.text-rotate {
-  /* margin-top: 8rem; */
-  margin-right: -4rem;
-  margin-left: -1rem;
-  transform: rotate(270deg);
-  opacity: 0.3;
-}
-
-.border-dashed-color {
-  border-color: #242627;
-}
-
-.circle-ticket {
-}
-
-.circle-ticket-top {
-  width: 40px;
-  height: 40px;
-  background-color: #18181b;
-  top: -20px;
-  left: 186px;
-}
-
-.circle-ticket-bottom {
-  width: 40px;
-  height: 40px;
-  background-color: #18181b;
-  left: 186px;
-  bottom: -20px;
-}
-
-.dark-bg {
-  background-color: #4d5155;
-}
-
-.min-w-52 {
-  min-width: 208px;
-}
-
-.my-button {
-  border: 1px solid #79ffdb;
-  color: #79ffdb;
-  transition: all 0.3s ease-in-out;
-}
-
-.my-button:hover {
-  border: 1px solid #34d399;
-  color: #fff;
-  background-color: #34d399;
-}
 </style>

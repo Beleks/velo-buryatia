@@ -251,12 +251,18 @@ onMounted(() => {
               {{ participant.bip }}
             </div>
             <div class="w-60 mr-4">
-              <a
-                class="underline-offset-2 hover:text-emerald-400 group-hover:underline cursor-pointer"
-                @click="goToCyclist(participant)"
+              <router-link
+                :to="{ name: 'Cyclist', params: { cyclistId: participant.cyclist.id } }"
+                v-slot="{ href, route, navigate }"
               >
-                {{ participant.cyclist.lastname }} {{ participant.cyclist.firstname }}
-              </a>
+                <a
+                  :href="href"
+                  class="underline-offset-2 hover:text-emerald-400 group-hover:underline cursor-pointer"
+                  @click="navigate"
+                >
+                  {{ participant.cyclist.lastname }} {{ participant.cyclist.firstname }}
+                </a>
+              </router-link>
             </div>
             <div class="w-40 mr-4">
               {{ participant.city.name ? participant.city.name : "-" }}

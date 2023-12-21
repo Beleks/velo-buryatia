@@ -14,9 +14,7 @@ let alertIsVisible = ref(true);
 let seasons = ref([]);
 
 function chooseEvent(event) {
-  if (!event.disable) {
-    router.push({ name: "Season_m", params: { eventId: event.id } });
-  }
+  router.push({ name: "Season_m", params: { eventId: event.id } });
 }
 // function goToCyclists() {
 //   router.push({ name: "Cyclists" });

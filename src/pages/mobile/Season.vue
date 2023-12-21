@@ -251,9 +251,18 @@ onMounted(() => {
               {{ participant.number }}
             </div> -->
             <div class="w-48 mr-1 truncate">
-              <a class="hover:underline cursor-pointer" @click="goToCyclist(participant)">
-                {{ participant.cyclist.lastname }} {{ participant.cyclist.firstname }}
-              </a>
+              <router-link
+                :to="{ name: 'Cyclist_m', params: { cyclistId: participant.cyclist.id } }"
+                v-slot="{ href, route, navigate }"
+              >
+                <a
+                  :href="href"
+                  class="underline-offset-2 hover:text-emerald-400 group-hover:underline cursor-pointer"
+                  @click="navigate"
+                >
+                  {{ participant.cyclist.lastname }} {{ participant.cyclist.firstname }}
+                </a>
+              </router-link>
               <div class="flex items-center text-sm font-normal">
                 <div
                   :class="[participant.cyclist.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black']"

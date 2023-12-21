@@ -117,20 +117,23 @@ onMounted(() => {
           <div class="text-right w-[60px]">Участий</div>
         </div>
       </div>
-      <div
+      <router-link
         v-for="(cyclist, index) in visibleCyclists"
         :key="cyclist.id"
-        @click="goToCyclist(cyclist)"
+        :to="{ name: 'Cyclist', params: { cyclistId: cyclist.id } }"
         class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item cursor-pointer"
+        v-slot="{ href, route, navigate }"
       >
-        <div class="flex">
-          <!-- <div class="w-7 text-center mr-2">{{ index + 1 }}</div> -->
-          <div class="hover:underline cursor-pointer">{{ cyclist.lastname }} {{ cyclist.firstname }}</div>
+        <div :href="href" @click="navigate" class="flex w-full justify-between">
+          <div class="flex">
+            <!-- <div class="w-7 text-center mr-2">{{ index + 1 }}</div> -->
+            <div class="hover:underline cursor-pointer">{{ cyclist.lastname }} {{ cyclist.firstname }}</div>
+          </div>
+          <div>
+            <div class="text-right w-[60px]">{{ cyclist.cnt }}</div>
+          </div>
         </div>
-        <div>
-          <div class="text-right w-[60px]">{{ cyclist.cnt }}</div>
-        </div>
-      </div>
+      </router-link>
     </div>
     <div v-else class="text-center p-4">Загрузка...</div>
     <div class="flex justify-center">

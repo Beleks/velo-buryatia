@@ -114,22 +114,21 @@ onMounted(() => {
         <div></div>
       </div>
       <!-- border-b last:border-none -->
-      <div
+      <router-link
         v-if="cyclists.length"
         v-for="(cyclist, index) in visibleCyclists"
         :key="cyclist.id"
-        @click="goToCyclist(cyclist)"
+        :to="{ name: 'Cyclist_m', params: { cyclistId: cyclist.id } }"
         class="group flex items-center justify-between px-4 border-t my-border-color py-2 hover-table-item cursor-pointer"
+        v-slot="{ href, route, navigate }"
       >
-        <div class="flex">
-          <!-- TODO: Сделать underline при наведении на всю строку -->
+        <a :href="href" @click="navigate" class="flex">
           <div class="group-hover:underline cursor-pointer w-[400px]">
             {{ cyclist.lastname }} {{ cyclist.firstname }} {{ cyclist.middlename }}
           </div>
           <div class="ml-2 w-[115px] text-center">{{ cyclist.cnt }}</div>
-        </div>
-        <div></div>
-      </div>
+        </a>
+      </router-link>
       <div v-else class="text-center p-4">Загрузка...</div>
     </div>
     <div class="flex justify-center">

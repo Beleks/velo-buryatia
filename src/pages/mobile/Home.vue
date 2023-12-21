@@ -59,9 +59,11 @@ function chooseMenuItem(pathName) {
           v-for="item in menu"
           :key="item.name"
         >
-          <div @click="chooseMenuItem(item.name)" :to="item.name">
-            {{ item.title }}
-          </div>
+          <router-link :to="{ name: item.name }" v-slot="{ href, route, navigate }">
+            <a :href="href" @click="navigate">
+              {{ item.title }}
+            </a>
+          </router-link>
         </div>
       </menu>
       <div class="mb-10">
