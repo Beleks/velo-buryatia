@@ -4,7 +4,7 @@ function widthCheck(to) {
   let width = window.innerWidth;
 
   if (width < 1200) {
-    return { name: "Mobile" };
+    return { name: `${to.name}_m`, params: to.params };
   }
 }
 
@@ -12,7 +12,7 @@ function widthCheckM(to) {
   let width = window.innerWidth;
 
   if (width >= 1200) {
-    return { name: "Desktop" };
+    return { name: `${to.name.slice(0, -2)}`, params: to.params };
   }
 }
 

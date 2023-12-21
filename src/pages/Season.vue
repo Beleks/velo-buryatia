@@ -147,11 +147,9 @@ onMounted(() => {
   mainStore.getEvents().then((response) => {
     // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
     event.value = response.data.data.find((event) => event.id == eventId.value);
-    console.log(response.data.data.find((event) => event.id == eventId.value));
   });
 
   mainStore.getEventResults(eventId.value).then((response) => {
-    console.log(response.data.data, "response.data.data");
     participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
     distances.value = getDistances(participants.value);
   });

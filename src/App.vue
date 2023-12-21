@@ -37,9 +37,9 @@ watch(
     // console.log(oldWidth <= 1200 && newWidth > 1200, "To Desktop");
 
     if (oldWidth >= 1200 && newWidth < 1200 && pathName !== "Mobile") {
-      router.replace({ name: "Mobile" });
+      router.replace({ name: `${route.name}_m` });
     } else if (oldWidth <= 1200 && newWidth > 1200 && pathName !== "Desktop") {
-      router.replace({ name: "Desktop" });
+      router.replace({ name: `${route.name.slice(0, -2)}` });
     }
     //  else if (newWidth < 1200 && pathName !== "Mobile") {
     //   console.log("3");

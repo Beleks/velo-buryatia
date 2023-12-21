@@ -83,7 +83,6 @@ onMounted(() => {
       season.circles = getCirclesColor(index);
       return season;
     });
-    console.log(seasons.value, "response");
   });
 });
 
@@ -126,7 +125,7 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
           class="w-[344px] m-0.5 h-[136px] rounded-lg py-3 px-3 flex flex-col justify-between absolute z-10 bg-[#202022]"
         >
           <div class="text-xl w-[250px]">{{ season.name }}</div>
-          <div v-if="[4, 5, 6, 7].includes(season.id)" class="text-sm opacity-50">Заполняем...</div>
+          <div v-if="[5, 6, 7].includes(season.id)" class="text-sm opacity-50">Заполняем...</div>
           <div class="flex items-center fill-white">
             <PeoplsSvg :size="26" class="mr-2" />
             {{ season.cyclists }}
@@ -142,9 +141,6 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
           :class="['rounded-full h-[100px] w-[100px] absolute z-10 right-[57px] top-[105px]', season.circles.small]"
         ></div>
       </div>
-      <!-- <div class="max-w-[344px] h-[140px] rounded-lg border border-dashed flex justify-center items-center px-14">
-        <div class="text-center">Скоро тут появятся результаты за другие года</div>
-      </div> -->
     </template>
     <template v-else>
       <div class="flex w-full justify-center">Загрузка результатов...</div>

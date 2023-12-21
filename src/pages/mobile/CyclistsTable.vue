@@ -90,7 +90,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-2 m-auto">
+  <div class="px-2 m-auto max-w-2xl">
     <div class="flex justify-center items-center mb-6 mx-5 select-none">
       <div><span class="opacity-80">Участников за всё время:</span> {{ cyclists.length }}</div>
     </div>

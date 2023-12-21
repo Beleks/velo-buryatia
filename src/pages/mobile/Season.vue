@@ -147,11 +147,9 @@ onMounted(() => {
   mainStore.getEvents().then((response) => {
     // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
     event.value = response.data.data.find((event) => event.id == eventId.value);
-    console.log(response.data.data.find((event) => event.id == eventId.value));
   });
 
   mainStore.getEventResults(eventId.value).then((response) => {
-    console.log(response.data.data, "response.data.data");
     participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
     distances.value = getDistances(participants.value);
   });
@@ -159,7 +157,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-2 m-auto">
+  <div class="px-2 m-auto max-w-2xl">
     <template v-if="event.id">
       <div class="flex justify-between items-center mb-6 mx-2 select-none">
         <div @click="goBack()" class="stroke-neutral-400 hover:stroke-white cursor-pointer">
