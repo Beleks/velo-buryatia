@@ -123,7 +123,8 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
           class="w-[344px] m-0.5 h-[136px] rounded-lg py-3 px-3 flex flex-col justify-between absolute z-10 bg-[#202022]"
         >
           <div class="text-xl w-[250px]">{{ season.name }}</div>
-          <div v-if="[5, 6].includes(season.id)" class="text-sm opacity-50">Заполняем...</div>
+          <!-- Показать какие соревнования заполняются -->
+          <div v-if="[5].includes(season.id)" class="text-sm opacity-50">Заполняем...</div>
           <div class="flex items-center fill-white">
             <PeoplsSvg :size="26" class="mr-2" />
             {{ season.cyclists }}
