@@ -5,9 +5,19 @@ import { onClickOutside } from "@vueuse/core";
 import SimpleArrowSvg from "./svg/SimpleArrowSvg.vue";
 
 const props = defineProps({
+  label: {
+    type: Array,
+    default: () => {
+      return ["name"];
+    },
+  },
   options: {
     type: Array,
     default: () => [],
+  },
+  modelValue: {
+    type: Object,
+    // default ?
   },
   width: {
     type: [String, Number],
@@ -15,7 +25,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["input"]);
+const emit = defineEmits(["input", "update:modelValue"]);
 
 const target = ref(null);
 const ignorEl = ref(null);
@@ -30,17 +40,33 @@ let disable = computed(() => {
 watch(
   selectedOption,
   () => {
-    emit("input", selectedOption);
+    // emit("input", selectedOption);
+    emit("update:modelValue", selectedOption.value);
   },
   { immediate: true }
 );
-watch(
-  () => props.options,
-  () => {
-    selectedOption.value = props.options[0];
-  },
-  { immediate: true }
-);
+
+// Когда получаем список, то назначаем первый элемент
+// watch(
+//   () => props.options,
+//   () => {
+//     console.log(!props.modelValue, props.modelValue);
+//     if (!props.modelValue) {
+//       selectedOption.value = props.options[0];
+//     }
+//   },
+//   { immediate: true }
+// );
+// watch(
+//   () => props.options,
+//   () => {
+//     console.log(!props.modelValue, props.modelValue);
+//     if (!props.modelValue) {
+//       selectedOption.value = props.options[0];
+//     }
+//   },
+//   { immediate: true }
+// );
 
 onClickOutside(target, (event) => {
   // Не работает из-за "hover:"
@@ -81,7 +107,7 @@ function selectOption(option) {
       @click="switchDropdownMenu"
       ref="ignorEl"
     >
-      <div>{{ selectedOption }}</div>
+      <div>{{ props.modelValue?.[label[0]] }}</div>
       <SimpleArrowSvg :class="[dropdownMenuIsOpen ? 'rotate-180' : '', 'transition ease-out']" :size="20" />
     </div>
     <div
@@ -99,7 +125,7 @@ function selectOption(option) {
         :key="option"
         @click="selectOption(option)"
       >
-        {{ option }}
+        <slot :option="option"></slot>
       </span>
     </div>
   </div>
