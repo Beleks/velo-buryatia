@@ -5,9 +5,19 @@ import { onClickOutside } from "@vueuse/core";
 import SimpleArrowSvg from "./svg/SimpleArrowSvg.vue";
 
 const props = defineProps({
+  label: {
+    type: Array,
+    default: () => {
+      return ["name"];
+    },
+  },
   options: {
     type: Array,
     default: () => [],
+  },
+  modelValue: {
+    type: Object,
+    // default ?
   },
   width: {
     type: [String, Number],
@@ -15,7 +25,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["input"]);
+const emit = defineEmits(["input", "update:modelValue"]);
 
 const target = ref(null);
 const ignorEl = ref(null);
@@ -28,16 +38,9 @@ let disable = computed(() => {
 });
 
 watch(
-  selectedOption,
+  () => props.modelValue,
   () => {
-    emit("input", selectedOption);
-  },
-  { immediate: true }
-);
-watch(
-  () => props.options,
-  () => {
-    selectedOption.value = props.options[0];
+    selectedOption.value = props.modelValue;
   },
   { immediate: true }
 );
@@ -68,6 +71,7 @@ function closeDropdownMenu() {
 
 function selectOption(option) {
   selectedOption.value = option;
+  emit("update:modelValue", selectedOption.value);
   closeDropdownMenu();
 }
 </script>
@@ -81,7 +85,7 @@ function selectOption(option) {
       @click="switchDropdownMenu"
       ref="ignorEl"
     >
-      <div>{{ selectedOption }}</div>
+      <div>{{ props.modelValue?.[label[0]] }}</div>
       <SimpleArrowSvg :class="[dropdownMenuIsOpen ? 'rotate-180' : '', 'transition ease-out']" :size="20" />
     </div>
     <div
@@ -93,13 +97,13 @@ function selectOption(option) {
       <span
         :class="[
           'px-2 py-1 cursor-pointer hover:text-emerald-400',
-          option == selectedOption ? 'bg-input-color-selected' : 'bg-input-color',
+          option?.id == selectedOption?.id ? 'bg-input-color-selected' : 'bg-input-color',
         ]"
         v-for="option in options"
         :key="option"
         @click="selectOption(option)"
       >
-        {{ option }}
+        <slot :option="option"></slot>
       </span>
     </div>
   </div>

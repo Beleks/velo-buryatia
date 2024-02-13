@@ -6,21 +6,21 @@ import InputSelect from "@/components/InputSelect.vue";
 import ArrowSvg from "@/components/svg/ArrowSvg.vue";
 import DocSvg from "@/components/svg/DocSvg.vue";
 
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { useMainStore } from "@/stores/MainStore";
-import { useCyclistsStore } from "@/stores/CyclistsStore";
 
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
-const cyclistsStore = useCyclistsStore();
 
 let distances = ref([]);
+let typesBike = ref([]);
+let groups = ref([]);
 
 let selectedDistance = ref(null);
-let selectedTypeByke = ref(null);
+let selectedTypeBike = ref(null);
 let selectedGroup = ref(null);
 let isTotalTime = ref(false);
 
@@ -28,9 +28,43 @@ let event = ref({});
 let results = ref([]);
 let participants = ref([]);
 
-let protocolName = computed(() => {
-  return mainStore.protocols.find((protocol) => protocol.id === event.value.id).name;
-});
+let culcFilter = ref(false);
+
+watch(
+  () => selectedDistance.value,
+  () => {
+    typesBike.value = getTypesBike(participants.value, selectedDistance.value);
+    if (culcFilter.value) {
+      selectedTypeBike.value = typesBike.value[0];
+    }
+    changeStatus();
+  }
+);
+
+watch(
+  () => selectedTypeBike.value,
+  () => {
+    groups.value = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
+    if (culcFilter.value) {
+      selectedGroup.value = groups.value[0];
+    }
+  }
+);
+
+watch(
+  () => selectedGroup.value,
+  () => {
+    router.replace({
+      name: route.name,
+      query: {
+        distance: selectedDistance.value?.id,
+        bike: selectedTypeBike.value?.id,
+        group: selectedGroup.value?.id,
+      },
+    });
+  }
+);
+
 let eventId = computed(() => {
   return route.params.eventId;
 });
@@ -38,70 +72,59 @@ let eventId = computed(() => {
 let filteredParticipants = computed(() => {
   let filteredParticipants = participants.value.filter((participant) => {
     return (
-      participant.distance.name == selectedDistance.value &&
-      participant.biketype.name == selectedTypeByke.value &&
-      participant.category.name == selectedGroup.value
+      participant.distance.id == selectedDistance.value?.id &&
+      participant.biketype.id == selectedTypeBike.value?.id &&
+      participant.category.id == selectedGroup.value?.id
     );
   });
 
   return setPlaces(filteredParticipants);
 });
 
-let typesBike = computed(() => {
-  let typesBike = [];
-
-  let filteredByDistance = participants.value.filter(
-    (participant) => participant.distance.name === selectedDistance.value
-  );
-
-  filteredByDistance.forEach((participant) => {
-    if (!typesBike.includes(participant.biketype.name)) {
-      typesBike.push(participant.biketype.name);
-    }
-  });
-
-  return typesBike;
-});
-
-// TODO: Поменять на category
-let groups = computed(() => {
-  let groups = [];
-
-  let filteredByDistanceAndBiketypes = participants.value.filter((participant) => {
-    return participant.distance.name === selectedDistance.value && participant.biketype.name === selectedTypeByke.value;
-  });
-
-  filteredByDistanceAndBiketypes.forEach((participant) => {
-    if (!groups.includes(participant.category.name)) {
-      groups.push(participant.category.name);
-    }
-  });
-
-  return groups;
+let protocolName = computed(() => {
+  return mainStore.protocols.find((protocol) => protocol.id === event.value.id).name;
 });
 
 function getDistances(participants) {
   let distances = [];
 
   participants.forEach((participant) => {
-    if (!distances.includes(participant.distance.name)) {
-      distances.push(participant.distance.name);
+    if (!distances.some((distance) => participant.distance.id === distance.id)) {
+      distances.push(participant.distance);
     }
   });
 
   return distances;
 }
 
-function selectDistance(distance) {
-  selectedDistance.value = distance.value;
+function getTypesBike(participants, selectedDistance) {
+  let typesBike = [];
+
+  let filteredByDistance = participants.filter((participant) => participant.distance.id === selectedDistance?.id);
+
+  filteredByDistance.forEach((participant) => {
+    if (!typesBike.some((biketype) => participant.biketype.id === biketype.id)) {
+      typesBike.push(participant.biketype);
+    }
+  });
+
+  return typesBike;
 }
 
-function selectTypeBike(type) {
-  selectedTypeByke.value = type.value;
-}
+function getGroups(participants, selectedDistance, selectedTypeBike) {
+  let groups = [];
 
-function selectGroup(group) {
-  selectedGroup.value = group.value;
+  let filteredByDistanceAndBiketypes = participants.filter((participant) => {
+    return participant.distance.id === selectedDistance?.id && participant.biketype.id === selectedTypeBike?.id;
+  });
+
+  filteredByDistanceAndBiketypes.forEach((participant) => {
+    if (!groups.some((group) => participant.category.id === group.id)) {
+      groups.push(participant.category);
+    }
+  });
+
+  return groups;
 }
 
 function setPlaces(participants) {
@@ -136,7 +159,7 @@ function culcDelay(resultMs) {
 }
 
 function goToCyclist(participant) {
-  router.push({ name: "Cyclist_m", params: { cyclistId: participant.cyclist.id } });
+  router.push({ name: "Cyclist", params: { cyclistId: participant.cyclist.id } });
 }
 
 function goBack() {
@@ -144,6 +167,8 @@ function goBack() {
 }
 
 onMounted(() => {
+  let query = route.query;
+
   mainStore.getEvents().then((response) => {
     // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
     event.value = response.data.data.find((event) => event.id == eventId.value);
@@ -151,9 +176,35 @@ onMounted(() => {
 
   mainStore.getEventResults(eventId.value).then((response) => {
     participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
+
     distances.value = getDistances(participants.value);
+    if (!distances.value.find((distance) => distance.id == query.distance)) {
+      selectedDistance.value = distances.value[0];
+    } else {
+      selectedDistance.value = distances.value.find((distance) => distance.id == query.distance);
+    }
+
+    typesBike.value = getTypesBike(participants.value, selectedDistance.value);
+    if (!typesBike.value.find((typeBike) => typeBike.id == query.bike)) {
+      selectedTypeBike.value = typesBike.value[0];
+    } else {
+      selectedTypeBike.value = typesBike.value.find((typeBike) => typeBike.id == query.bike);
+    }
+
+    // TODO: Поменять на category
+    groups.value = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
+    if (!groups.value.find((group) => group.id == query.group)) {
+      selectedGroup.value = groups.value[0];
+    } else {
+      selectedGroup.value = groups.value.find((group) => group.id == query.group);
+    }
   });
 });
+
+// TODO:FIXME: Поменять название. Устанавливает в true, когда фильтры из пути применялись. Костыль !!
+function changeStatus() {
+  culcFilter.value = true;
+}
 </script>
 
 <template>
@@ -175,15 +226,21 @@ onMounted(() => {
       <div class="mb-5 flex flex-col justify-between select-none">
         <div class="flex justify-between items-center mb-2">
           <div class="opacity-60 mr-3">Дистанция:</div>
-          <InputSelect :options="distances" @input="selectDistance" :width="160" />
+          <InputSelect v-model="selectedDistance" :options="distances" v-slot="{ option }" :width="160">
+            {{ option.name }}
+          </InputSelect>
         </div>
         <div v-show="!isTotalTime" class="flex justify-between items-center mb-2">
           <div class="opacity-60 mr-3">Велосипед:</div>
-          <InputSelect :options="typesBike" @input="selectTypeBike" :width="160" />
+          <InputSelect v-model="selectedTypeBike" :options="typesBike" v-slot="{ option }" :width="160">
+            {{ option.name }}
+          </InputSelect>
         </div>
         <div v-show="!isTotalTime" class="flex justify-between items-center mb-2">
           <div class="opacity-60 mr-3">Группа:</div>
-          <InputSelect :options="groups" @input="selectGroup" :width="160" />
+          <InputSelect v-model="selectedGroup" :options="groups" :width="160" v-slot="{ option }">
+            {{ option.name }}
+          </InputSelect>
         </div>
         <a
           target="_blank"
