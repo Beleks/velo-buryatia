@@ -7,47 +7,18 @@ const route = useRoute();
 
 onBeforeMount(() => {});
 
-// onMounted(() => {
-//   let pathName = route.matched[0]?.name;
-//   width.value = window.innerWidth;
-
-//   // console.log(pathName, " pathName");
-// });
-// onBeforeUpdate(() => {
-//   console.log("ssdfsdfdsf");
-//   let pathName = route.matched[0]?.name;
-//   console.log(pathName, "pathName");
-// });
-
-// onActivated(() => {
-//   console.log("sfdsf");
-//   let pathName = route.matched[0]?.name;
-//   console.log(pathName, "pathName");
-// });
 let width = ref(0);
 
 watch(
   width,
   (newWidth, oldWidth) => {
-    // console.log(oldWidth, "oldWidth");
-    // console.log(newWidth, "newWidth");
-
     let pathName = route.matched[0]?.name;
-    // console.log(oldWidth >= 1200 && newWidth < 1200, "To Mobile");
-    // console.log(oldWidth <= 1200 && newWidth > 1200, "To Desktop");
 
     if (oldWidth >= 1200 && newWidth < 1200 && pathName !== "Mobile") {
       router.replace({ name: `${route.name}_m` });
     } else if (oldWidth <= 1200 && newWidth > 1200 && pathName !== "Desktop") {
       router.replace({ name: `${route.name.slice(0, -2)}` });
     }
-    //  else if (newWidth < 1200 && pathName !== "Mobile") {
-    //   console.log("3");
-    //   router.replace({ name: "Mobile" });
-    // } else if (newWidth >= 1200 && pathName !== "Desktop") {
-    //   console.log("4");
-    //   router.replace({ name: "Desktop" });
-    // }
   },
   { immediate: false }
 );

@@ -38,35 +38,12 @@ let disable = computed(() => {
 });
 
 watch(
-  selectedOption,
+  () => props.modelValue,
   () => {
-    // emit("input", selectedOption);
-    emit("update:modelValue", selectedOption.value);
+    selectedOption.value = props.modelValue;
   },
   { immediate: true }
 );
-
-// Когда получаем список, то назначаем первый элемент
-// watch(
-//   () => props.options,
-//   () => {
-//     console.log(!props.modelValue, props.modelValue);
-//     if (!props.modelValue) {
-//       selectedOption.value = props.options[0];
-//     }
-//   },
-//   { immediate: true }
-// );
-// watch(
-//   () => props.options,
-//   () => {
-//     console.log(!props.modelValue, props.modelValue);
-//     if (!props.modelValue) {
-//       selectedOption.value = props.options[0];
-//     }
-//   },
-//   { immediate: true }
-// );
 
 onClickOutside(target, (event) => {
   // Не работает из-за "hover:"
@@ -94,6 +71,7 @@ function closeDropdownMenu() {
 
 function selectOption(option) {
   selectedOption.value = option;
+  emit("update:modelValue", selectedOption.value);
   closeDropdownMenu();
 }
 </script>
@@ -119,7 +97,7 @@ function selectOption(option) {
       <span
         :class="[
           'px-2 py-1 cursor-pointer hover:text-emerald-400',
-          option == selectedOption ? 'bg-input-color-selected' : 'bg-input-color',
+          option?.id == selectedOption?.id ? 'bg-input-color-selected' : 'bg-input-color',
         ]"
         v-for="option in options"
         :key="option"

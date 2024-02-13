@@ -2,20 +2,18 @@
 import { convertMsToTime } from "@/utils/utils.js";
 
 import _ from "lodash";
-import InputSelect from "../components/InputSelect.vue";
-import ArrowSvg from "../components/svg/ArrowSvg.vue";
+import InputSelect from "@/components/InputSelect.vue";
+import ArrowSvg from "@/components/svg/ArrowSvg.vue";
 import DocSvg from "@/components/svg/DocSvg.vue";
 
 import { computed, ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { useMainStore } from "@/stores/MainStore";
-import { useCyclistsStore } from "@/stores/CyclistsStore";
 
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
-const cyclistsStore = useCyclistsStore();
 
 let distances = ref([]);
 let typesBike = ref([]);
@@ -34,26 +32,28 @@ let culcFilter = ref(false);
 
 watch(
   () => selectedDistance.value,
-  (newDistance) => {
-    console.log(newDistance, "newDistance");
-    // selectedTypeBike.value = null;
+  () => {
     typesBike.value = getTypesBike(participants.value, selectedDistance.value);
+    if (culcFilter.value) {
+      selectedTypeBike.value = typesBike.value[0];
+    }
+    changeStatus();
   }
 );
 
 watch(
   () => selectedTypeBike.value,
-  (newTypebike) => {
-    // selectedGroup.value = null;
+  () => {
     groups.value = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
+    if (culcFilter.value) {
+      selectedGroup.value = groups.value[0];
+    }
   }
 );
 
 watch(
+  () => selectedGroup.value,
   () => {
-    return selectedGroup.value;
-  },
-  (newGroup) => {
     router.replace({
       name: route.name,
       query: {
@@ -63,7 +63,6 @@ watch(
       },
     });
   }
-  // { immediate: true }
 );
 
 let eventId = computed(() => {
@@ -85,10 +84,6 @@ let filteredParticipants = computed(() => {
 let protocolName = computed(() => {
   return mainStore.protocols.find((protocol) => protocol.id === event.value.id).name;
 });
-
-// function filteredParticipants(params) {
-
-// }
 
 function getDistances(participants) {
   let distances = [];
@@ -191,7 +186,6 @@ onMounted(() => {
 
     typesBike.value = getTypesBike(participants.value, selectedDistance.value);
     if (!typesBike.value.find((typeBike) => typeBike.id == query.bike)) {
-      console.log("test");
       selectedTypeBike.value = typesBike.value[0];
     } else {
       selectedTypeBike.value = typesBike.value.find((typeBike) => typeBike.id == query.bike);
@@ -204,19 +198,17 @@ onMounted(() => {
     } else {
       selectedGroup.value = groups.value.find((group) => group.id == query.group);
     }
-
-    console.log(selectedDistance.value, "selectedDistance.value");
-    console.log(selectedTypeBike.value, "selectedTypeBike.value");
-    console.log(selectedGroup.value, "selectedGroup.value");
-
-    culcFilter.value = true;
   });
 });
+
+// TODO:FIXME: Поменять название. Устанавливает в true, когда фильтры из пути применялись. Костыль !!
+function changeStatus() {
+  culcFilter.value = true;
+}
 </script>
 
 <template>
   <div class="px-24 max-w-7xl m-auto">
-    <!--  && culcFilter -->
     <template v-if="event.id">
       <div class="flex justify-between items-center mb-6 mx-5">
         <div @click="goBack()" class="select-none stroke-neutral-400 hover:stroke-white cursor-pointer">
@@ -352,13 +344,7 @@ onMounted(() => {
       </div>
     </template>
     <div v-else class="flex justify-center items-center mb-6 mx-5 select-none">
-      <!-- <div @click="goBack()" class="stroke-white hover:stroke-lime-400 cursor-pointer">
-        <ArrowSvg />
-      </div> -->
       <div>Загрузка...</div>
-      <!-- <div class="opacity-0 cursor-default">
-        <ArrowSvg />
-      </div> -->
     </div>
   </div>
 </template>
