@@ -159,7 +159,7 @@ function culcDelay(resultMs) {
 }
 
 function goToCyclist(participant) {
-  router.push({ name: "Cyclist", params: { cyclistId: participant.cyclist.id } });
+  return { name: "Cyclist", params: { cyclistId: participant.cyclist.id } }
 }
 
 function goBack() {
@@ -309,7 +309,7 @@ function changeStatus() {
             </div> -->
             <div class="participant-max-width mr-1 truncate">
               <router-link
-                :to="{ name: 'Cyclist_m', params: { cyclistId: participant.cyclist.id } }"
+                :to="goToCyclist(participant)"
                 v-slot="{ href, route, navigate }"
               >
                 <a
