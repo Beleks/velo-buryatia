@@ -71,8 +71,6 @@ let eventId = computed(() => {
 
 let filteredParticipants = computed(() => {
   let filteredParticipants = participants.value.filter((participant) => {
-    console.log(participant.distance.id, 'participant.distance.id')
-    console.log(selectedDistance.value?.id, 'selectedDistance.value?.id')
     return (
       participant.distance.id === selectedDistance.value?.id &&
       participant.biketype.id === selectedTypeBike.value?.id &&
