@@ -212,14 +212,14 @@ function changeStatus() {
     <template v-if="event.id">
       <div class="flex justify-between items-center mb-6 mx-2 select-none">
         <div @click="goBack()" class="stroke-neutral-400 hover:stroke-white cursor-pointer">
-          <ArrowSvg />
+          <ArrowSvg/>
         </div>
         <span class="text-xl font-bold text-center mx-2">
           {{ event.name }}
         </span>
         <div class="opacity-0 cursor-default">
           <div>
-            <ArrowSvg />
+            <ArrowSvg/>
           </div>
         </div>
       </div>
@@ -247,7 +247,7 @@ function changeStatus() {
           :href="`https://bm.cyclists03.ru/protocols/${protocolName}.pdf`"
           class="flex justify-center items-center h-[34px] border my-border-color rounded px-4 py-1 cursor-pointer bg-input-color transition ease-out hover:border-emerald-400"
         >
-          <DocSvg class="mr-2" />
+          <DocSvg class="mr-2"/>
           Протокол
         </a>
         <!-- <div
@@ -270,7 +270,7 @@ function changeStatus() {
           <div class="flex">
             <div class="w-7 h-7 flex justify-center items-center mr-2">#</div>
             <!-- <div class="w-7 text-center mr-2">№</div> -->
-            <div class="w-48 mr-4">
+            <div class="participant-max-width mr-4">
               <div>Фамилия Имя</div>
               <div class="font-normal opacity-50">№ | нп. | Команда</div>
             </div>
@@ -279,8 +279,8 @@ function changeStatus() {
           </div>
           <div class="flex items-center">
             <div>
-              <div class="w-22 text-end">Вермя</div>
-              <div class="w-22 text-end opacity-50">Отставание</div>
+              <div class="w-24 text-end">Вермя</div>
+              <div class="w-24 text-end opacity-50">Отставание</div>
             </div>
             <!-- <div class="w-20 mr-2 text-end"></div>
             <div class="w-20 text-end">Время</div> -->
@@ -299,7 +299,7 @@ function changeStatus() {
                   second: participant.place == 2 && participant.place && participant.status == 2,
                   third: participant.place == 3 && participant.place && participant.status == 2,
                 },
-                'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-4',
+                'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-2',
               ]"
             >
               {{ participant.status == 2 ? participant.place : "-" }}
@@ -307,7 +307,7 @@ function changeStatus() {
             <!-- <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
               {{ participant.number }}
             </div> -->
-            <div class="w-48 mr-1 truncate">
+            <div class="participant-max-width mr-1 truncate">
               <router-link
                 :to="{ name: 'Cyclist_m', params: { cyclistId: participant.cyclist.id } }"
                 v-slot="{ href, route, navigate }"
@@ -356,14 +356,23 @@ function changeStatus() {
     </template>
     <div v-else class="flex justify-between items-center mb-6 mx-5 select-none">
       <div @click="goBack()" class="stroke-white hover:stroke-lime-400 cursor-pointer">
-        <ArrowSvg />
+        <ArrowSvg/>
       </div>
       <div>Нет результатов</div>
       <div class="opacity-0 cursor-default">
-        <ArrowSvg />
+        <ArrowSvg/>
       </div>
     </div>
   </div>
 </template>
 
-<style></style>
+<style lang="scss" scoped>
+.participant-max-width {
+  // TODO: Считать и получать некоторые значения через JS
+  // 16px - table padding
+  // 16px - outside table padding
+  // 96px - time column width
+  // 36px - place column width
+  width: calc(100vw - 16px - 16px - 96px - 36px - 16px);
+}
+</style>
