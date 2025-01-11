@@ -1,7 +1,7 @@
 <script setup>
 import { convertMsToTime } from "@/utils/utils.js";
 
-import _ from "lodash";
+// import _ from "lodash";
 import InputSelect from "@/components/InputSelect.vue";
 import ArrowSvg from "@/components/svg/ArrowSvg.vue";
 import DocSvg from "@/components/svg/DocSvg.vue";
@@ -71,10 +71,12 @@ let eventId = computed(() => {
 
 let filteredParticipants = computed(() => {
   let filteredParticipants = participants.value.filter((participant) => {
+    console.log(participant.distance.id, 'participant.distance.id')
+    console.log(selectedDistance.value?.id, 'selectedDistance.value?.id')
     return (
-      participant.distance.id == selectedDistance.value?.id &&
-      participant.biketype.id == selectedTypeBike.value?.id &&
-      participant.category.id == selectedGroup.value?.id
+      participant.distance.id === selectedDistance.value?.id &&
+      participant.biketype.id === selectedTypeBike.value?.id &&
+      participant.category.id === selectedGroup.value?.id
     );
   });
 
@@ -129,7 +131,7 @@ function getGroups(participants, selectedDistance, selectedTypeBike) {
 
 function setPlaces(participants) {
   let placeNumber = 1;
-  let newArr = participants.map((participant, index) => {
+  return participants.map((participant, index) => {
     let handledParticipant = { ...participant };
     if (index === 0) {
       handledParticipant.place = placeNumber;
@@ -144,8 +146,6 @@ function setPlaces(participants) {
     }
     return handledParticipant;
   });
-
-  return newArr;
 }
 
 function culcDelay(resultMs) {
@@ -171,32 +171,32 @@ onMounted(() => {
 
   mainStore.getEvents().then((response) => {
     // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
-    event.value = response.data.data.find((event) => event.id == eventId.value);
+    event.value = response.data.data.find((event) => event.id === eventId.value);
   });
 
   mainStore.getEventResults(eventId.value).then((response) => {
     participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
 
     distances.value = getDistances(participants.value);
-    if (!distances.value.find((distance) => distance.id == query.distance)) {
+    if (!distances.value.find((distance) => distance.id === query.distance)) {
       selectedDistance.value = distances.value[0];
     } else {
-      selectedDistance.value = distances.value.find((distance) => distance.id == query.distance);
+      selectedDistance.value = distances.value.find((distance) => distance.id === query.distance);
     }
 
     typesBike.value = getTypesBike(participants.value, selectedDistance.value);
-    if (!typesBike.value.find((typeBike) => typeBike.id == query.bike)) {
+    if (!typesBike.value.find((typeBike) => typeBike.id === query.bike)) {
       selectedTypeBike.value = typesBike.value[0];
     } else {
-      selectedTypeBike.value = typesBike.value.find((typeBike) => typeBike.id == query.bike);
+      selectedTypeBike.value = typesBike.value.find((typeBike) => typeBike.id === query.bike);
     }
 
     // TODO: Поменять на category
     groups.value = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
-    if (!groups.value.find((group) => group.id == query.group)) {
+    if (!groups.value.find((group) => group.id === query.group)) {
       selectedGroup.value = groups.value[0];
     } else {
-      selectedGroup.value = groups.value.find((group) => group.id == query.group);
+      selectedGroup.value = groups.value.find((group) => group.id === query.group);
     }
   });
 });
@@ -295,14 +295,14 @@ function changeStatus() {
             <div
               :class="[
                 {
-                  first: participant.place == 1 && participant.place && participant.status == 2,
-                  second: participant.place == 2 && participant.place && participant.status == 2,
-                  third: participant.place == 3 && participant.place && participant.status == 2,
+                  first: participant.place === 1 && participant.place && participant.status === 2,
+                  second: participant.place === 2 && participant.place && participant.status === 2,
+                  third: participant.place === 3 && participant.place && participant.status === 2,
                 },
                 'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-2',
               ]"
             >
-              {{ participant.status == 2 ? participant.place : "-" }}
+              {{ participant.status === 2 ? participant.place : "-" }}
             </div>
             <!-- <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
               {{ participant.number }}
@@ -341,7 +341,7 @@ function changeStatus() {
             <div class="w-40 mr-4">-</div> -->
           </div>
           <div class="flex flex-col items-center">
-            <div v-if="participant.status == 2" class="w-20 text-end">
+            <div v-if="participant.status === 2" class="w-20 text-end">
               {{ convertMsToTime(participant.result) }}
             </div>
             <div class="w-20 text-end" v-else>
