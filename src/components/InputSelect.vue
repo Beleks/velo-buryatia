@@ -52,6 +52,7 @@ onClickOutside(target, (event) => {
   //   "closest"
   // );
   //
+  // TODO: Пересмотреть получение элемента?
   if (ignorEl.value == event.target.closest(`.border.my-border-color.rounded.px-2.py-1.bg-input-color`)) {
     return;
   }
