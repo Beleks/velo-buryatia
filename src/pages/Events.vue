@@ -14,7 +14,7 @@ let alertIsVisible = ref(true);
 let seasons = ref([]);
 
 function chooseEvent(event) {
-  router.push({ name: "Season", params: { eventId: event.id } });
+  router.push({name: "Season", params: {eventId: event.id}});
 }
 
 function getCirclesColor(index) {
@@ -95,7 +95,7 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
   >
     <div class="flex items-center">
       <div class="stroke-yellow-400 mr-4">
-        <AlertSvg :size="32" />
+        <AlertSvg :size="32"/>
       </div>
       <div class="text-yellow-400">
         <div class="text-base text-yellow-400 mb-1">Эти результаты являются обработкой бумажных протоколов</div>
@@ -126,9 +126,9 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
         >
           <div class="text-xl w-[250px]">{{ season.name }}</div>
           <!-- Показать какие соревнования заполняются -->
-          <div v-if="[5].includes(season.id)" class="text-sm opacity-50">Заполняем...</div>
+          <!-- <div v-if="[5].includes(season.id)" class="text-sm opacity-50">Заполняем...</div> -->
           <div class="flex items-center fill-white">
-            <PeoplsSvg :size="26" class="mr-2" />
+            <PeoplsSvg :size="26" class="mr-2"/>
             {{ season.cyclists }}
           </div>
         </div>
