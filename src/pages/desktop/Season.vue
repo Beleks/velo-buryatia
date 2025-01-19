@@ -52,7 +52,7 @@ function goBack() {
           </div>
           <div class="flex items-center mr-6">
             <div class="opacity-60 mr-3">Велосипед:</div>
-            <InputSelect v-model="selectedTypeBike" :options="filtres.typesBike" v-slot="{ option }">
+            <InputSelect v-model="selectedTypeBike" :options="filtres.typesBike" :width="160" v-slot="{ option }">
               {{ option.name }}
             </InputSelect>
           </div>
