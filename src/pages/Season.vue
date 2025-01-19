@@ -90,7 +90,6 @@ let filteredParticipants = computed(() => {
   return setPlaces(filteredParticipants);
 });
 
-// TODO: Сделать методом
 function getProtocolLink(eventId) {
   let protocolName = mainStore.protocols.find((protocol) => protocol.id === eventId).name;
   return `https://bm.cyclists03.ru/protocols/${protocolName}.pdf`;
@@ -109,33 +108,31 @@ function getDistances(participants) {
 }
 
 function getTypesBike(participants, selectedDistance) {
-  let typesBike = [];
+  const uniqueBikeTypes = [{ id: null, name: 'Общий зачёт' }];
 
-  let filteredByDistance = participants.filter((participant) => participant.distance.id === selectedDistance?.id);
-
-  filteredByDistance.forEach((participant) => {
-    if (!typesBike.some((biketype) => participant.biketype.id === biketype.id)) {
-      typesBike.push(participant.biketype);
+  participants.forEach((participant) => {
+    if (participant.distance.id === selectedDistance.id) {
+      if (!uniqueBikeTypes.some((bikeType) => bikeType.id === participant.biketype.id)) {
+        uniqueBikeTypes.push(participant.biketype);
+      }
     }
   });
 
-  return typesBike;
+  return uniqueBikeTypes;
 }
 
 function getGroups(participants, selectedDistance, selectedTypeBike) {
-  let groups = [];
+  const uniqueGroups = [{ id: null, name: 'Общий зачёт' }];
 
-  let filteredByDistanceAndBiketypes = participants.filter((participant) => {
-    return participant.distance.id === selectedDistance?.id && participant.biketype.id === selectedTypeBike?.id;
-  });
-
-  filteredByDistanceAndBiketypes.forEach((participant) => {
-    if (!groups.some((group) => participant.category.id === group.id)) {
-      groups.push(participant.category);
+  participants.forEach((participant) => {
+    if (participant.distance.id === selectedDistance.id && participant.biketype.id === selectedTypeBike.id) {
+      if (!uniqueGroups.some((group) => group.id === participant.category.id)) {
+        uniqueGroups.push(participant.category);
+      }
     }
   });
 
-  return groups;
+  return uniqueGroups;
 }
 
 function setPlaces(participants) {
