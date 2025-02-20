@@ -1,4 +1,23 @@
 <script setup>
+// TODO: Пересмотреть работу с фильтрами
+// TODO: !! Пофиксить в методах getTypesBike, getGroups: IDE ругается, если сразу в массиве указать объект, поэтому пушим его
+// =====
+// TODO: Пересмотреть добавление объекта по умолчанию в getTypesBike, getGroups?
+// Может проходиться по участникам, находить объект с id === null и потом просто поменять название?
+// P.S Нельзя реализовать, т.к может не быть участника с объектом, где id === null
+// =====
+// TODO: Поменять Groups на Category
+// TODO: Переименовать getTypesBike, ... -> getTypesBikeFilter, ...Filter?
+
+
+// [-] Проверить мобилку
+
+
+// Вынести в задачи:
+// Проверить заполнение несуществующих URL. В будущем выдавать ошибку?
+// Не исправляет ошибку в пути в mounted
+// [?] Показывать в таблицы группу и тип велосипеда если применён "общий зачёт"
+
 import SeasonDesktopView from "@/pages/desktop/Season.vue"
 import SeasonMobileView from "@/pages/mobile/Season.vue"
 
@@ -18,84 +37,121 @@ const typeComponent = computed(() => {
   }
 });
 
+let routeQueryParams = {}
+
 const event = ref({
   // id: null,
   // name: '',
   // protocolLink: '',
 })
 
-const filtres = ref({
-  distances: [],
-  typesBike: [],
-  groups: []
+const filters = ref({
+  // TODO: selected: {} ?
+  distances: {
+    selected: null,
+    options: []
+  },
+  typesBike: {
+    selected: null,
+    options: []
+  },
+  groups: {
+    selected: null,
+    options: []
+  },
 })
 
-const selectedDistance = ref(null);
-const selectedTypeBike = ref(null);
-const selectedGroup = ref(null);
+const allTypesBikeOption = { id: null, name: 'Общий зачёт' } // name: 'Все типы велосипедов'
+const allGroupOption = { id: null, name: 'Общий зачёт' }
 
 const participants = ref([]);
 
-// Для чего?
-const culcFilter = ref(false);
-
-watch(
-  () => selectedDistance.value,
-  () => {
-    filtres.value.typesBike = getTypesBike(participants.value, selectedDistance.value);
-    if (culcFilter.value) {
-      selectedTypeBike.value = filtres.value.typesBike[0];
-    }
-    changeStatus();
-  }
-);
-
-watch(
-  () => selectedTypeBike.value,
-  () => {
-    filtres.value.groups = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
-    if (culcFilter.value) {
-      selectedGroup.value = filtres.value.groups[0];
-    }
-  }
-);
-
-watch(
-  () => selectedGroup.value,
-  () => {
-    router.replace({
-      name: route.name,
-      query: {
-        distance: selectedDistance.value?.id,
-        bike: selectedTypeBike.value?.id,
-        group: selectedGroup.value?.id,
-      },
-    });
-  }
-);
 // TODO: Нужен ли computed ?
 let eventId = computed(() => {
   return +route.params.eventId;
 });
+// ===
 
 let filteredParticipants = computed(() => {
-  let filteredParticipants = participants.value.filter((participant) => {
-    return (
-      participant.distance.id === selectedDistance.value?.id &&
-      participant.biketype.id === selectedTypeBike.value?.id &&
-      participant.category.id === selectedGroup.value?.id
-    );
-  });
+  const { distances, typesBike, groups } = filters.value
 
-  return setPlaces(filteredParticipants);
+  let filteredByDistance = participants.value.filter((participant) => {
+    return (
+      participant.distance.id === distances.selected?.id
+    );
+  })
+
+  // Выбран "общий зачёт" в списке велосипедов, в списке больше 1 элемента
+  if (typesBike.selected?.id === allTypesBikeOption.id && typesBike.options.length > 1) {
+    return setPlaces(filteredByDistance)
+  }
+  // Выбран "общий зачёт" в списке велосипедов + в списке групп
+  if (typesBike.selected?.id === allTypesBikeOption.id && groups.selected?.id === allGroupOption.id) {
+    return setPlaces(filteredByDistance)
+  }
+
+  let filteredByBiketype = filteredByDistance.filter((participant) => {
+    return (
+      participant.biketype.id === typesBike.selected?.id
+    );
+  })
+
+  // Выбран "общий зачёт" в списке групп
+  if (groups.selected?.id === allGroupOption.id) {
+    return setPlaces(filteredByBiketype)
+  }
+
+  let filteredByGroup = filteredByBiketype.filter((participant) => {
+    return (
+      participant.category.id === groups.selected?.id
+    );
+  })
+
+  return setPlaces(filteredByGroup)
 });
+
+function startWatchFilters() {
+  watch(
+    () => filters.value.distances.selected,
+    () => {
+      filters.value.typesBike = getTypesBike(participants.value, filters.value.distances.selected);
+    }
+  );
+  watch(
+    () => filters.value.typesBike,
+    () => {
+      filters.value.groups = getGroups(participants.value, filters.value.distances.selected, filters.value.typesBike.selected);
+    },
+    {
+      deep: true
+    }
+  );
+  watch(
+    () => filters.value.groups,
+    () => {
+
+      router.replace({
+        name: route.name,
+        query: {
+          distance: filters.value.distances.selected?.id,
+          bike: filters.value.typesBike.selected?.id || 'all',
+          group: filters.value.groups.selected?.id || 'all',
+        },
+      });
+    },
+    {
+      deep: true
+    }
+  );
+}
 
 function getProtocolLink(eventId) {
   let protocolName = mainStore.protocols.find((protocol) => protocol.id === eventId).name;
   return `https://bm.cyclists03.ru/protocols/${protocolName}.pdf`;
 }
 
-function getDistances(participants) {
+function getDistances(participants, selectedValueId) {
+  let selected
   let distances = [];
 
   participants.forEach((participant) => {
@@ -104,11 +160,20 @@ function getDistances(participants) {
     }
   });
 
-  return distances;
+  selected = distances.find((distance) => distance.id === selectedValueId) || distances[0] || null
+
+  return {
+    selected,
+    options: distances
+  };
+
 }
 
-function getTypesBike(participants, selectedDistance) {
-  const uniqueBikeTypes = [{ id: null, name: 'Общий зачёт' }];
+function getTypesBike(participants, selectedDistance, selectedValueId) {
+  let selected
+  // const uniqueBikeTypes = [allTypesBikeOption];
+  const uniqueBikeTypes = [];
+  uniqueBikeTypes.push({ ...allTypesBikeOption })
 
   participants.forEach((participant) => {
     if (participant.distance.id === selectedDistance.id) {
@@ -118,11 +183,31 @@ function getTypesBike(participants, selectedDistance) {
     }
   });
 
-  return uniqueBikeTypes;
+  // Если в списке типов велосипеда нет опций кроме общего зачёта, то "Общий зачёт" -> "-"
+  if (uniqueBikeTypes.length === 1 && uniqueBikeTypes[0].id === allTypesBikeOption.id) {
+    uniqueBikeTypes[0].name = '-'
+  }
+
+  if (uniqueBikeTypes.length === 2) {
+    const allTypesBikeOptionIndex = uniqueBikeTypes.findIndex((bikeType) => bikeType.id === allTypesBikeOption.id)
+    uniqueBikeTypes.splice(allTypesBikeOptionIndex, 1)
+  }
+
+  selected = uniqueBikeTypes.find(bikeType => bikeType.id === selectedValueId) || uniqueBikeTypes[0] || null;
+
+  return {
+    selected,
+    options: uniqueBikeTypes
+  };
+
 }
 
-function getGroups(participants, selectedDistance, selectedTypeBike) {
-  const uniqueGroups = [{ id: null, name: 'Общий зачёт' }];
+function getGroups(participants, selectedDistance, selectedTypeBike, selectedValueId) {
+  let selected
+  // Всегда ли будут группы?
+  // const uniqueGroups = [allGroupOption];
+  const uniqueGroups = [];
+  uniqueGroups.push({ ...allGroupOption })
 
   participants.forEach((participant) => {
     if (participant.distance.id === selectedDistance.id && participant.biketype.id === selectedTypeBike.id) {
@@ -132,7 +217,17 @@ function getGroups(participants, selectedDistance, selectedTypeBike) {
     }
   });
 
-  return uniqueGroups;
+  if (uniqueGroups.length === 2) {
+    const allGroupOptionIndex = uniqueGroups.findIndex((group) => group.id === allGroupOption.id)
+    uniqueGroups.splice(allGroupOptionIndex, 1)
+  }
+
+  selected = uniqueGroups.find((group) => group.id === selectedValueId) || uniqueGroups[0] || null;
+
+  return {
+    selected,
+    options: uniqueGroups
+  };
 }
 
 function setPlaces(participants) {
@@ -155,7 +250,7 @@ function setPlaces(participants) {
 }
 
 onMounted(() => {
-  let query = route.query;
+  routeQueryParams = route.query;
 
   mainStore.getEvents().then((response) => {
     // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
@@ -169,39 +264,15 @@ onMounted(() => {
   mainStore.getEventResults(eventId.value).then((response) => {
     participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
 
-    filtres.value.distances = getDistances(participants.value);
-    if (!filtres.value.distances.find((distance) => distance.id === query.distance)) {
-      selectedDistance.value = filtres.value.distances[0];
-    } else {
-      selectedDistance.value = filtres.value.distances.find((distance) => distance.id === query.distance);
-    }
+    filters.value.distances = getDistances(participants.value, +routeQueryParams.distance);
+    filters.value.typesBike = getTypesBike(participants.value, filters.value.distances.selected, +routeQueryParams.bike);
+    filters.value.groups = getGroups(participants.value, filters.value.distances.selected, filters.value.typesBike.selected, +routeQueryParams.group);
 
-    filtres.value.typesBike = getTypesBike(participants.value, selectedDistance.value);
-    if (!filtres.value.typesBike.find((typeBike) => typeBike.id === query.bike)) {
-      selectedTypeBike.value = filtres.value.typesBike[0];
-    } else {
-      selectedTypeBike.value = filtres.value.typesBike.find((typeBike) => typeBike.id === query.bike);
-    }
-
-    // TODO: Поменять на category
-    filtres.value.groups = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
-    if (!filtres.value.groups.find((group) => group.id === query.group)) {
-      selectedGroup.value = filtres.value.groups[0];
-    } else {
-      selectedGroup.value = filtres.value.groups.find((group) => group.id === query.group);
-    }
+    startWatchFilters()
   });
 });
 
-// TODO:FIXME: Поменять название. Устанавливает в true, когда фильтры из пути применялись. Костыль !!
-function changeStatus() {
-  culcFilter.value = true;
-}
-
-provide('filtres', readonly(filtres))
-provide('selectedDistance', selectedDistance)
-provide('selectedTypeBike', selectedTypeBike)
-provide('selectedGroup', selectedGroup)
+provide('filters', filters)
 provide('filteredParticipants', readonly(filteredParticipants))
 provide('event', readonly(event))
 </script>

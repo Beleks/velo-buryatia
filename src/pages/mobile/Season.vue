@@ -11,12 +11,7 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-const filtres = inject("filtres");
-
-const selectedDistance = inject("selectedDistance");
-const selectedTypeBike = inject("selectedTypeBike");
-const selectedGroup = inject("selectedGroup");
-
+const filters = inject("filters");
 const event = inject("event");
 
 const filteredParticipants = inject('filteredParticipants')
@@ -49,19 +44,31 @@ function goBack() {
       <div class="mb-5 flex flex-col justify-between select-none">
         <div class="flex justify-between items-center mb-2">
           <div class="opacity-60 mr-3">Дистанция:</div>
-          <InputSelect v-model="selectedDistance" :options="filtres.distances" v-slot="{ option }" :width="160">
+          <InputSelect
+            v-model="filters.distances.selected"
+            :options="filters.distances.options"
+            v-slot="{ option }"
+            :width="160">
             {{ option.name }}
           </InputSelect>
         </div>
         <div class="flex justify-between items-center mb-2">
           <div class="opacity-60 mr-3">Велосипед:</div>
-          <InputSelect v-model="selectedTypeBike" :options="filtres.typesBike" v-slot="{ option }" :width="160">
+          <InputSelect
+            v-model="filters.typesBike.selected"
+            :options="filters.typesBike.options"
+            v-slot="{ option }"
+            :width="160">
             {{ option.name }}
           </InputSelect>
         </div>
         <div class="flex justify-between items-center mb-2">
           <div class="opacity-60 mr-3">Группа:</div>
-          <InputSelect v-model="selectedGroup" :options="filtres.groups" :width="160" v-slot="{ option }">
+          <InputSelect
+            v-model="filters.groups.selected"
+            :options="filters.groups.options"
+            :width="160"
+            v-slot="{ option }">
             {{ option.name }}
           </InputSelect>
         </div>
