@@ -75,13 +75,13 @@ function goBack() {
         <a
           target="_blank"
           :href="event.protocolLink"
-          class="flex justify-center items-center h-[34px] border my-border-color rounded px-4 py-1 cursor-pointer bg-input-color transition ease-out hover:border-emerald-400"
+          class="flex justify-center items-center h-[34px] border my-border-color rounded-sm px-4 py-1 cursor-pointer bg-input-color transition ease-out hover:border-emerald-400"
         >
           <DocSvg class="mr-2"/>
           Протокол
         </a>
         <!-- <div
-          class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
+          class="border my-border-color rounded-sm px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
           @click="switchTotalTime"
         >
           <div
@@ -94,7 +94,7 @@ function goBack() {
           </div>
         </div> -->
       </div>
-      <div class="border my-border-color rounded mb-8">
+      <div class="border my-border-color rounded-sm mb-8">
         <div class="bg-table-color justify-between px-2 py-2 flex font-normal items-center opacity-80">
           <!-- items-center -->
           <div class="flex">
@@ -134,7 +134,7 @@ function goBack() {
             >
               {{ participant.status === 2 ? participant.place : "-" }}
             </div>
-            <!-- <div class="w-7 text-xs bg-my-color rounded text-center mr-2">
+            <!-- <div class="w-7 text-xs bg-my-color rounded-sm text-center mr-2">
               {{ participant.number }}
             </div> -->
             <div class="participant-max-width mr-1 truncate">
@@ -153,7 +153,7 @@ function goBack() {
               <div class="flex items-center text-sm font-normal">
                 <div
                   :class="[participant.cyclist.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black']"
-                  class="min-w-7 text-xs rounded text-center mr-2 px-1"
+                  class="min-w-7 text-xs rounded-sm text-center mr-2 px-1"
                 >
                   {{ participant.bip }}
                 </div>

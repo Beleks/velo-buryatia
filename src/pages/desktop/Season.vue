@@ -76,14 +76,14 @@ function goBack() {
           <a
             target="_blank"
             :href="event.protocolLink"
-            class="flex items-center h-[34px] border my-border-color rounded px-4 py-1 cursor-pointer bg-input-color transition ease-out hover:border-emerald-400"
+            class="flex items-center h-[34px] border my-border-color rounded-sm px-4 py-1 cursor-pointer bg-input-color transition ease-out hover:border-emerald-400"
           >
             <DocSvg class="mr-2"/>
             Протокол
           </a>
 
           <!-- <div
-            class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
+            class="border my-border-color rounded-sm px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
             @click="switchTotalTime"
           >
             <div
@@ -101,7 +101,7 @@ function goBack() {
           </div> -->
         </div>
       </div>
-      <div class="border my-border-color rounded mb-8 overflow-hidden">
+      <div class="border my-border-color rounded-sm mb-8 overflow-hidden">
         <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
           <div class="flex items-center">
             <div class="w-7 h-7 mr-4 flex justify-center items-center">#</div>
@@ -135,7 +135,7 @@ function goBack() {
             </div>
             <div
               :class="[participant.cyclist.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black']"
-              class="w-7 text-xs rounded text-center mr-2"
+              class="w-7 text-xs rounded-sm text-center mr-2"
             >
               {{ participant.bip }}
             </div>

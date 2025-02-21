@@ -141,7 +141,7 @@ onMounted(() => {
         <div class="ml-3" v-if="results[0].year">{{ results[0].year }} г.</div>
       </div>
       <div class="">
-        <div class="border my-border-color rounded overflow-hidden">
+        <div class="border my-border-color rounded-sm overflow-hidden">
           <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
             <div class="flex items-center">
               <div class="w-12 h-7 mr-4 flex justify-center items-center">Сезон</div>
@@ -186,7 +186,7 @@ onMounted(() => {
                   <div class="w-7 h-7 bg-neutral-800 rounded-full"></div>
                 </div>
               </div>
-              <div class="w-20 rounded mr-4">
+              <div class="w-20 rounded-sm mr-4">
                 {{ result.dist_name }}
               </div>
 
