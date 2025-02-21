@@ -97,17 +97,17 @@ onMounted(() => {
     <div class="mb-2 flex">
       <input
         type="text"
-        class="px-4 bg-[#262628] placeholder:text-neutral-400 h-10 outline-none border my-border-color text-sm rounded focus:border-emerald-400 w-full flex items-center"
+        class="px-4 bg-[#262628] placeholder:text-neutral-400 h-10 outline-hidden border my-border-color text-sm rounded-sm focus:border-emerald-400 w-full flex items-center"
         placeholder="Введите ФИО участника"
         v-model="searchInput"
       />
       <!-- <div
-        class="ml-4 px-5 text-lime-400 bg-input-color flex items-center h-10 cursor-pointer border border-lime-400 hover:bg-lime-400 rounded hover:text-black transition ease-in-out"
+        class="ml-4 px-5 text-lime-400 bg-input-color flex items-center h-10 cursor-pointer border border-lime-400 hover:bg-lime-400 rounded-sm hover:text-black transition ease-in-out"
       >
         Поиск
       </div> -->
     </div>
-    <div v-if="cyclists.length" class="border my-border-color rounded mb-4">
+    <div v-if="cyclists.length" class="border my-border-color rounded-sm mb-4">
       <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
         <div class="flex">
           <!-- <div class="w-7 text-center mr-2">№</div> -->

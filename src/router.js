@@ -44,6 +44,7 @@ const routes = [
             name: "Season",
             path: ":eventId",
             component: () => import("@/pages/Season.vue"),
+            meta: { typeView: "Desktop" },
           },
         ],
       },
@@ -104,7 +105,8 @@ const routes = [
           {
             name: "Season_m",
             path: ":eventId",
-            component: () => import("@/pages/mobile/Season.vue"),
+            component: () => import("@/pages/Season.vue"),
+            meta: { typeView: "Mobile" },
           },
         ],
       },

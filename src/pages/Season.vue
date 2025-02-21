@@ -1,91 +1,141 @@
 <script setup>
-import { convertMsToTime } from "@/utils/utils.js";
+// TODO: Поменять Groups на Category
+// TODO: Переименовать getTypesBike, ... -> getTypesBikeFilter, ...Filter?
 
-import _ from "lodash";
-import InputSelect from "@/components/InputSelect.vue";
-import ArrowSvg from "@/components/svg/ArrowSvg.vue";
-import DocSvg from "@/components/svg/DocSvg.vue";
+import SeasonDesktopView from "@/pages/desktop/Season.vue"
+import SeasonMobileView from "@/pages/mobile/Season.vue"
 
-import { computed, ref, onMounted, watch } from "vue";
+import { computed, ref, onMounted, watch, provide, readonly } from "vue";
 import { useRouter, useRoute } from "vue-router";
-
 import { useMainStore } from "@/stores/MainStore";
 
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
 
-let distances = ref([]);
-let typesBike = ref([]);
-let groups = ref([]);
-
-let selectedDistance = ref(null);
-let selectedTypeBike = ref(null);
-let selectedGroup = ref(null);
-let isTotalTime = ref(false);
-
-let event = ref({});
-let results = ref([]);
-let participants = ref([]);
-
-let culcFilter = ref(false);
-
-watch(
-  () => selectedDistance.value,
-  () => {
-    typesBike.value = getTypesBike(participants.value, selectedDistance.value);
-    if (culcFilter.value) {
-      selectedTypeBike.value = typesBike.value[0];
-    }
-    changeStatus();
+const typeComponent = computed(() => {
+  if (route.meta.typeView === 'Desktop') {
+    return SeasonDesktopView;
+  } else {
+    return SeasonMobileView;
   }
-);
-
-watch(
-  () => selectedTypeBike.value,
-  () => {
-    groups.value = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
-    if (culcFilter.value) {
-      selectedGroup.value = groups.value[0];
-    }
-  }
-);
-
-watch(
-  () => selectedGroup.value,
-  () => {
-    router.replace({
-      name: route.name,
-      query: {
-        distance: selectedDistance.value?.id,
-        bike: selectedTypeBike.value?.id,
-        group: selectedGroup.value?.id,
-      },
-    });
-  }
-);
-
-let eventId = computed(() => {
-  return route.params.eventId;
 });
+
+let routeQueryParams = {}
+
+const event = ref({
+  // id: null,
+  // name: '',
+  // protocolLink: '',
+})
+
+const filters = ref({
+  // TODO: selected: {} ?
+  distances: {
+    selected: null,
+    options: []
+  },
+  typesBike: {
+    selected: null,
+    options: []
+  },
+  groups: {
+    selected: null,
+    options: []
+  },
+})
+
+const allTypesBikeOption = { id: null, name: 'Общий зачёт' } // name: 'Все типы велосипедов'
+const allGroupOption = { id: null, name: 'Общий зачёт' }
+
+const participants = ref([]);
+
+// TODO: Нужен ли computed ?
+let eventId = computed(() => {
+  return +route.params.eventId;
+});
+// ===
 
 let filteredParticipants = computed(() => {
-  let filteredParticipants = participants.value.filter((participant) => {
+  const { distances, typesBike, groups } = filters.value
+
+  let filteredByDistance = participants.value.filter((participant) => {
     return (
-      participant.distance.id == selectedDistance.value?.id &&
-      participant.biketype.id == selectedTypeBike.value?.id &&
-      participant.category.id == selectedGroup.value?.id
+      participant.distance.id === distances.selected?.id
     );
-  });
+  })
 
-  return setPlaces(filteredParticipants);
+  // Выбран "общий зачёт" в списке велосипедов, в списке больше 1 элемента
+  if (typesBike.selected?.id === allTypesBikeOption.id && typesBike.options.length > 1) {
+    return setPlaces(filteredByDistance)
+  }
+  // Выбран "общий зачёт" в списке велосипедов + в списке групп
+  if (typesBike.selected?.id === allTypesBikeOption.id && groups.selected?.id === allGroupOption.id) {
+    return setPlaces(filteredByDistance)
+  }
+
+  let filteredByBiketype = filteredByDistance.filter((participant) => {
+    return (
+      participant.biketype.id === typesBike.selected?.id
+    );
+  })
+
+  // Выбран "общий зачёт" в списке групп
+  if (groups.selected?.id === allGroupOption.id) {
+    return setPlaces(filteredByBiketype)
+  }
+
+  let filteredByGroup = filteredByBiketype.filter((participant) => {
+    return (
+      participant.category.id === groups.selected?.id
+    );
+  })
+
+  return setPlaces(filteredByGroup)
 });
 
-let protocolName = computed(() => {
-  return mainStore.protocols.find((protocol) => protocol.id === event.value.id).name;
-});
+function startWatchFilters() {
+  watch(
+    () => filters.value.distances.selected,
+    () => {
+      filters.value.typesBike = getTypesBike(participants.value, filters.value.distances.selected);
+    }
+  );
+  watch(
+    () => filters.value.typesBike,
+    () => {
+      filters.value.groups = getGroups(participants.value, filters.value.distances.selected, filters.value.typesBike.selected);
+    },
+    {
+      deep: true
+    }
+  );
+  watch(
+    () => filters.value.groups,
+    () => {
 
-function getDistances(participants) {
+      router.replace({
+        name: route.name,
+        query: {
+          distance: filters.value.distances.selected?.id,
+          bike: filters.value.typesBike.selected?.id || 'all',
+          group: filters.value.groups.selected?.id || 'all',
+        },
+      });
+    },
+    {
+      deep: true
+    }
+  );
+}
+
+function getProtocolLink(eventId) {
+  let protocolName = mainStore.protocols.find((protocol) => protocol.id === eventId).name;
+  return `https://bm.cyclists03.ru/protocols/${protocolName}.pdf`;
+}
+
+function getDistances(participants, selectedValueId) {
+  let selected
   let distances = [];
 
   participants.forEach((participant) => {
@@ -94,42 +144,79 @@ function getDistances(participants) {
     }
   });
 
-  return distances;
+  selected = distances.find((distance) => distance.id === selectedValueId) || distances[0] || null
+
+  return {
+    selected,
+    options: distances
+  };
+
 }
 
-function getTypesBike(participants, selectedDistance) {
-  let typesBike = [];
+function getTypesBike(participants, selectedDistance, selectedValueId) {
+  let selected
+  // const uniqueBikeTypes = [allTypesBikeOption];
+  const uniqueBikeTypes = [];
+  uniqueBikeTypes.push({ ...allTypesBikeOption })
 
-  let filteredByDistance = participants.filter((participant) => participant.distance.id === selectedDistance?.id);
-
-  filteredByDistance.forEach((participant) => {
-    if (!typesBike.some((biketype) => participant.biketype.id === biketype.id)) {
-      typesBike.push(participant.biketype);
+  participants.forEach((participant) => {
+    if (participant.distance.id === selectedDistance.id) {
+      if (!uniqueBikeTypes.some((bikeType) => bikeType.id === participant.biketype.id)) {
+        uniqueBikeTypes.push(participant.biketype);
+      }
     }
   });
 
-  return typesBike;
+  // Если в списке типов велосипеда нет опций кроме общего зачёта, то "Общий зачёт" -> "-"
+  if (uniqueBikeTypes.length === 1 && uniqueBikeTypes[0].id === allTypesBikeOption.id) {
+    uniqueBikeTypes[0].name = '-'
+  }
+
+  if (uniqueBikeTypes.length === 2) {
+    const allTypesBikeOptionIndex = uniqueBikeTypes.findIndex((bikeType) => bikeType.id === allTypesBikeOption.id)
+    uniqueBikeTypes.splice(allTypesBikeOptionIndex, 1)
+  }
+
+  selected = uniqueBikeTypes.find(bikeType => bikeType.id === selectedValueId) || uniqueBikeTypes[0] || null;
+
+  return {
+    selected,
+    options: uniqueBikeTypes
+  };
+
 }
 
-function getGroups(participants, selectedDistance, selectedTypeBike) {
-  let groups = [];
+function getGroups(participants, selectedDistance, selectedTypeBike, selectedValueId) {
+  let selected
+  // Всегда ли будут группы?
+  // const uniqueGroups = [allGroupOption];
+  const uniqueGroups = [];
+  uniqueGroups.push({ ...allGroupOption })
 
-  let filteredByDistanceAndBiketypes = participants.filter((participant) => {
-    return participant.distance.id === selectedDistance?.id && participant.biketype.id === selectedTypeBike?.id;
-  });
-
-  filteredByDistanceAndBiketypes.forEach((participant) => {
-    if (!groups.some((group) => participant.category.id === group.id)) {
-      groups.push(participant.category);
+  participants.forEach((participant) => {
+    if (participant.distance.id === selectedDistance.id && participant.biketype.id === selectedTypeBike.id) {
+      if (!uniqueGroups.some((group) => group.id === participant.category.id)) {
+        uniqueGroups.push(participant.category);
+      }
     }
   });
 
-  return groups;
+  if (uniqueGroups.length === 2) {
+    const allGroupOptionIndex = uniqueGroups.findIndex((group) => group.id === allGroupOption.id)
+    uniqueGroups.splice(allGroupOptionIndex, 1)
+  }
+
+  selected = uniqueGroups.find((group) => group.id === selectedValueId) || uniqueGroups[0] || null;
+
+  return {
+    selected,
+    options: uniqueGroups
+  };
 }
 
 function setPlaces(participants) {
   let placeNumber = 1;
-  let newArr = participants.map((participant, index) => {
+  return participants.map((participant, index) => {
     let handledParticipant = { ...participant };
     if (index === 0) {
       handledParticipant.place = placeNumber;
@@ -144,209 +231,38 @@ function setPlaces(participants) {
     }
     return handledParticipant;
   });
-
-  return newArr;
-}
-
-function culcDelay(resultMs) {
-  if (!resultMs) {
-    return;
-  }
-
-  let bestTimeMs = filteredParticipants.value[0].result;
-
-  return `+ ${convertMsToTime(resultMs - bestTimeMs)}`;
-}
-
-function goToCyclist(participant) {
-  router.push({ name: "Cyclist", params: { cyclistId: participant.cyclist.id } });
-}
-
-function goBack() {
-  router.back();
 }
 
 onMounted(() => {
-  let query = route.query;
+  routeQueryParams = route.query;
 
   mainStore.getEvents().then((response) => {
     // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
-    event.value = response.data.data.find((event) => event.id == eventId.value);
+    let neededEvent = response.data.data.find((event) => event.id === eventId.value);
+    event.value = {
+      ...neededEvent,
+      protocolLink: getProtocolLink(neededEvent.id),
+    }
   });
 
   mainStore.getEventResults(eventId.value).then((response) => {
     participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
 
-    distances.value = getDistances(participants.value);
-    if (!distances.value.find((distance) => distance.id == query.distance)) {
-      selectedDistance.value = distances.value[0];
-    } else {
-      selectedDistance.value = distances.value.find((distance) => distance.id == query.distance);
-    }
+    filters.value.distances = getDistances(participants.value, +routeQueryParams.distance);
+    filters.value.typesBike = getTypesBike(participants.value, filters.value.distances.selected, +routeQueryParams.bike);
+    filters.value.groups = getGroups(participants.value, filters.value.distances.selected, filters.value.typesBike.selected, +routeQueryParams.group);
 
-    typesBike.value = getTypesBike(participants.value, selectedDistance.value);
-    if (!typesBike.value.find((typeBike) => typeBike.id == query.bike)) {
-      selectedTypeBike.value = typesBike.value[0];
-    } else {
-      selectedTypeBike.value = typesBike.value.find((typeBike) => typeBike.id == query.bike);
-    }
-
-    // TODO: Поменять на category
-    groups.value = getGroups(participants.value, selectedDistance.value, selectedTypeBike.value);
-    if (!groups.value.find((group) => group.id == query.group)) {
-      selectedGroup.value = groups.value[0];
-    } else {
-      selectedGroup.value = groups.value.find((group) => group.id == query.group);
-    }
+    startWatchFilters()
   });
 });
 
-// TODO:FIXME: Поменять название. Устанавливает в true, когда фильтры из пути применялись. Костыль !!
-function changeStatus() {
-  culcFilter.value = true;
-}
+provide('filters', filters)
+provide('filteredParticipants', readonly(filteredParticipants))
+provide('event', readonly(event))
 </script>
 
 <template>
-  <div class="px-24 max-w-7xl m-auto">
-    <template v-if="event.id">
-      <div class="flex justify-between items-center mb-6 mx-5">
-        <div @click="goBack()" class="select-none stroke-neutral-400 hover:stroke-white cursor-pointer">
-          <ArrowSvg />
-        </div>
-        <span class="text-2xl font-extrabold"> {{ event.name }} </span>
-        <div class="opacity-0 cursor-default">
-          <ArrowSvg />
-        </div>
-      </div>
-      <div class="px-4 mb-5 flex justify-between select-none">
-        <div class="flex items-center">
-          <div class="flex items-center mr-6">
-            <div class="opacity-60 mr-3">Дистанция:</div>
-            <InputSelect v-model="selectedDistance" :options="distances" v-slot="{ option }">
-              {{ option.name }}
-            </InputSelect>
-          </div>
-          <div v-show="!isTotalTime" class="flex items-center mr-6">
-            <div class="opacity-60 mr-3">Велосипед:</div>
-            <InputSelect v-model="selectedTypeBike" :options="typesBike" v-slot="{ option }">
-              {{ option.name }}
-            </InputSelect>
-          </div>
-          <div v-show="!isTotalTime" class="flex items-center mr-6">
-            <div class="opacity-60 mr-3">Группа:</div>
-            <InputSelect v-model="selectedGroup" :options="groups" :width="160" v-slot="{ option }">
-              {{ option.name }}
-            </InputSelect>
-          </div>
-        </div>
-        <div>
-          <a
-            target="_blank"
-            :href="`https://bm.cyclists03.ru/protocols/${protocolName}.pdf`"
-            class="flex items-center h-[34px] border my-border-color rounded px-4 py-1 cursor-pointer bg-input-color transition ease-out hover:border-emerald-400"
-          >
-            <DocSvg class="mr-2" />
-            Протокол
-          </a>
-
-          <!-- <div
-            class="border my-border-color rounded px-2 py-1 bg-input-color cursor-pointer hover:border-lime-400 transition ease-out"
-            @click="switchTotalTime"
-          >
-            <div
-              class="flex justify-between items-center"
-              :class="[!isTotalTime ? 'stroke-white' : 'stroke-lime-400 text-lime-400']"
-            >
-              <div v-if="!isTotalTime">
-                <EyeOffSvg :size="20" />
-              </div>
-              <div v-else>
-                <EyeSvg :size="20" />
-              </div>
-              <div class="ml-2">Общий зачёт</div>
-            </div>
-          </div> -->
-        </div>
-      </div>
-      <div class="border my-border-color rounded mb-8 overflow-hidden">
-        <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
-          <div class="flex items-center">
-            <div class="w-7 h-7 mr-4 flex justify-center items-center">#</div>
-            <div class="w-7 text-center mr-2">№</div>
-            <div class="w-60 mr-4">Фамилия Имя</div>
-            <div class="w-40 mr-4">нп.</div>
-            <div class="w-56 mr-4">Команда</div>
-          </div>
-          <div class="flex items-center">
-            <div class="w-20 mr-2 text-end"></div>
-            <div class="w-20 text-end">Время</div>
-          </div>
-        </div>
-        <div
-          class="flex items-center justify-between px-4 border-b last:border-none my-border-color py-2 hover-table-item group"
-          v-for="(participant, index) in filteredParticipants"
-          :key="index"
-        >
-          <div class="flex items-center">
-            <div
-              :class="[
-                {
-                  first: participant.place == 1 && participant.place && participant.status == 2,
-                  second: participant.place == 2 && participant.place && participant.status == 2,
-                  third: participant.place == 3 && participant.place && participant.status == 2,
-                },
-                'text-lg font-bold w-7 h-7 flex justify-center items-center rounded-full mr-4',
-              ]"
-            >
-              {{ participant.status == 2 ? participant.place : "-" }}
-            </div>
-            <div
-              :class="[participant.cyclist.male ? 'bg-my-color' : 'bg-fuchsia-200 text-black']"
-              class="w-7 text-xs rounded text-center mr-2"
-            >
-              {{ participant.bip }}
-            </div>
-            <div class="w-60 mr-4">
-              <router-link
-                :to="{ name: 'Cyclist', params: { cyclistId: participant.cyclist.id } }"
-                v-slot="{ href, route, navigate }"
-              >
-                <a
-                  :href="href"
-                  class="underline-offset-2 hover:text-emerald-400 group-hover:underline cursor-pointer"
-                  @click="navigate"
-                >
-                  {{ participant.cyclist.lastname }} {{ participant.cyclist.firstname }}
-                </a>
-              </router-link>
-            </div>
-            <div class="w-40 mr-4">
-              {{ participant.city.name ? participant.city.name : "-" }}
-            </div>
-            <div class="w-56 mr-4 truncate">
-              {{ participant.team.name ? participant.team.name : "-" }}
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div v-if="participant.status == 2" class="w-20 mr-2 opacity-70 text-end">
-              {{ index !== 0 ? culcDelay(participant.result) : "" }}
-            </div>
-            <div v-if="participant.status == 2" class="w-20 text-end">
-              {{ convertMsToTime(participant.result) }}
-              <!-- {{ formatTime(participant.result) }} -->
-            </div>
-            <div v-else class="w-20 text-end">
-              {{ participant.cyclist.male ? "Сошёл" : "Сошла" }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-    <div v-else class="flex justify-center items-center mb-6 mx-5 select-none">
-      <div>Загрузка...</div>
-    </div>
-  </div>
+  <component :is="typeComponent"/>
 </template>
 
 <style></style>

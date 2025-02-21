@@ -98,12 +98,12 @@ onMounted(() => {
       </div>
       <input
         type="text"
-        class="px-4 bg-[#262628] h-10 outline-none border my-border-color placeholder:text-neutral-400 rounded focus:border-emerald-400 w-full flex items-center"
+        class="px-4 bg-[#262628] h-10 outline-hidden border my-border-color placeholder:text-neutral-400 rounded-sm focus:border-emerald-400 w-full flex items-center"
         placeholder="Введите ФИО участника"
         v-model="searchInput"
       />
     </div>
-    <div class="border my-border-color rounded mb-4">
+    <div class="border my-border-color rounded-sm mb-4">
       <!-- bg-table-color -->
       <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
         <div class="flex">

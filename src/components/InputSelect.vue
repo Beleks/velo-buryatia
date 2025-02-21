@@ -52,6 +52,7 @@ onClickOutside(target, (event) => {
   //   "closest"
   // );
   //
+  // TODO: Пересмотреть получение элемента?
   if (ignorEl.value == event.target.closest(`.border.my-border-color.rounded.px-2.py-1.bg-input-color`)) {
     return;
   }
@@ -80,7 +81,7 @@ function selectOption(option) {
   <div class="">
     <div
       :style="{ width: `${width}px` }"
-      class="h-[34px] border my-border-color rounded px-2 py-1 bg-input-color transition ease-out flex justify-between items-center stroke-white"
+      class="h-[34px] border my-border-color rounded-sm px-2 py-1 bg-input-color transition ease-out flex justify-between items-center stroke-white"
       :class="[disable ? 'opacity-50' : 'hover:border-emerald-400 cursor-pointer']"
       @click="switchDropdownMenu"
       ref="ignorEl"
@@ -92,7 +93,7 @@ function selectOption(option) {
       v-if="dropdownMenuIsOpen"
       :style="{ width: `${width}px` }"
       ref="target"
-      class="absolute mt-2 border my-border-color rounded z-10 shadow-md flex flex-col overflow-hidden"
+      class="absolute mt-2 border my-border-color rounded-sm z-10 shadow-md flex flex-col overflow-hidden"
     >
       <span
         :class="[

@@ -23,4 +23,11 @@ function convertTimeToMs(str) {
   return ms;
 }
 
-export { convertMsToTime, convertTimeToMs };
+function culcDelay(resultMs, bestTimeMs = 0) {
+  if (!resultMs) {
+    return;
+  }
+  return `+ ${convertMsToTime(resultMs - bestTimeMs)}`;
+}
+
+export { convertMsToTime, convertTimeToMs, culcDelay };
