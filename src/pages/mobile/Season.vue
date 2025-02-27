@@ -203,6 +203,6 @@ function goBack() {
   // 16px - outside table padding
   // 96px - time column width
   // 36px - place column width
-  width: calc(100vw - 16px - 16px - 96px - 36px - 16px);
+  max-width: calc(100vw - 16px - 16px - 96px - 36px - 16px);
 }
 </style>
