@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, useTemplateRef } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
 import SimpleArrowSvg from "./svg/SimpleArrowSvg.vue";
@@ -27,13 +27,13 @@ const props = defineProps({
 
 const emit = defineEmits(["input", "update:modelValue"]);
 
-const target = ref(null);
-const ignorEl = ref(null);
+const target = useTemplateRef("target");
+const ignorEl = useTemplateRef("ignorEl");
 
-let dropdownMenuIsOpen = ref(false);
-let selectedOption = ref(null);
+const dropdownMenuIsOpen = ref(false);
+const selectedOption = ref(null);
 
-let disable = computed(() => {
+const disable = computed(() => {
   return props.options.length < 2;
 });
 
@@ -46,14 +46,7 @@ watch(
 );
 
 onClickOutside(target, (event) => {
-  // Не работает из-за "hover:"
-  // console.log(
-  //   event.target.closest(`.${[...ignorEl.value.classList].join(".")}`),
-  //   "closest"
-  // );
-  //
-  // TODO: Пересмотреть получение элемента?
-  if (ignorEl.value == event.target.closest(`.border.my-border-color.rounded.px-2.py-1.bg-input-color`)) {
+  if (ignorEl.value == event.target.closest(`.border.my-border-color.rounded-sm.px-2.py-1.bg-input-color`)) {
     return;
   }
   closeDropdownMenu();
@@ -87,7 +80,7 @@ function selectOption(option) {
       ref="ignorEl"
     >
       <div>{{ props.modelValue?.[label[0]] }}</div>
-      <SimpleArrowSvg :class="[dropdownMenuIsOpen ? 'rotate-180' : '', 'transition ease-out']" :size="20" />
+      <SimpleArrowSvg :class="[dropdownMenuIsOpen ? 'rotate-180' : '', 'transition ease-out']" :size="20"/>
     </div>
     <div
       v-if="dropdownMenuIsOpen"
