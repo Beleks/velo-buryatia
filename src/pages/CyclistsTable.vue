@@ -4,6 +4,7 @@ import { useRouter, useRoute } from "vue-router";
 
 import { useMainStore } from "@/stores/MainStore";
 import { useCyclistsStore } from "@/stores/CyclistsStore";
+import { getCyclists } from "@/api/api.js";
 
 const router = useRouter();
 const route = useRoute();
@@ -83,8 +84,8 @@ function goBack() {
   router.back();
 }
 onMounted(() => {
-  mainStore.getCyclists().then((response) => {
-    cyclists.value = response.data.data;
+  getCyclists().then((response) => {
+    cyclists.value = response.data;
   });
 });
 </script>
@@ -105,7 +106,9 @@ onMounted(() => {
     </div>
     <div class="border my-border-color rounded-sm mb-4">
       <!-- bg-table-color -->
-      <div class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80">
+      <div
+        class="bg-table-color justify-between px-4 py-2 flex font-normal items-center opacity-80"
+      >
         <div class="flex">
           <!-- <div class="w-7 text-center mr-2">№</div> -->
           <div class="w-[400px]">Фамилия Имя Отчество</div>

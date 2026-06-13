@@ -6,6 +6,7 @@ import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { onMounted } from "vue";
 import { useMainStore } from "@/stores/MainStore";
+import { getEvents } from "@/api/api.js";
 
 const router = useRouter();
 const route = useRoute();
@@ -14,7 +15,7 @@ let alertIsVisible = ref(true);
 let seasons = ref([]);
 
 function chooseEvent(event) {
-  router.push({name: "Season", params: {eventId: event.id}});
+  router.push({ name: "Season", params: { eventId: event.id } });
 }
 
 function getCirclesColor(index) {
@@ -72,8 +73,8 @@ function acceptAlert() {
 }
 
 onMounted(() => {
-  mainStore.getEvents().then((response) => {
-    seasons.value = response.data.data.map((season, index) => {
+  getEvents().then((result) => {
+    seasons.value = result.data.map((season, index) => {
       let bgStyle = `bg-gradient-${index}`;
       season.style = bgStyle;
       season.circles = getCirclesColor(index);
@@ -95,10 +96,12 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
   >
     <div class="flex items-center">
       <div class="stroke-yellow-400 mr-4">
-        <AlertSvg :size="32"/>
+        <AlertSvg :size="32" />
       </div>
       <div class="text-yellow-400">
-        <div class="text-base text-yellow-400 mb-1">Эти результаты являются обработкой бумажных протоколов</div>
+        <div class="text-base text-yellow-400 mb-1">
+          Эти результаты являются обработкой бумажных протоколов
+        </div>
         <div class="text-sm font-normal">Сообщите нам, если найдёте ошибку</div>
       </div>
     </div>
@@ -128,18 +131,27 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
           <!-- Показать какие соревнования заполняются v-if="[5].includes(season.id)" [5].includes(season.id) 5 - id соревнования которое заполняется -->
           <div v-if="false" class="text-sm opacity-50">Заполняем...</div>
           <div class="flex items-center fill-white">
-            <PeoplsSvg :size="26" class="mr-2"/>
+            <PeoplsSvg :size="26" class="mr-2" />
             {{ season.cyclists }}
           </div>
         </div>
         <div
-          :class="['w-[348px] h-[140px] transition-opacity ease-out opacity-0 group-hover:opacity-100', season.style]"
+          :class="[
+            'w-[348px] h-[140px] transition-opacity ease-out opacity-0 group-hover:opacity-100',
+            season.style,
+          ]"
         ></div>
         <div
-          :class="['rounded-full h-[128px] w-[128px] absolute z-10 right-[-37px] top-[90px]', season.circles.big]"
+          :class="[
+            'rounded-full h-[128px] w-[128px] absolute z-10 right-[-37px] top-[90px]',
+            season.circles.big,
+          ]"
         ></div>
         <div
-          :class="['rounded-full h-[100px] w-[100px] absolute z-10 right-[57px] top-[105px]', season.circles.small]"
+          :class="[
+            'rounded-full h-[100px] w-[100px] absolute z-10 right-[57px] top-[105px]',
+            season.circles.small,
+          ]"
         ></div>
       </div>
     </template>

@@ -10,6 +10,7 @@ import { useRouter, useRoute } from "vue-router";
 
 import { useCyclistsStore } from "@/stores/cyclistsStore";
 import { useMainStore } from "@/stores/MainStore";
+import { getEvents, getEventResults, getCyclistsResults } from "@/api/api";
 
 const router = useRouter();
 const route = useRoute();
@@ -57,8 +58,8 @@ function setPlaces(participants) {
 
 function loadCyclistEvents(cyclistEvents) {
   let allEvents = [];
-  mainStore.getEvents().then((response) => {
-    allEvents = response.data.data;
+  getEvents().then((response) => {
+    allEvents = response.data;
 
     cyclistEvents.forEach((result) => {
       allEvents.forEach((event) => {
@@ -78,15 +79,15 @@ function loadCyclistEvents(cyclistEvents) {
     results.value.forEach((result) => {
       // TODO: Анимация загрузки
 
-      mainStore.getEventResults(result.event_id).then((response) => {
-        let relevantParticipants = response.data.data.filter(
+      getEventResults(result.event_id).then((response) => {
+        let relevantParticipants = response.data.filter(
           (participant) =>
             participant.category.id === result.category_id &&
             participant.distance.id === result.distance_id &&
-            participant.biketype.id === result.biketype_id
+            participant.biketype.id === result.biketype_id,
         );
         result.place = setPlaces(relevantParticipants).find(
-          (participant) => participant.cyclist.id === result.cyclist_id
+          (participant) => participant.cyclist.id === result.cyclist_id,
         ).place;
       });
     });
@@ -100,12 +101,9 @@ function goBack() {
 onMounted(() => {
   pageIsLoading.value = true;
 
-  mainStore
-    .getCyclistsResults(cyclistId.value)
+  getCyclistsResults(cyclistId.value)
     .then((response) => {
-      console.log(response.data.data, "getCyclistsResults");
-      // results.value = response.data.data;
-      loadCyclistEvents(response.data.data);
+      loadCyclistEvents(response.data);
     })
     .catch((err) => {
       console.log(err);

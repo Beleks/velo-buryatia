@@ -2,51 +2,52 @@
 // TODO: Поменять Groups на Category
 // TODO: Переименовать getTypesBike, ... -> getTypesBikeFilter, ...Filter?
 
-import SeasonDesktopView from "@/pages/desktop/Season.vue"
-import SeasonMobileView from "@/pages/mobile/Season.vue"
+import SeasonDesktopView from "@/pages/desktop/Season.vue";
+import SeasonMobileView from "@/pages/mobile/Season.vue";
 
 import { computed, ref, onMounted, watch, provide, readonly } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useMainStore } from "@/stores/MainStore";
+import { getEvents, getEventResults } from "@/api/api";
 
 const router = useRouter();
 const route = useRoute();
 const mainStore = useMainStore();
 
 const typeComponent = computed(() => {
-  if (route.meta.typeView === 'Desktop') {
+  if (route.meta.typeView === "Desktop") {
     return SeasonDesktopView;
   } else {
     return SeasonMobileView;
   }
 });
 
-let routeQueryParams = {}
+let routeQueryParams = {};
 
 const event = ref({
   // id: null,
   // name: '',
   // protocolLink: '',
-})
+});
 
 const filters = ref({
   // TODO: selected: {} ?
   distances: {
     selected: null,
-    options: []
+    options: [],
   },
   typesBike: {
     selected: null,
-    options: []
+    options: [],
   },
   groups: {
     selected: null,
-    options: []
+    options: [],
   },
-})
+});
 
-const allTypesBikeOption = { id: null, name: 'Общий зачёт' } // name: 'Все типы велосипедов'
-const allGroupOption = { id: null, name: 'Общий зачёт' }
+const allTypesBikeOption = { id: null, name: "Общий зачёт" }; // name: 'Все типы велосипедов'
+const allGroupOption = { id: null, name: "Общий зачёт" };
 
 const participants = ref([]);
 
@@ -57,41 +58,38 @@ let eventId = computed(() => {
 // ===
 
 let filteredParticipants = computed(() => {
-  const { distances, typesBike, groups } = filters.value
+  const { distances, typesBike, groups } = filters.value;
 
   let filteredByDistance = participants.value.filter((participant) => {
-    return (
-      participant.distance.id === distances.selected?.id
-    );
-  })
+    return participant.distance.id === distances.selected?.id;
+  });
 
   // Выбран "общий зачёт" в списке велосипедов, в списке больше 1 элемента
   if (typesBike.selected?.id === allTypesBikeOption.id && typesBike.options.length > 1) {
-    return setPlaces(filteredByDistance)
+    return setPlaces(filteredByDistance);
   }
   // Выбран "общий зачёт" в списке велосипедов + в списке групп
-  if (typesBike.selected?.id === allTypesBikeOption.id && groups.selected?.id === allGroupOption.id) {
-    return setPlaces(filteredByDistance)
+  if (
+    typesBike.selected?.id === allTypesBikeOption.id &&
+    groups.selected?.id === allGroupOption.id
+  ) {
+    return setPlaces(filteredByDistance);
   }
 
   let filteredByBiketype = filteredByDistance.filter((participant) => {
-    return (
-      participant.biketype.id === typesBike.selected?.id
-    );
-  })
+    return participant.biketype.id === typesBike.selected?.id;
+  });
 
   // Выбран "общий зачёт" в списке групп
   if (groups.selected?.id === allGroupOption.id) {
-    return setPlaces(filteredByBiketype)
+    return setPlaces(filteredByBiketype);
   }
 
   let filteredByGroup = filteredByBiketype.filter((participant) => {
-    return (
-      participant.category.id === groups.selected?.id
-    );
-  })
+    return participant.category.id === groups.selected?.id;
+  });
 
-  return setPlaces(filteredByGroup)
+  return setPlaces(filteredByGroup);
 });
 
 function startWatchFilters() {
@@ -99,33 +97,36 @@ function startWatchFilters() {
     () => filters.value.distances.selected,
     () => {
       filters.value.typesBike = getTypesBike(participants.value, filters.value.distances.selected);
-    }
+    },
   );
   watch(
     () => filters.value.typesBike,
     () => {
-      filters.value.groups = getGroups(participants.value, filters.value.distances.selected, filters.value.typesBike.selected);
+      filters.value.groups = getGroups(
+        participants.value,
+        filters.value.distances.selected,
+        filters.value.typesBike.selected,
+      );
     },
     {
-      deep: true
-    }
+      deep: true,
+    },
   );
   watch(
     () => filters.value.groups,
     () => {
-
       router.replace({
         name: route.name,
         query: {
           distance: filters.value.distances.selected?.id,
-          bike: filters.value.typesBike.selected?.id || 'all',
-          group: filters.value.groups.selected?.id || 'all',
+          bike: filters.value.typesBike.selected?.id || "all",
+          group: filters.value.groups.selected?.id || "all",
         },
       });
     },
     {
-      deep: true
-    }
+      deep: true,
+    },
   );
 }
 
@@ -135,7 +136,7 @@ function getProtocolLink(eventId) {
 }
 
 function getDistances(participants, selectedValueId) {
-  let selected
+  let selected;
   let distances = [];
 
   participants.forEach((participant) => {
@@ -144,20 +145,19 @@ function getDistances(participants, selectedValueId) {
     }
   });
 
-  selected = distances.find((distance) => distance.id === selectedValueId) || distances[0] || null
+  selected = distances.find((distance) => distance.id === selectedValueId) || distances[0] || null;
 
   return {
     selected,
-    options: distances
+    options: distances,
   };
-
 }
 
 function getTypesBike(participants, selectedDistance, selectedValueId) {
-  let selected
+  let selected;
   // const uniqueBikeTypes = [allTypesBikeOption];
   const uniqueBikeTypes = [];
-  uniqueBikeTypes.push({ ...allTypesBikeOption })
+  uniqueBikeTypes.push({ ...allTypesBikeOption });
 
   participants.forEach((participant) => {
     if (participant.distance.id === selectedDistance.id) {
@@ -169,32 +169,39 @@ function getTypesBike(participants, selectedDistance, selectedValueId) {
 
   // Если в списке типов велосипеда нет опций кроме общего зачёта, то "Общий зачёт" -> "-"
   if (uniqueBikeTypes.length === 1 && uniqueBikeTypes[0].id === allTypesBikeOption.id) {
-    uniqueBikeTypes[0].name = '-'
+    uniqueBikeTypes[0].name = "-";
   }
 
   if (uniqueBikeTypes.length === 2) {
-    const allTypesBikeOptionIndex = uniqueBikeTypes.findIndex((bikeType) => bikeType.id === allTypesBikeOption.id)
-    uniqueBikeTypes.splice(allTypesBikeOptionIndex, 1)
+    const allTypesBikeOptionIndex = uniqueBikeTypes.findIndex(
+      (bikeType) => bikeType.id === allTypesBikeOption.id,
+    );
+    uniqueBikeTypes.splice(allTypesBikeOptionIndex, 1);
   }
 
-  selected = uniqueBikeTypes.find(bikeType => bikeType.id === selectedValueId) || uniqueBikeTypes[0] || null;
+  selected =
+    uniqueBikeTypes.find((bikeType) => bikeType.id === selectedValueId) ||
+    uniqueBikeTypes[0] ||
+    null;
 
   return {
     selected,
-    options: uniqueBikeTypes
+    options: uniqueBikeTypes,
   };
-
 }
 
 function getGroups(participants, selectedDistance, selectedTypeBike, selectedValueId) {
-  let selected
+  let selected;
   // Всегда ли будут группы?
   // const uniqueGroups = [allGroupOption];
   const uniqueGroups = [];
-  uniqueGroups.push({ ...allGroupOption })
+  uniqueGroups.push({ ...allGroupOption });
 
   participants.forEach((participant) => {
-    if (participant.distance.id === selectedDistance.id && participant.biketype.id === selectedTypeBike.id) {
+    if (
+      participant.distance.id === selectedDistance.id &&
+      participant.biketype.id === selectedTypeBike.id
+    ) {
       if (!uniqueGroups.some((group) => group.id === participant.category.id)) {
         uniqueGroups.push(participant.category);
       }
@@ -202,15 +209,15 @@ function getGroups(participants, selectedDistance, selectedTypeBike, selectedVal
   });
 
   if (uniqueGroups.length === 2) {
-    const allGroupOptionIndex = uniqueGroups.findIndex((group) => group.id === allGroupOption.id)
-    uniqueGroups.splice(allGroupOptionIndex, 1)
+    const allGroupOptionIndex = uniqueGroups.findIndex((group) => group.id === allGroupOption.id);
+    uniqueGroups.splice(allGroupOptionIndex, 1);
   }
 
   selected = uniqueGroups.find((group) => group.id === selectedValueId) || uniqueGroups[0] || null;
 
   return {
     selected,
-    options: uniqueGroups
+    options: uniqueGroups,
   };
 }
 
@@ -236,33 +243,44 @@ function setPlaces(participants) {
 onMounted(() => {
   routeQueryParams = route.query;
 
-  mainStore.getEvents().then((response) => {
+  getEvents().then((response) => {
     // TODO: Нет метода для получения информации о соревновании (название, дата проведения) по его id. Поэтому такой костыль
-    let neededEvent = response.data.data.find((event) => event.id === eventId.value);
+    let neededEvent = response.data.find((event) => event.id === eventId.value);
     event.value = {
       ...neededEvent,
       protocolLink: getProtocolLink(neededEvent.id),
-    }
+    };
   });
 
-  mainStore.getEventResults(eventId.value).then((response) => {
-    participants.value = response.data.data.sort((cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result);
+  getEventResults(eventId.value).then((response) => {
+    participants.value = response.data.sort(
+      (cyclist_1, cyclist_2) => cyclist_1.result - cyclist_2.result,
+    );
 
     filters.value.distances = getDistances(participants.value, +routeQueryParams.distance);
-    filters.value.typesBike = getTypesBike(participants.value, filters.value.distances.selected, +routeQueryParams.bike);
-    filters.value.groups = getGroups(participants.value, filters.value.distances.selected, filters.value.typesBike.selected, +routeQueryParams.group);
+    filters.value.typesBike = getTypesBike(
+      participants.value,
+      filters.value.distances.selected,
+      +routeQueryParams.bike,
+    );
+    filters.value.groups = getGroups(
+      participants.value,
+      filters.value.distances.selected,
+      filters.value.typesBike.selected,
+      +routeQueryParams.group,
+    );
 
-    startWatchFilters()
+    startWatchFilters();
   });
 });
 
-provide('filters', filters)
-provide('filteredParticipants', readonly(filteredParticipants))
-provide('event', readonly(event))
+provide("filters", filters);
+provide("filteredParticipants", readonly(filteredParticipants));
+provide("event", readonly(event));
 </script>
 
 <template>
-  <component :is="typeComponent"/>
+  <component :is="typeComponent" />
 </template>
 
 <style></style>

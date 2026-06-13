@@ -6,6 +6,7 @@ import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { onMounted } from "vue";
 import { useMainStore } from "@/stores/MainStore";
+import { getEvents } from "@/api/api.js";
 
 const router = useRouter();
 const route = useRoute();
@@ -74,8 +75,8 @@ function acceptAlert() {
 }
 
 onMounted(() => {
-  mainStore.getEvents().then((response) => {
-    seasons.value = response.data.data.map((season, index) => {
+  getEvents().then((response) => {
+    seasons.value = response.data.map((season, index) => {
       let bgStyle = `bg-gradient-${index}`;
       season.style = bgStyle;
       season.circles = getCirclesColor(index);
@@ -98,7 +99,9 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
     <div class="stroke-yellow-400 mx-auto flex items-center">
       <AlertSvg :size="32" />
     </div>
-    <div class="text-base text-yellow-400 mb-1">Эти результаты являются обработкой бумажных протоколов</div>
+    <div class="text-base text-yellow-400 mb-1">
+      Эти результаты являются обработкой бумажных протоколов
+    </div>
     <div class="text-sm font-normal my-0.5">Сообщите нам, если найдёте ошибку</div>
     <!-- <div class="text-yellow-400"></div> -->
     <div
@@ -131,13 +134,22 @@ if (localStorage.getItem("alertMessageIsAccept") == null) {
           </div>
         </div>
         <div
-          :class="['w-[348px] h-[140px] transition-opacity ease-out opacity-0 group-hover:opacity-100', season.style]"
+          :class="[
+            'w-[348px] h-[140px] transition-opacity ease-out opacity-0 group-hover:opacity-100',
+            season.style,
+          ]"
         ></div>
         <div
-          :class="['rounded-full h-[128px] w-[128px] absolute z-10 right-[-37px] top-[90px]', season.circles.big]"
+          :class="[
+            'rounded-full h-[128px] w-[128px] absolute z-10 right-[-37px] top-[90px]',
+            season.circles.big,
+          ]"
         ></div>
         <div
-          :class="['rounded-full h-[100px] w-[100px] absolute z-10 right-[57px] top-[105px]', season.circles.small]"
+          :class="[
+            'rounded-full h-[100px] w-[100px] absolute z-10 right-[57px] top-[105px]',
+            season.circles.small,
+          ]"
         ></div>
       </div>
     </template>
